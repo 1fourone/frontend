@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Script to test the local file once
+
+# You test by moving it to ~/public_html/testing
+# Use naming of index.html but inside testing folder
+# For ease of use, files are edited outside of AFS
+# Use scp to upload these files to their target directories
+
+for f in ./*; do
+    # don't import files ending with .ignore
+    if [[ $f != *.ignore ]]
+    then
+        #echo $f
+        scp -r $f ml637@afs6.njit.edu:/afs/cad/u/m/l/ml637/public_html/testing
+    fi
+done
+
