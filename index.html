@@ -1,10 +1,27 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Frontend Alpha</title>
     <link rel="stylesheet" type="text/css" href="styles.css" />
     <script>
-      
+      function prepareData() {
+        var uname = document.getElementById("uname").value;
+        var pw = document.getElementById("pw").value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", 'front.php', true);
+
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); //We're sending JSON data in a string
+        xhr.onreadystatechange = function() {
+          if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            //alert(this.responseText);
+          }
+        };
+
+        xhr.send("credentials=" + JSON.stringify({user: uname, password: pw})); //send the JSON
+      }
     </script>
   </head>
 
@@ -17,7 +34,7 @@
     <label for="pw">Password:</label>
     <input type="password" id="pw" name="pw" />
 
-    <input type="submit" id="submit" value="Submit" /> 
+    <input type="submit" id="submit" value="Submit" onclick="prepareData();" />
 
   </body>
 
