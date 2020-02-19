@@ -1,11 +1,7 @@
 <?php
     //json credentials string is now available through $_POST['credentials']
-    //hash password, repackage JSON into string, and send it to mid
+    // DON't hash password, send plaintext credentials to mid
     $v = $_POST['credentials'];
-    $data = json_decode($v);
-    $pw_hashed = hash('sha256', $data->{'password'});
-    $data->{'password'} = $pw_hashed;
-    $v = json_encode($data);
 
     //talk to mid.php via cURL and send a POST request with the (updated) credentials JSON string
     //and receive a result JSON string
