@@ -61,6 +61,16 @@ A `receiver` is a php script that doesn't use `cURL` to communicate to another s
 ?>
 ```
 
+#### Specific Chain of Events
+1. Front reads input from HTML, passes a `Credentials` JSON object to `front.php` with username and plaintext password.
+2. `front.php` gets this `Credentials` and passes it onto Middle in `mid.php`.
+3. Middle gets this `Credentials` and performs spoof logic to NJIT with them and keeps track of the outcome. 
+4. While doing #3, it makes an extra copy of `Credentials`, and replaces the plaintext password with a hashed one (via php's `hash()`). Middle sends this "hashed" `Credentials` object and passes it onto Back in `back.php`.
+5. Back gets this "hashed" `Credentials` and compares the hashed password to the hashed password on the DB. Based on the result, Back prepares a partially complete `Result` JSON object (with only the local result) and returns it.
+6. Middle gets this returned `Result`, and completes the `Result` by adding the outcome of the NJIT spoof. It returns this complete `Result`.
+7. Frontend receives this `Result`, and returns it.
+8. Within JS, a function is called to update the view on the browser based on the `Result`.
+
 ### Data
 Will send a `Credentials` JSON object to Middle.
 ```json
