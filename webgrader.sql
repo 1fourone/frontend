@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 12, 2020 at 09:12 PM
+-- Generation Time: Mar 12, 2020 at 09:21 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -173,6 +173,7 @@ INSERT INTO `student` (`uuid`, `name`, `cid`) VALUES
 
 CREATE TABLE `user` (
   `name` varchar(16) NOT NULL,
+  `hashedPW` varchar(65) NOT NULL,
   `profID` char(37) DEFAULT NULL,
   `studID` char(37) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

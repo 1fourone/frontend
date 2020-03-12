@@ -76,6 +76,7 @@ CREATE TABLE `webgrader`.`examanswer`
 CREATE TABLE `webgrader`.`user` 
 ( 
     `name` VARCHAR(16) NOT NULL,
+    `hashedPW` VARCHAR(65) NOT NULL,
     `profID` CHAR(37),
     `studID` CHAR(37),
     
