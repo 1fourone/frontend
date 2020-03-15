@@ -9,6 +9,10 @@ Program needs to be able to do the following:
 [W] - Instructor starts autograding (can tweak scores, add comments, release scores)
 [W] - Students review results (can only do this once done their score is released)
 
+There are some common subtasks that are important to the above features' functionality:
+
+[W] - Rendering the question bank `qbank.html`
+
 *Legend*: D(esigned), I(mplemented), T(esting), R(eady), W(aiting)
 
 ## Identification
@@ -42,7 +46,8 @@ On a similar login page to one on Alpha release, allow for users to login to eit
 An instructor should be able to add a question of the form "write a function ..." to the question bank. Basically, allow an instructor to set some values for a "question", and create a question and store it. These would eventually be shown to the instructor when creating an exam.
 
 #### Technical
-- `qbank.html` allows instructor to click a button `Add` to add a question to the bank. 
+- `qbank.html` is rendered with the `Add` button.
+- Instructor clicks on `Add` button.
 - `add.html` takes instructor's input on `prompt`, `difficulty`, `topic`, `firstTestCase`, `firstOutput`, `secondTestCase`, `secondOutput`. 
 - When instructor clicks `Add to Bank` button, `add.html` will pass these values to `qbank.php` via a `POST` request.
 - Front's `qbank.php` constructs a `Question` and passes it to Mid's `qbank.php` via `POST` request.
@@ -75,7 +80,35 @@ INSERT INTO QUESTION(`id`, `prompt`, `difficulty`, `topic`, `creatorID`, `creati
 - Mid's `qbank.php` will receive the `QueryResult` and send it to Front's `qbank.php`.
 - Front's `qbank.php` will either display a success/failure message to instructor (popup) and reset `qbank.html`.
 
+## Instructor Prepares Exam
 
+#### Overview
+An instructor should be able to select questions from the question bank to create an exam. Questions can be searched/filtered by difficulty, topic, creator, and date. When the instructor selects a question, he/she can assign a number of points that the question is worth on the exam. Once the instructor is done adding questions and assigning them points, the instructor can select to what class to assign the exam to. This would make it such that all students on that class have the exam as an active exam and are able to take it from their home page.
+
+The general "flow" would be as follows:
+1) Instructor drags and drops questions from the question bank view to the exam view.
+2) Optionally, instructor can drag back items to not include them on the test.
+3) Instructor assigns points for each question by entering a number on the box to the right of the question.
+4) Instructor selects one of his/her class from a dropdown list.
+5) Instructor clicks on either `Dispatch Exam` or `Cancel`.
+    - `Dispatch Exam` will go through with exam creation
+    - `Cancel` will take them back to `instructor.html`
+
+
+#### Technical
+There's some exam-specific technical challenges, namely:
+
+(Incomplete)
+1. Managing IFrames and drag-and-drop functionality
+    - From a local copy of question data from `qbank.html`, toggle visibility on question bank view and create/destroy the question element in the exam view.
+    - Need to find intuitive way of drag and drop, could take some time.
+2. Creating a representation for a `Question` (info banner with test label on right for points)
+    - From a specific entry in the local copy of question data from `qbank.html`, create a banner with all necessary info about question and have a label on the right for it where points can be assigned.
+    - Have these be in a  class but with distinct container id's so that each question can be accessed separately
+3. Getting an instructor's classes, and displaying them on the dropdown list.
+    - `GET` request sent all the way to Back's `exam.php` as usual
+    - Back performs selection query and returns result
+4. Sending the Exam's data over to Mid to be sent to Back.
 
 ## Schema
 ---
@@ -143,17 +176,17 @@ There can be 1+ `section`s of a `course`.
 ---
 `QUESTION` - contains information about a question
 - `id` - UUID to represent each distinct question (primary key)
-- `prompt` - instructions/prompt for the question
-- `difficulty` - number to represent difficulty (0 = easy, 1 = medium, 2 = hard) (index)
-- `topic` - topic a question belongs to (index)
-- `creatorID` - UUID to represent the creator of question (index, foreign key to `INSTRUCTOR`.`id`)
-- `creationDate` - timestamp of when question was created (index)
+- `prompt` - instructions/prompt for the question (unique)
+- `difficulty` - number to represent difficulty (0 = easy, 1 = medium, 2 = hard)
+- `topic` - topic a question belongs to
+- `creatorID` - UUID to represent the creator of question (foreign key to `INSTRUCTOR`.`id`)
+- `creationDate` - timestamp of when question was created
 - `firstTestCase` - testcase for autograder to grade a future exam submission
 - `firstOutput` - expected result for first test case
 - `secondTestCase` - testcase for autograder to grade a future exam submission
 - `secondOutput` - expected result for second test case
 
-| id (PK) | prompt                                                                       | difficulty (I) | topic (I)    | creatorID (I) | creationDate (I) | firstTestCase | firstOutput | secondTestCase | secondOutput |
+| id (PK) | prompt (U)                                                                     | difficulty | topic    | creatorID | creationDate | firstTestCase | firstOutput | secondTestCase | secondOutput |
 |---------|------------------------------------------------------------------------------|----------------|--------------|---------------|------------------|---------------|-------------|----------------|--------------|
 | f3s0... | Write a function add(a, b) that adds two numbers and returns the result.     | 0              | Functions    | 43s8...       | 1584283994       | 1,5           | 6           | -3,15          | 12           |
 | a5sl... | Write a function isLeapYear(year) that returns whether year is a  leap year. | 1              | Conditionals | a9s5...       | 1584254553       | 2020          | True        | 2019           | False        |
@@ -161,7 +194,8 @@ There can be 1+ `section`s of a `course`.
 
 A `QUESTION` has a `prompt` with instructions on what to do.
 A `QUESTION` has a `firstTestCase` and `secondTestCase` with their respective `firstOutput` and `secondOutput`.
-The `QUESTION` bank can be sorted/filtered by `difficulty`, `topic`, `creatorID`, and `creationDate`.
+The `QUESTION` bank can be sorted/filtered by `difficulty`, `topic`, `creatorID`, and `creationDate` (this is done by JS on "raw" data, *not* SQL).
+A `QUESTION`s prompt has to be unique - you cannot have more than one question with the same prompt.
 
 ---
 `EXAM` - contains information about an exam
