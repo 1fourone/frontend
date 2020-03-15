@@ -1,7 +1,7 @@
 # Beta Specification
 
 Program needs to be able to do the following:
-
+e
 [D] - Identification - Student home page different than Instructor home page
 [D] - Instructor adds a question to question bank (write a function ..)
 [W] - Instructor selects a question for exam
@@ -114,14 +114,15 @@ There's some exam-specific technical challenges, namely:
 ---
 `USER` - contains information about a user (can be instructor/student)
 - `id` - UUID to represent each distinct user (primary key)
+- `name` - username for each distinct user
 - `sid` - UUID to represent each distinct student (foreign key to `STUDENT`.`id`)
 - `pid` - UUID to represent each distinct instructor (foreign key to `INSTRUCTOR`.`id`)
 
-| id (PK) | sid (FK) | pid (FK) |
-|---------|----------|----------|
-| 89a7... | 95s3...  | NULL     |
-| 95q4... | NULL     | 43s8...  |
-| ...     | ...      | ...      |
+| id (PK) | name  | sid (FK) | pid (FK) |
+|---------|-------|----------|----------|
+| 89a7... | ab531 | 95s3...  | NULL     |
+| 95q4... | se432 | NULL     | 43s8...  |
+| ...     | ...   | ...      | ...      |
 
 A `USER` can be either a `STUDENT` or an `INSTRUCTOR`.
 
@@ -186,7 +187,7 @@ There can be 1+ `section`s of a `course`.
 - `secondTestCase` - testcase for autograder to grade a future exam submission
 - `secondOutput` - expected result for second test case
 
-| id (PK) | prompt (U)                                                                     | difficulty | topic    | creatorID | creationDate | firstTestCase | firstOutput | secondTestCase | secondOutput |
+| id (PK) | prompt (U)                                                                     | difficulty | topic    | creatorID (FK)| creationDate | firstTestCase | firstOutput | secondTestCase | secondOutput |
 |---------|------------------------------------------------------------------------------|----------------|--------------|---------------|------------------|---------------|-------------|----------------|--------------|
 | f3s0... | Write a function add(a, b) that adds two numbers and returns the result.     | 0              | Functions    | 43s8...       | 1584283994       | 1,5           | 6           | -3,15          | 12           |
 | a5sl... | Write a function isLeapYear(year) that returns whether year is a  leap year. | 1              | Conditionals | a9s5...       | 1584254553       | 2020          | True        | 2019           | False        |
@@ -210,7 +211,7 @@ A `QUESTION`s prompt has to be unique - you cannot have more than one question w
 - `professorFeedback` - manual feedback by professor
 - `pointsReceived` - number of points question was given by the autograder/overriden by the instructor
 
-| id (PK) | qid (PK) | sid (PK) | status | date       | maxPoints | submissionText                  | autoFeedback | professorFeedback | pointsReceived |
+| id (PK) | qid (PK, FK) | sid (PK, FK) | status | date       | maxPoints | submissionText                  | autoFeedback | professorFeedback | pointsReceived |
 |---------|----------|----------|--------|------------|-----------|---------------------------------|--------------|-------------------|----------------|
 | b5k3... | f3s0...  | 95s3...  | 0      | 1584283995 | 2         | def add(a, b):     return a + b | 6            | Great job!        | 2              |
 | q95s... | a5sl...  | 5s41...  | 2      | 1584254554 | 5         | NULL                            | NULL         | NULL              | 0              |
