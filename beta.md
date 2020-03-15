@@ -114,11 +114,11 @@ There's some exam-specific technical challenges, namely:
 ---
 `USER` - contains information about a user (can be instructor/student)
 - `id` - UUID to represent each distinct user (primary key)
-- `name` - username for each distinct user
+- `name` - username for each distinct user (unique)
 - `sid` - UUID to represent each distinct student (foreign key to `STUDENT`.`id`)
-- `pid` - UUID to represent each distinct instructor (foreign key to `INSTRUCTOR`.`id`)
+- `iid` - UUID to represent each distinct instructor (foreign key to `INSTRUCTOR`.`id`)
 
-| id (PK) | name  | sid (FK) | pid (FK) |
+| id (PK) |name (U)| sid (FK) | iid (FK) |
 |---------|-------|----------|----------|
 | 89a7... | ab531 | 95s3...  | NULL     |
 | 95q4... | se432 | NULL     | 43s8...  |
