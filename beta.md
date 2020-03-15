@@ -177,7 +177,7 @@ There can be 1+ `section`s of a `course`.
 ---
 `QUESTION` - contains information about a question
 - `id` - UUID to represent each distinct question (primary key)
-- `prompt` - instructions/prompt for the question (unique)
+- `prompt` - instructions/prompt for the question
 - `difficulty` - number to represent difficulty (0 = easy, 1 = medium, 2 = hard)
 - `topic` - topic a question belongs to
 - `creatorID` - UUID to represent the creator of question (foreign key to `INSTRUCTOR`.`id`)
@@ -187,7 +187,7 @@ There can be 1+ `section`s of a `course`.
 - `secondTestCase` - testcase for autograder to grade a future exam submission
 - `secondOutput` - expected result for second test case
 
-| id (PK) | prompt (U)                                                                     | difficulty | topic    | creatorID (FK)| creationDate | firstTestCase | firstOutput | secondTestCase | secondOutput |
+| id (PK) | prompt                                                                      | difficulty | topic    | creatorID (FK)| creationDate | firstTestCase | firstOutput | secondTestCase | secondOutput |
 |---------|------------------------------------------------------------------------------|----------------|--------------|---------------|------------------|---------------|-------------|----------------|--------------|
 | f3s0... | Write a function add(a, b) that adds two numbers and returns the result.     | 0              | Functions    | 43s8...       | 1584283994       | 1,5           | 6           | -3,15          | 12           |
 | a5sl... | Write a function isLeapYear(year) that returns whether year is a  leap year. | 1              | Conditionals | a9s5...       | 1584254553       | 2020          | True        | 2019           | False        |
@@ -208,10 +208,10 @@ A `QUESTION`s prompt has to be unique - you cannot have more than one question w
 - `maxPoints` - number of points the question is worth
 - `submissionText` - answer that the student wrote
 - `autoFeedback` - feedback by the autograding
-- `professorFeedback` - manual feedback by professor
+- `instructorFeedback` - manual feedback by instructor
 - `pointsReceived` - number of points question was given by the autograder/overriden by the instructor
 
-| id (PK) | qid (PK, FK) | sid (PK, FK) | status | date       | maxPoints | submissionText                  | autoFeedback | professorFeedback | pointsReceived |
+| id (PK) | qid (PK, FK) | sid (PK, FK) | status | date       | maxPoints | submissionText                  | autoFeedback | instructorFeedback | pointsReceived |
 |---------|----------|----------|--------|------------|-----------|---------------------------------|--------------|-------------------|----------------|
 | b5k3... | f3s0...  | 95s3...  | 0      | 1584283995 | 2         | def add(a, b):     return a + b | 6            | Great job!        | 2              |
 | q95s... | a5sl...  | 5s41...  | 2      | 1584254554 | 5         | NULL                            | NULL         | NULL              | 0              |
