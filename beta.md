@@ -20,8 +20,8 @@ On a similar login page to one on Alpha release, allow for users to login to eit
 - `login.html` reads a `name` and `plain_password` from input fields and sends it to `login.php` as `Credentials`
 ```json 
 {
-    'name': 'ma353',
-    'plain_password': 'billyab351sE%^'
+    "name": "ma353",
+    "plain_password": "billyab351sE%^"
 }
 ```
 
@@ -29,8 +29,8 @@ On a similar login page to one on Alpha release, allow for users to login to eit
 - Mid's `login.php` modifies the credentials to store a `hashed_password` and sends this to Back's login.php in the form
 ```json
 {
-    'name': 'ma353',
-    'hashed_password': '89a7e6eabbc4c9477277ec9b246c6417dc352e69418bf3ef4d75e9c19bbbedd6'
+    "name": "ma353",
+    "hashed_password": "89a7e6eabbc4c9477277ec9b246c6417dc352e69418bf3ef4d75e9c19bbbedd6"
 }
 ```
 - Back's `login.php` uses the credentials to query the `USER` table for either a valid student or instructor id. Once that valid id is found, either `STUDENT` or `INSTRUCTOR` table are queried to get the personal details for the respective homepage `instructor.html` or `student.html`.
