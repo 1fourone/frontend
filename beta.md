@@ -115,28 +115,30 @@ There's some exam-specific technical challenges, namely:
 `USER` - contains information about a user (can be instructor/student)
 - `id` - UUID to represent each distinct user (primary key)
 - `name` - username for each distinct user (unique)
+- `password` - the (hashed) password of each distinct user
 - `sid` - UUID to represent each distinct student (foreign key to `STUDENT`.`id`)
 - `iid` - UUID to represent each distinct instructor (foreign key to `INSTRUCTOR`.`id`)
 
-| id (PK) |name (U)| sid (FK) | iid (FK) |
-|---------|-------|----------|----------|
-| 89a7... | ab531 | 95s3...  | NULL     |
-| 95q4... | se432 | NULL     | 43s8...  |
-| ...     | ...   | ...      | ...      |
+| id (PK) | name (U) | password   | sid (FK) | iid (FK) |
+|---------|----------|------------|----------|----------|
+| 89a7... | bj531    | 89a7e6e... | 95s3...  | NULL     |
+| 95q4... | jd432    | k531sr3... | NULL     | 43s8...  |
+| ...     | ...      | ...        | ...      | ...      |
 
 A `USER` can be either a `STUDENT` or an `INSTRUCTOR`.
 
 ---
 `STUDENT` - contains information about a student
 - `id` - UUID to represent each distinct student (primary key)
-- `name` - the student's name, is not necessarily unique
-- `cid` - UUID to represent each distinct class (primary key, foreign key to `CLASS`.`id`)
+- `uname` - a student's distinct username (foreign key to `USER`.`id`)
+- `name` - the student's name, is not necessarily unique (unique with cid)
+- `cid` - UUID to represent each distinct class (primary key, foreign key to `CLASS`.`id`) (unique with cid)
 
-| id (PK) | name      | cid (PK, FK) |
-|---------|-----------|--------------|
-| 95s3... | Billy Joe | a593...      |
-| 5s41... | Jenna Doe | a592...      |
-| ...     | ...       | ...          |
+| id (PK) | uname (FK) | name      | cid (PK, FK) |
+|---------|------------|-----------|--------------|
+| 95s3... | bj531      | Billy Joe | a593...      |
+| 5s41... | jd432      | Jenna Doe | a592...      |
+| ...     | ...        | ...       | ...          |
 
 A `STUDENT` has a `name` and is a part of 1+ `CLASS`es.
 `STUDENT`s with the same `cid` belong to the same `CLASS`.
@@ -145,14 +147,15 @@ Multiple entries with same `id` but different `cid` represent all of that `STUDE
 ---
 `INSTRUCTOR` - contains information about an instructor
 - `id` - UUID to represent each distinct instructor (primary key)
+- `uname` - an instructor's distinct username (foreign key to `USER`.`id`)
 - `name` - the instructor's name, not necessarily unique
 - `cid` - UUID to represent each distinct class (primary key, foreign key to `CLASS`.`id`)
 
-| id (PK) | name       | cid (PK, FK) |
-|---------|------------|--------------|
-| 43s8... | James Kent | a593...      |
-| a9s5... | Mindy Craw | a592...      |
-| ...     | ...        | ...          |
+| id (PK) | uname (FK) | name       | cid (PK, FK) |
+|---------|------------|------------|--------------|
+| 43s8... | jk93       | James Kent | a593...      |
+| a9s5... | mc351      | Mindy Craw | a592...      |
+| ...     | ...        | ...        | ...          |
 
 An `INTRUCTOR` has a `name` and teaches 1+ `CLASS`es.
 A `CLASS` can only be taught by 1 `INSTRUCTOR`.
@@ -162,8 +165,8 @@ Multiple entries with same `id` and different `cid` represent all of that `INSTR
 `CLASS` - contains information about a class
 - `id` - UUID to represent each distinct class (primary key)
 - `name` - the class name
-- `course` - the course name
-- `section` - the section number
+- `course` - the course name (unique with section)
+- `section` - the section number (unique with course)
 
 | id (PK) | name                 | course | section |
 |---------|----------------------|--------|---------|
@@ -173,6 +176,7 @@ Multiple entries with same `id` and different `cid` represent all of that `INSTR
 
 A `CLASS` has a `name`, a `course`, and a `section`.
 There can be 1+ `section`s of a `course`.
+There cannot be 1+ entry with the same `course` and `section`.
 
 ---
 `QUESTION` - contains information about a question
