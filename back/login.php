@@ -19,15 +19,19 @@
 
     
     //Query the database for a valid student/instructor id, and respond appropriately
-    $sql = "SELECT sid, iid FROM USER WHERE name='$name' AND password='$pw'";
+    $sql = "SELECT id, sid, iid FROM USER WHERE name='$name' AND password='$pw'";
     $result = $conn->query($sql);
 
     if($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        if(empty($row['sid'])) 
+        if(empty($row['sid'])) {
             $r->{'type'} = "instructor";
-        else
+            $r->{'id'} = $row['iid'];
+        }
+        else {
             $r->{'type'} = "student";
+            $r->{'id'} = $row['sid'];
+        }
         $r->{'result'} = "success";
     }
     else {

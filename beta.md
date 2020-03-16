@@ -21,7 +21,7 @@ There are some common subtasks that are important to the above features' functio
 On a similar login page to one on Alpha release, allow for users to login to either as a faculty or as a student, and to be taken to their home pages.
 
 #### Technical
-- `login.html` reads a `name` and `plain_password` from input fields and sends it to `login.php` as `Credentials`
+- `index.php` reads a `name` and `plain_password` from input fields and sends it to `login.php` as `Credentials`
 ```json 
 {
     "name": "ma353",
@@ -37,11 +37,12 @@ On a similar login page to one on Alpha release, allow for users to login to eit
     "hashed_password": "89a7e6eabbc4c9477277ec9b246c6417dc352e69418bf3ef4d75e9c19bbbedd6"
 }
 ```
-- Back's `login.php` uses the credentials to query the `USER` table for either a valid student or instructor id. Once that valid id is found, either `STUDENT` or `INSTRUCTOR` table are queried to get the personal details for the respective homepage `instructor.html` or `student.html`.
+- Back's `login.php` uses the credentials to query the `USER` table for either a valid student or instructor id. Once that valid id is found, either `STUDENT` or `INSTRUCTOR` table are queried to get the personal details for the respective homepage `instructor.php` or `student.php`.
 ```json
 {
     "type": "instructor",
-    "result": "success"
+    "result": "success",
+    "id": "1a35..."
 }
 ```
 

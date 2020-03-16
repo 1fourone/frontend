@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<?php
+  if(isset($_COOKIE['userType'])) {
+    header("Location: http://1fourone.io/webgrader/front/" . $_COOKIE['userType'] . ".php");
+  }
+?>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -29,10 +34,12 @@
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); //We're sending JSON data in a string
         xhr.onreadystatechange = function() {
           if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            console.log(this.responseText);
             response = JSON.parse(this.responseText);
             if(response['result'] == "success")
-              window.location.href = response['type'] + '.html';
-            console.log(this.responseText);
+              window.location.href = response['type'] + '.php';
+            else
+              alert("Invalid credentials");
           }
         };
 
