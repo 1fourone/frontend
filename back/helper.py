@@ -11,67 +11,6 @@ db = mysql.connector.connect(
     database = 'webgrader'
 )
 
-# Creates a class with a particular name, course, section.
-# Can also have it create the instructor that teaches the course.
-# Can also have it create the list of students that are in the course
-def createClass(name, course, section, instructorName='', studentNameList=[]):
-    try:
-        # First, create the class entry in `CLASS`.
-        cursor = db.cursor()
-        sql = "INSERT INTO CLASS(name, course, section) VALUES (%s, %s, %s)"
-        val = (name, course, section)
-        cursor.execute(sql, val)
-        db.commit()
-
-        # Get its id
-        sql = "SELECT id FROM CLASS WHERE course = %s AND section = %s"
-        cond = (course, section)
-        cursor.execute(sql, cond)
-        classID = cursor.fetchone()[0]
-
-        # Use that id to add an instructor (if provided)
-        if len(instructorName) != 0:
-            addInstructorToClass(instructorName, classID)
-
-        # Use that id to add all the students (if provided)
-        for s in studentNameList:
-            addStudentToClass(s, classID)
-        
-        return 0
-    except err.IntegrityError: 
-        print('Error adding a class: that class course and section already exist.')
-    
-    return -1
-
-
-# Adds instructor to class with classID.
-# Returns 0 if successful insertion
-def addInstructorToClass(instructor, classID):
-    # One instructor per class
-    cursor = db.cursor()
-    sql = "INSERT INTO INSTRUCTOR(name, cid) VALUES(%s, %s)"
-    val = (instructor, classID)
-    cursor.execute(sql, val)
-    db.commit()
-    return 0
-
-# Adds instructor to class with classID.
-# Returns 0 if successful insertion
-def addStudentToClass(student, classID):
-    cursor = db.cursor()
-    sql = "INSERT INTO STUDENT(name, cid) VALUES(%s, %s)"
-    val = (student, classID)
-    cursor.execute(sql, val)
-    db.commit()
-
-    print(cursor.lastrowid)
-
-    # If student isn't on user, add an entry there too
-    return 0
-
-#@TODO: make addInstructor and addStudent account for existing instructor/student
-#       and optionally create an user too if it doesn't exist
-
 # Add an user, and either student/instructor from that user
 # Any user, whether instructor or student, needs to belong to (at least) one class.
 # Therefore, make sure you call `addClass` at least one time and pass that id here
