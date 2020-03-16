@@ -1,8 +1,8 @@
 # Beta Specification
 
 Program needs to be able to do the following:
-e
-[D] - Identification - Student home page different than Instructor home page
+
+[PI] - Identification - Student home page different than Instructor home page
 [D] - Instructor adds a question to question bank (write a function ..)
 [W] - Instructor selects a question for exam
 [W] - Student takes the exam
@@ -13,7 +13,7 @@ There are some common subtasks that are important to the above features' functio
 
 [W] - Rendering the question bank `qbank.html`
 
-*Legend*: D(esigned), I(mplemented), T(esting), R(eady), W(aiting)
+*Legend*: D(esigned), P(artially)I(mplemented), T(esting), R(eady), W(aiting)
 
 ## Identification
 
@@ -38,7 +38,12 @@ On a similar login page to one on Alpha release, allow for users to login to eit
 }
 ```
 - Back's `login.php` uses the credentials to query the `USER` table for either a valid student or instructor id. Once that valid id is found, either `STUDENT` or `INSTRUCTOR` table are queried to get the personal details for the respective homepage `instructor.html` or `student.html`.
-
+```json
+{
+    "type": "instructor",
+    "result": "success"
+}
+```
 
 ## (Adding to) Question Bank
 
