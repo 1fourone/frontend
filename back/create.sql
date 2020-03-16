@@ -108,8 +108,9 @@ CREATE TRIGGER on_question_insert
     SET new.id = uuid();
 
 -- EXAM TABLE
+-- need to supply its ID since there would be problems
 CREATE TABLE `webgrader`.`EXAM` (
-    `id` CHAR(36) DEFAULT NULL,
+    `id` CHAR(36) NOT NULL,
     `qid` CHAR(36) NOT NULL,
     `sid` CHAR(36) NOT NULL,
     `status` TINYINT NOT NULL,
@@ -124,10 +125,6 @@ CREATE TABLE `webgrader`.`EXAM` (
     FOREIGN KEY(`qid`)
         REFERENCES `webgrader`.`QUESTION`(id),
     FOREIGN KEY(`sid`)
-        REFERENCES `webgrader`.`STUDENT`(id)
+        REFERENCES `webgrader`.`STUDENT`(id),
+    UNIQUE `unique`(`id`, `qid`, `sid`)
 ) ENGINE = InnoDB;
-
-CREATE TRIGGER on_exam_insert
-    BEFORE INSERT ON EXAM
-    FOR EACH ROW
-    SET new.id = uuid();

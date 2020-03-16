@@ -186,7 +186,7 @@ There cannot be 1+ entry with the same `course` and `section`.
 ---
 `QUESTION` - contains information about a question
 - `id` - UUID to represent each distinct question (primary key)
-- `prompt` - instructions/prompt for the question
+- `prompt` - instructions/prompt for the question (unique)
 - `difficulty` - number to represent difficulty (0 = easy, 1 = medium, 2 = hard)
 - `topic` - topic a question belongs to
 - `creatorID` - UUID to represent the creator of question (foreign key to `INSTRUCTOR`.`id`)
@@ -196,7 +196,7 @@ There cannot be 1+ entry with the same `course` and `section`.
 - `secondTestCase` - testcase for autograder to grade a future exam submission
 - `secondOutput` - expected result for second test case
 
-| id (PK) | prompt                                                                      | difficulty | topic    | creatorID (FK)| creationDate | firstTestCase | firstOutput | secondTestCase | secondOutput |
+| id (PK) | prompt (U)                                                                     | difficulty | topic    | creatorID (FK)| creationDate | firstTestCase | firstOutput | secondTestCase | secondOutput |
 |---------|------------------------------------------------------------------------------|----------------|--------------|---------------|------------------|---------------|-------------|----------------|--------------|
 | f3s0... | Write a function add(a, b) that adds two numbers and returns the result.     | 0              | Functions    | 43s8...       | 1584283994       | 1,5           | 6           | -3,15          | 12           |
 | a5sl... | Write a function isLeapYear(year) that returns whether year is a  leap year. | 1              | Conditionals | a9s5...       | 1584254553       | 2020          | True        | 2019           | False        |
@@ -209,9 +209,9 @@ A `QUESTION`s prompt has to be unique - you cannot have more than one question w
 
 ---
 `EXAM` - contains information about an exam
-- `id` - UUID to represent each distinct exam (primary key)
-- `qid` - UUID to represent each distinct question (primary key, foreign key to `QUESTION`.`id`)
-- `sid` - UUID to represent each distinct student (primary key, foreign key to `STUDENT`.`id`)
+- `id` - UUID to represent each distinct exam (primary key, unique)
+- `qid` - UUID to represent each distinct question (primary key, foreign key to `QUESTION`.`id`, unique)
+- `sid` - UUID to represent each distinct student (primary key, foreign key to `STUDENT`.`id`, unique)
 - `status` - number to represent state of exam (0 = past released, 1 = past unreleased, 2 = active)
 - `date` - timestamp of when exam was assigned
 - `maxPoints` - number of points the question is worth
@@ -220,7 +220,7 @@ A `QUESTION`s prompt has to be unique - you cannot have more than one question w
 - `instructorFeedback` - manual feedback by instructor
 - `pointsReceived` - number of points question was given by the autograder/overriden by the instructor
 
-| id (PK) | qid (PK, FK) | sid (PK, FK) | status | date       | maxPoints | submissionText                  | autoFeedback | instructorFeedback | pointsReceived |
+| id (PK, U) | qid (PK, FK, U) | sid (PK, FK, U) | status | date       | maxPoints | submissionText                  | autoFeedback | instructorFeedback | pointsReceived |
 |---------|----------|----------|--------|------------|-----------|---------------------------------|--------------|-------------------|----------------|
 | b5k3... | f3s0...  | 95s3...  | 0      | 1584283995 | 2         | def add(a, b):     return a + b | 6            | Great job!        | 2              |
 | q95s... | a5sl...  | 5s41...  | 2      | 1584254554 | 5         | NULL                            | NULL         | NULL              | 0              |
@@ -233,3 +233,4 @@ Multiple entries with the same `id` and `qid` but different `sid` represent the 
 An `EXAM` with a `status = 0` can be displayed to the `STUDENT`.
 An `EXAM` with a `status = 1` cannot be displayed to the `STUDENT`.
 An `EXAM` with a `status = 2` needs to be taken by the `STUDENT`.
+There cannot be an exam with the same `id`, `qid`, and `sid`.

@@ -1,0 +1,14 @@
+prompt:
+  Write a function add(a, b) that returns the result of adding two numbers.
+difficulty:
+  easy
+topic:
+  Functions
+creator:
+  by53
+testCases:
+  - 1 2
+  - 3 4
+output:
+  - 3
+  - 7

@@ -1,0 +1,10 @@
+question:
+  example.yaml
+course:
+  CS100
+section:
+  001
+status:
+  active
+maxPoints:
+  10
