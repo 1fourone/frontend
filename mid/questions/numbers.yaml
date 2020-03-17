@@ -1,0 +1,14 @@
+prompt:
+  Write a function sqrt(a, b) that returns the result of adding the two numbers and taking their square root.
+difficulty:
+  medium
+topic:
+  Numbers
+creator:
+  by53
+testCases:
+  - 1 8
+  - 5 20
+output:
+  - 3
+  - 5

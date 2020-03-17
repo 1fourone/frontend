@@ -204,6 +204,7 @@ if __name__ == "__main__":
     addUser('bk123', 'Billy Kramer', "abcd", cID, 'student')
     addUser('jt341', 'Jenna Travis', "12ab", cID, 'student')
     qID = addQuestion('mid/questions/example.yaml')
+    addQuestion('mid/questions/numbers.yaml')
     print("Got question ID:", qID)
     eID = addExam('mid/exams/example.yaml')
     print("Got exam ID:", eID)

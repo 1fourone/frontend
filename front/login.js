@@ -1,4 +1,7 @@
 //JS for login-related code
+var type = getCookie("userType");
+if(type != "")
+    window.location.href = type + '.html';
 
 function attemptLogin() 
 {
