@@ -4,16 +4,16 @@ Program needs to be able to do the following:
 
 [PI] - Identification - Student home page different than Instructor home page
 [D] - Instructor adds a question to question bank (write a function ..)
-[W] - Instructor selects a question for exam
+[D] - Instructor selects a question for exam
 [W] - Student takes the exam
 [W] - Instructor starts autograding (can tweak scores, add comments, release scores)
 [W] - Students review results (can only do this once done their score is released)
 
 There are some common subtasks that are important to the above features' functionality:
 
-[W] - Rendering the question bank `qbank.html`
+[CC] - Rendering the question bank `qbank.html`
 
-*Legend*: D(esigned), P(artially)I(mplemented), T(esting), R(eady), W(aiting)
+*Legend*: D(esigned), P(artially)I(mplemented), T(esting), C(osmetic)C(hanges), R(eady), W(aiting)
 
 ## Identification
 
@@ -46,50 +46,51 @@ On a similar login page to one on Alpha release, allow for users to login to eit
 }
 ```
 
-## (Adding to) Question Bank
+## Rendering the Question Bank
+
+#### Overview
+An instructor should be able to view all the questions in the question bank. Each question will have a visual representation with its information (prompt, difficulty, etc), and they will all be rendered as items that can be dragged around (used later in exam creation). 
+
+#### Technical
+- `qbank.html`'s `qbank.js` sends a `GET` request to `data.php` with `value=qbank` to indicate that it wants to get the question bank data.
+- Front's `data.php` receives the request and passes it along to Mid's `data.php`.
+- Mid's `data.php` receives the request and passes it along to Back's `data.php`.
+- Back's `data.php` queries all question information.
+    - Each question is added as an object to an array
+    - The resulting array is returned as a JSON string
+- Mid's `data.php` receives the JSON string and passes it along
+- Front's `data.php` receives the JSON string and passes it back to `qbank.js`
+- `qbank.js` loops through the array (optionally applying any filtering/sorting) and prints each question as its visual representation
+    - it also assigns the containing div element to a `question` class and to a `q#` id, where # is the index of the question in the array.
+    - `qbank.css` is responsible for specifying how each question should be rendered.
+
+## Adding to Question Bank
 
 #### Overview
 An instructor should be able to add a question of the form "write a function ..." to the question bank. Basically, allow an instructor to set some values for a "question", and create a question and store it. These would eventually be shown to the instructor when creating an exam.
 
 #### Technical
-- `qbank.html` is rendered with the `Add` button.
-- Instructor clicks on `Add` button.
-- `add.html` takes instructor's input on `prompt`, `difficulty`, `topic`, `firstTestCase`, `firstOutput`, `secondTestCase`, `secondOutput`. 
-- When instructor clicks `Add to Bank` button, `add.html` will pass these values to `qbank.php` via a `POST` request.
-- Front's `qbank.php` constructs a `Question` and passes it to Mid's `qbank.php` via `POST` request.
+- `qadd.html` takes input from the instructor for `prompt`, `difficulty`, `topic`, `firstTestCase`, `firstOutput`, `secondTestCase`, `secondOutput` of the question.
+- Instructor clicks on `Add Question` button.
+- `qadd.html` sends a `POST` request to `data.php` with `value=(data)` where data is a JSON string of all the input received from the instructor.
+- Front's `data.php` receives the request and passes it along to Mid's `data.php`.
+- Mid's `data.php` receives the request and passes it along to Back's `data.php`.
+- Back's `data.php` performs an insertion query with the question data provided, and returns the result
 ```json
 {
-    "id": "c1a5c028-ba52-4b24-9c43-ec6603222ece",
-    "prompt": "Write a function add(a, b) that returns the result of adding both numbers.",
-    "difficulty": 0,
-    "topic": "Functions",
-    "creatorID": "3e9cac74-b6a4-4080-8e61-92a31f603d1a",
-    "creationDate": 1584285975,
-    "firstTestCase": "-1,5",
-    "firstOutput": "4",
-    "secondTestCase": "-99,-1",
-    "secondOutput": "-100"
+    "result": "success"
 }
 ```
-- Mid's `qbank.php` sends the same `Question` to Back's `qbank.php` via `POST` request.
-- Back's `qbank.php` performs an insertion to the `QUESTION` database with the `Question` it got to add it to the question bank.
-```sql
-INSERT INTO QUESTION(`id`, `prompt`, `difficulty`, `topic`, `creatorID`, `creationDate`, `firstTestCase`, `firstOutput`, `secondTestCase`, `secondOutput`)
-            VALUES($question->{'id'}, $question->{'prompt'}, $question->{'difficulty'}, $question->{'topic'}, $question->{'creatorID'}, $question->{'creationDate'}, $question->{'firstTestCase'}, $question->{'firstOutput'}, $question->{'secondTestCase'}, $question->{'secondOutput'});
-```
-- Back's `qbank.php` will receive the result of the query and send it to `mid.php` as a `QueryResult`.
-```json
-{
-    "result": "succeed"
-}
-```
-- Mid's `qbank.php` will receive the `QueryResult` and send it to Front's `qbank.php`.
-- Front's `qbank.php` will either display a success/failure message to instructor (popup) and reset `qbank.html`.
+- Mid's `data.php` receives the result and passes it along to Front's `data.php`.
+- Front's `data.php` receives the result and passes it along to `qadd.html`.
+- `qadd.html` does one of two things based on result
+    - if success, redirect to `instructor.html`
+    - if failure, print error message
 
 ## Instructor Prepares Exam
 
 #### Overview
-An instructor should be able to select questions from the question bank to create an exam. Questions can be searched/filtered by difficulty, topic, creator, and date. When the instructor selects a question, he/she can assign a number of points that the question is worth on the exam. Once the instructor is done adding questions and assigning them points, the instructor can select to what class to assign the exam to. This would make it such that all students on that class have the exam as an active exam and are able to take it from their home page.
+An instructor should be able to select questions from the question bank to create an exam. Questions can be searched/filtered by difficulty, topic, creator, and date. When the instructor selects a question, he/she must assign a number of points that the question is worth on the exam. Once the instructor is done adding questions and assigning them points, the instructor can select to what class to assign the exam to. This would make it such that all students on that class have the exam as an active exam and are able to take it from their home page.
 
 The general "flow" would be as follows:
 1) Instructor drags and drops questions from the question bank view to the exam view.
@@ -102,19 +103,38 @@ The general "flow" would be as follows:
 
 
 #### Technical
-There's some exam-specific technical challenges, namely:
 
-(Incomplete)
-1. Managing IFrames and drag-and-drop functionality
-    - From a local copy of question data from `qbank.html`, toggle visibility on question bank view and create/destroy the question element in the exam view.
-    - Need to find intuitive way of drag and drop, could take some time.
-2. Creating a representation for a `Question` (info banner with test label on right for points)
-    - From a specific entry in the local copy of question data from `qbank.html`, create a banner with all necessary info about question and have a label on the right for it where points can be assigned.
-    - Have these be in a  class but with distinct container id's so that each question can be accessed separately
-3. Getting an instructor's classes, and displaying them on the dropdown list.
-    - `GET` request sent all the way to Back's `exam.php` as usual
-    - Back performs selection query and returns result
-4. Sending the Exam's data over to Mid to be sent to Back.
+- `eadd.html` renders `qbank.html`'s content in a view on the right half of the screen.
+- `eadd.html` contains empty `<div>`s that `qbank.html`'s questions can be dragged back-and-forth.
+    - bank view -> exam view
+        - question is placed before a placeholder empty container on exam view
+    - exam view -> bank view
+        - container of the now moved question is deleted, making room for more questions
+- `eadd.html` meanwhile sends a `GET` request to `data.php` with `value=classes&instructor=(id)` where id is the instructor's id.
+- Front's `data.php` passes the request along to Mid's `data.php`.
+- Mid's `data.php` passes the request along to Back's `data.php`.
+- Back's `data.php` performs a selection query to get all the info for classes that the instructor is in
+    - Each class is added as an object to an array
+    - The resulting array is returned as a JSON string
+- Mid's `data.php` passes the response along to Front's `data.php`.
+- Front's `data.php` passes the response along to Front's `eadd.html`.
+- `eadd.html` displays all class data in the dropdown list for instructor to select.
+- `eadd.html` sends a `POST` request to `data.php` with `value=exam&class=(id)&questions=(qdata)` where id is the class id for the selected class and qdata is an array of question ID and points assigned for each question.
+- Front's `data.php` receives the request and passes it along to Mid's `data.php`.
+- Mid's `data.php` receives the request and passes it along to Back's `data.php`.
+- Back's `data.php` adds the exam for all students involved and returns the result.
+    - Performs insertion query to create exam for each student in the class with the questions and points in qdata.
+    - *NOTE:* query should either **fail or pass for everyone**, no exceptions. This will most likely mean using one transaction with each student's query inside of it.
+```json
+{
+    "result": "success"
+}
+```
+- Mid's `data.php` receives the result and passes it along to Front's `data.php`.
+- Front's `data.php` receives the result and passes it along to `eadd.html`.
+- Based on result
+    - if successful, instructor is redirected to `instructor.html`.
+    - otherwise, print error message.
 
 ## Schema
 ---
