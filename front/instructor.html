@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebQuiz Instructor Home</title>
+    <script src="utils.js"></script>
+
+    <script>
+        if(getCookie("userType") != "instructor")
+            window.location.href = 'login.html';
+
+        window.onload = function() 
+        {
+            document.getElementById('userName').innerHTML += " " + getCookie("userName");
+            document.getElementById('dbID').innerHTML += " " + getCookie("dbID");
+        };
+    </script>
+</head>
+<body>
+
+    <h1 id="header">Welcome instructor!</h1>
+    <p id='userName'><b>Username:</b></p>
+    <p id='dbID'><b>ID:</b></p>
+
+    <button onclick="clearAllCookies();"><a href="login.html">Logout</a></button>
+
+</body>
+</html>

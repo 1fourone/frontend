@@ -17,23 +17,6 @@
 
     if($output === false)
         echo 'Curl error: ' . curl_error($ch);
-    else {
-        $r = json_decode($output);
-        if($r->{'result'} == "success"){
-            setcookie("userType", $r->{'type'}, 0);
-            setcookie("userName", $c->{'name'}, 0);
-            setcookie("dbID", $r->{'id'});
-        }
+    else
         echo $output;
-    }
-
-    function logOut() {
-        setcookie("userType", "", time() - 3000);
-        setcookie("userName", "", time() - 3000);
-        setcookie("dbID", "", time() - 3000);
-        header("Location: http://1fourone.io/webgrader/front/login.html");
-    }
-
-    if(isset($_GET['logout']))
-        logOut();
 ?>
