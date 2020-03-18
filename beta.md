@@ -12,6 +12,7 @@ Program needs to be able to do the following:
 There are some common subtasks that are important to the above features' functionality:
 
 [CC] - Rendering the question bank `qbank.html`
+[W] - Rendering active exams for a student
 
 *Legend*: D(esigned), P(artially)I(mplemented), T(esting), C(osmetic)C(hanges), R(eady), W(aiting)
 
@@ -135,6 +136,34 @@ The general "flow" would be as follows:
 - Based on result
     - if successful, instructor is redirected to `instructor.html`.
     - otherwise, print error message.
+
+## Student Takes Exam
+
+#### Overview
+A student should be able to take an active exam. On his/her homepage the student would have a list of active exams to take at the top of the screen, and would click on a `Take Exam` button to take the exam itself. The exam would be shown to the student and he/she would have the option to enter their submission and click a `Submit Exam` button when done. The student cannot cancel an exam once it has started; if they exit the webpage their answers would be interpreted as the final submission and saved.
+
+#### Technical
+(Not complete)
+- `student.html` renders a list of active exams for the student (subtask)
+- clicked exam ID is passed from `student.html` to `exam.html` (cookie?)
+- `exam.html` sends a `GET` request to `data.php` with `value=exam&id=(eid)&student=(sid)` where eid is the clicked exam ID and sid is the student ID.
+- Front's `data.php` receives the request and passes it along to Mid's `data.php`.
+- Mid's `data.php` receives the request and passes it along to Back's `data.php`.
+- Back's `data.php` performs a selection query to get all the relevant question data for questions in the exam for student and returns them as a JSON string containing the array of question data.
+```json
+{ 
+    [
+        { "qid": "13a2...", "prompt": "Write a function ...", "maxPoints": 10 },
+        { "qid": "5ba2...", "prompt": "Write a function ...", "maxPoints": 3 }
+    ]
+}
+```
+- Mid's `data.php` receives the response and forwards it to Front's `data.php`.
+- Front's `data.php` receives the response and forwards it to `exam.html`.
+- `exam.js` now renders each exam question for the student from the array in its visual representation.
+    - it also assigns the containing div element to a `question` class and to a `q#` id, where # is the index of the question in the array.
+    - `exam.css` is responsible for stating the visual representation of each question 
+- Students answer each question and click `Submit Exam`.
 
 ## Schema
 ---
