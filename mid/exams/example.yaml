@@ -1,5 +1,8 @@
-question:
-  example.yaml
+questions:
+  - example.yaml
+  - numbers.yaml
+name:
+  First Quiz
 course:
   CS100
 section:
@@ -7,4 +10,5 @@ section:
 status:
   active
 maxPoints:
-  10
+  - 10
+  - 5

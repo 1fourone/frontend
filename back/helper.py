@@ -149,7 +149,7 @@ def addQuestion(configName):
         return -1
 
 # Add an exam to the test bank
-# Needs to reference a valid question, student
+# Needs to reference a valid question(s), student(s)
 # Pass students by their classID, which must be valid
 # Use same config structure as addQuestion
 # Returns the SINGLE exam id generated for the class, or -1 if invalid
@@ -160,10 +160,12 @@ def addExam(configName):
         c = yaml.load(f, Loader=yaml.FullLoader)
 
         # We have the config file open - make sure that the question points to a valid question
-        if os.path.exists('mid/questions/' + c['question']):
-            questionID = addQuestion('mid/questions/' + c['question'])
-        else:
-            return -1
+        questionIDs = []
+        for q in c['questions']:
+            if os.path.exists('mid/questions/' + q):
+                questionIDs.append(addQuestion('mid/questions/' + q))
+            else:
+                return -1
         
         # Check that course + section point to a valid class
         classID = isClassValid(c['course'], c['section'])
@@ -182,10 +184,11 @@ def addExam(configName):
             # Insert into DB
             cursor = db.cursor()
             studentID = s[0]
-            sql = "INSERT IGNORE INTO EXAM(id, qid, sid, status, maxPoints) VALUES(%s, %s, %s, %s, %s)"
-            val = (examID, questionID, studentID, st, c['maxPoints'])
-            cursor.execute(sql, val)
-            db.commit()
+            for i in range(len(questionIDs)):
+                sql = "INSERT IGNORE INTO EXAM(id, name, qid, sid, status, maxPoints) VALUES(%s, %s, %s, %s, %s, %s)"
+                val = (examID, c['name'], questionIDs[i], studentID, st, c['maxPoints'][i])
+                cursor.execute(sql, val)
+                db.commit()
 
         f.close()
         return examID

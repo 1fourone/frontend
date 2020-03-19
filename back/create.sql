@@ -122,10 +122,9 @@ CREATE TABLE `webgrader`.`EXAM` (
     `instructorFeedback` VARCHAR(256) DEFAULT NULL,
     `pointsRecevied` TINYINT DEFAULT NULL,
 
-    PRIMARY KEY(`id`),
+    PRIMARY KEY(`id`, `qid`, `sid`),
     FOREIGN KEY(`qid`)
         REFERENCES `webgrader`.`QUESTION`(id),
     FOREIGN KEY(`sid`)
-        REFERENCES `webgrader`.`STUDENT`(id),
-    UNIQUE `unique`(`id`, `qid`, `sid`)
+        REFERENCES `webgrader`.`STUDENT`(id)
 ) ENGINE = InnoDB;
