@@ -111,6 +111,7 @@ CREATE TRIGGER on_question_insert
 -- need to supply its ID since there would be problems
 CREATE TABLE `webgrader`.`EXAM` (
     `id` CHAR(36) NOT NULL,
+    `name` VARCHAR(64) NOT NULL,
     `qid` CHAR(36) NOT NULL,
     `sid` CHAR(36) NOT NULL,
     `status` TINYINT NOT NULL,
