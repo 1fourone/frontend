@@ -185,8 +185,8 @@ def addExam(configName):
             cursor = db.cursor()
             studentID = s[0]
             for i in range(len(questionIDs)):
-                sql = "INSERT IGNORE INTO EXAM(id, name, qid, sid, status, maxPoints) VALUES(%s, %s, %s, %s, %s, %s)"
-                val = (examID, c['name'], questionIDs[i], studentID, st, c['maxPoints'][i])
+                sql = "INSERT IGNORE INTO EXAM(id, name, qid, sid, cid, status, maxPoints) VALUES(%s, %s, %s, %s, %s, %s, %s)"
+                val = (examID, c['name'], questionIDs[i], studentID, classID, st, c['maxPoints'][i])
                 cursor.execute(sql, val)
                 db.commit()
 

@@ -114,6 +114,7 @@ CREATE TABLE `webgrader`.`EXAM` (
     `name` VARCHAR(64) NOT NULL,
     `qid` CHAR(36) NOT NULL,
     `sid` CHAR(36) NOT NULL,
+    `cid` CHAR(36) NOT NULL,
     `status` TINYINT NOT NULL,
     `date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `maxPoints` TINYINT NOT NULL,
@@ -126,5 +127,7 @@ CREATE TABLE `webgrader`.`EXAM` (
     FOREIGN KEY(`qid`)
         REFERENCES `webgrader`.`QUESTION`(id),
     FOREIGN KEY(`sid`)
-        REFERENCES `webgrader`.`STUDENT`(id)
+        REFERENCES `webgrader`.`STUDENT`(id),
+    FOREIGN KEY(`cid`)
+        REFERENCES `webgrader`.`CLASS`(id)
 ) ENGINE = InnoDB;
