@@ -4,7 +4,7 @@
 
 -- CLASS table
 CREATE TABLE `webgrader`.`CLASS` (
-    `id` CHAR(36) DEFAULT NULL,
+    `id` CHAR(36) DEFAULT "garbage" NOT NULL,
     `name` VARCHAR(32) NOT NULL,
     `course` VARCHAR(7) NOT NULL,
     `section` CHAR(3) NOT NULL,
@@ -21,7 +21,7 @@ CREATE TRIGGER on_class_insert
 
 -- USER table
 CREATE TABLE `webgrader`.`USER` (
-    `id` CHAR(36) DEFAULT NULL,
+    `id` CHAR(36) DEFAULT "garbage" NOT NULL,
     `name` VARCHAR(7) UNIQUE NOT NULL,
     `password` CHAR(64) NOT NULL,
     `sid` CHAR(37) DEFAULT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE `webgrader`.`USER` (
 
 -- INSTRUCTOR table
 CREATE TABLE `webgrader`.`INSTRUCTOR` (
-    `id` CHAR(36) DEFAULT NULL,
+    `id` CHAR(36) DEFAULT "garbage" NOT NULL,
     `uname` CHAR(36) NOT NULL,
     `name` VARCHAR(32) NOT NULL,
     `cid` CHAR(37) NOT NULL,
@@ -54,7 +54,7 @@ CREATE TRIGGER on_instructor_insert
 
 -- STUDENT table
 CREATE TABLE `webgrader`.`STUDENT` (
-    `id` CHAR(36) DEFAULT NULL,
+    `id` CHAR(36) DEFAULT "garbage" NOT NULL,
     `uname` CHAR(36) NOT NULL,
     `name` VARCHAR(32) NOT NULL,
     `cid` CHAR(37) NOT NULL,
@@ -85,7 +85,7 @@ CREATE TRIGGER on_user_insert
 
 -- QUESTION TABLE
 CREATE TABLE `webgrader`.`QUESTION` (
-    `id` CHAR(36) DEFAULT NULL,
+    `id` CHAR(36) DEFAULT "garbage" NOT NULL,
     `prompt` VARCHAR(128) NOT NULL,
     `difficulty` TINYINT NOT NULL,
     `topic` VARCHAR(32) NOT NULL,
