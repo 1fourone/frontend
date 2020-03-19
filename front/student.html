@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebQuiz Student Home</title>
     <script src="utils.js"></script>
+    <script src="student.js"></script>
+    <link rel="stylesheet" href="student.css">
 
     <script>
         if(getCookie("userType") != "student")
@@ -23,7 +25,16 @@
     <p id='userName'><b>Username:</b></p>
     <p id='dbID'><b>ID:</b></p>
 
+    <button onclick="getExams();">Get Exams</button>
     <button onclick="clearAllCookies();"><a href="login.html">Logout</a></button>
+    
+    <h2>Active Exams</h2>
+    <div id="active_end"></div>
 
+    <h2>Released Exams</h2>
+    <div id="released_end"></div>
+
+    <h2>Unreleased Exams</h2>
+    <div id="unreleased_end"></div>
 </body>
 </html>

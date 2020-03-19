@@ -12,6 +12,7 @@ function getQuestions()
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) 
         {
             questions = JSON.parse(this.responseText);
+            //questions.sort((a, b) => b['difficulty'] > a['difficulty']);
             for(let i = 0; i < questions.length; i++)
                 createQuestionElement(questions[i], i);
         }
@@ -22,12 +23,16 @@ function getQuestions()
 
 function createQuestionElement(question, id)
 {
-    var container = document.createElement("div");
-    container.setAttribute("id", "q"+id);
-    container.setAttribute("class", "question");
-    var label = document.createTextNode(question['prompt']);
-    container.appendChild(label);
+    var el = document.getElementById("q"+id);
+    if(el == null)
+    {
+        var container = document.createElement("div");
+        container.setAttribute("id", "q"+id);
+        container.setAttribute("class", "question");
+        //container.setAttribute("draggable", "true");
+        var label = document.createTextNode(question['prompt']);
+        container.appendChild(label);
 
-    document.body.insertBefore(container, document.getElementById('end'));
-
+        document.body.insertBefore(container, document.getElementById('end'));
+    }
 }

@@ -27,6 +27,41 @@
         //var_dump(json_encode($questions[0]));
         echo json_encode($questions);
     }
+    //Caller wants the exams (for displaying in homepage)
+    else if($req == "exams")
+    {
+        if(isset($_REQUEST['student'])) //Student requested this
+        {
+            //first get the active exams
+            $sql = "SELECT DISTINCT e.name, c.course, c.section FROM EXAM e, CLASS c WHERE e.sid='" . $_REQUEST['student'] . "' AND e.cid=c.id AND status=2";
+            $result = $conn->query($sql);
+            $actives = array();
+            while(($e = $result->fetch_assoc()) != NULL)
+                array_push($actives, (object)$e);
+            //echo json_encode($actives);
+
+            //then get the unreleased exams
+            $sql = "SELECT DISTINCT e.name, c.course, c.section FROM EXAM e, CLASS c WHERE e.sid='" . $_REQUEST['student'] . "' AND e.cid=c.id AND status=1";
+            $result = $conn->query($sql);
+            $unreleased = array();
+            while(($e = $result->fetch_assoc()) != NULL)
+                array_push($unreleased, (object)$e);
+            
+            //then get the released exams
+            $sql = "SELECT DISTINCT e.name, c.course, c.section FROM EXAM e, CLASS c WHERE e.sid='" . $_REQUEST['student'] . "' AND e.cid=c.id AND status=0";
+            $result = $conn->query($sql);
+            $released = array();
+            while(($e = $result->fetch_assoc()) != NULL)
+                array_push($released, (object)$e);
+
+            $all = array($actives, $released, $unreleased);
+            echo json_encode($all);
+        }
+        else //Instructor requested this
+        {
+            echo "Instructor " . $_REQUEST['instructor'] . " requested exams.";
+        }
+    }
     
     $conn->close();
 ?>

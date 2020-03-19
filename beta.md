@@ -137,6 +137,28 @@ The general "flow" would be as follows:
     - if successful, instructor is redirected to `instructor.html`.
     - otherwise, print error message.
 
+## Rendering a Student's Home Page
+
+#### Overview 
+Upon login, a student's home page should be populated with active, unreleased, and released exams. Active exams should be clickable - once the student clicks the exam, they will begin taking it.
+Unreleased exams should not be clickable - the student can only see that they took these exams but can't review them yet.
+Released exams should be clickable - once the student clicks the exam, they will begin reviewing it.
+
+
+#### Technical
+- `student.html` sends a `GET` request to `data.php` with `value=exams&student=(sid)` where sid is the student id.
+- Front's `data.php` receives the request and passes it along to Mid's `data.php`.
+- Mid's `data.php` receives the request and passes it along to Back's `data.php`.
+- Back's `data.php` performs 3 different selection queries.
+    - The first query gets all the data for active exams 
+    - The second query gets all the data for unreleased exams
+    - The third query gets all the data for released exams
+    Each of these is put into an array, and returned.
+- Mid's `data.php` receives the response and passes it along to Front's `data.php`.
+- Front's `data.php` receives the response and passes it along to `student.js`, who then draws each type of exam in a visual representation.
+    - each exam is drawn as a part of its own type's class and has an id for its index in the type's array.
+    - `student.css` is responsible for determining how each exam type is rendered.
+
 ## Student Takes Exam
 
 #### Overview
@@ -259,9 +281,11 @@ A `QUESTION`s prompt has to be unique - you cannot have more than one question w
 
 ---
 `EXAM` - contains information about an exam
-- `id` - UUID to represent each distinct exam (primary key, unique)
-- `qid` - UUID to represent each distinct question (primary key, foreign key to `QUESTION`.`id`, unique)
-- `sid` - UUID to represent each distinct student (primary key, foreign key to `STUDENT`.`id`, unique)
+- `id` - UUID to represent each distinct exam (primary key)
+- `name` - the name of the exam
+- `qid` - UUID to represent each distinct question (primary key, foreign key to `QUESTION`.`id`)
+- `sid` - UUID to represent each distinct student (primary key, foreign key to `STUDENT`.`id`)
+- `cid` - UUID to represent each distinct class (foreign key to `CLASS`.`id`)
 - `status` - number to represent state of exam (0 = past released, 1 = past unreleased, 2 = active)
 - `date` - timestamp of when exam was assigned
 - `maxPoints` - number of points the question is worth
@@ -270,11 +294,11 @@ A `QUESTION`s prompt has to be unique - you cannot have more than one question w
 - `instructorFeedback` - manual feedback by instructor
 - `pointsReceived` - number of points question was given by the autograder/overriden by the instructor
 
-| id (PK, U) | qid (PK, FK, U) | sid (PK, FK, U) | status | date       | maxPoints | submissionText                  | autoFeedback | instructorFeedback | pointsReceived |
-|---------|----------|----------|--------|------------|-----------|---------------------------------|--------------|-------------------|----------------|
-| b5k3... | f3s0...  | 95s3...  | 0      | 1584283995 | 2         | def add(a, b):     return a + b | 6            | Great job!        | 2              |
-| q95s... | a5sl...  | 5s41...  | 2      | 1584254554 | 5         | NULL                            | NULL         | NULL              | 0              |
-| ...     | ...      | ...      | ...    | ...        | ...       | ...                             | ...          | ...               | ...            |
+| id (PK) | name         | qid (PK, FK) | sid (PK, FK) | cid (FK) | status | date       | maxPoints | submissionText                  | autoFeedback | instructorFeedback | pointsReceived |
+|---------|--------------|--------------|--------------|----------|--------|------------|-----------|---------------------------------|--------------|--------------------|----------------|
+| b5k3... | First Common | f3s0...      | 95s3...      | a593...  | 0      | 1584283995 | 2         | def add(a, b):     return a + b | 6            | Great job!         | 2              |
+| q95s... | Quiz #1      | a5sl...      | 5s41...      | a592...  | 2      | 1584254554 | 5         | NULL                            | NULL         | NULL               | 0              |
+| ...     | ...          | ...          | ...          |          | ...    | ...        | ...       | ...                             | ...          | ...                | ...            |
 
 
 An `EXAM` is made up of `QUESTION`s, and is assigned on a `date`.
