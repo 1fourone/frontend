@@ -13,12 +13,6 @@ CREATE TABLE `webgrader`.`CLASS` (
     UNIQUE `unique`(`course`, `section`)
 ) ENGINE = InnoDB;
 
-CREATE TRIGGER on_class_insert
-    BEFORE INSERT ON CLASS
-    FOR EACH ROW
-    SET new.id = uuid();
-
-
 -- USER table
 CREATE TABLE `webgrader`.`USER` (
     `id` CHAR(36) DEFAULT "garbage" NOT NULL,
@@ -46,12 +40,6 @@ CREATE TABLE `webgrader`.`INSTRUCTOR` (
         REFERENCES `webgrader`.`USER`(name)
 ) ENGINE = InnoDB;
 
-CREATE TRIGGER on_instructor_insert
-    BEFORE INSERT ON INSTRUCTOR
-    FOR EACH ROW
-    SET new.id = uuid();
-
-
 -- STUDENT table
 CREATE TABLE `webgrader`.`STUDENT` (
     `id` CHAR(36) DEFAULT "garbage" NOT NULL,
@@ -66,22 +54,10 @@ CREATE TABLE `webgrader`.`STUDENT` (
         REFERENCES `webgrader`.`USER`(name)
 ) ENGINE = InnoDB;
 
-CREATE TRIGGER on_student_insert
-    BEFORE INSERT ON STUDENT
-    FOR EACH ROW
-    SET new.id = uuid();
-
 -- add SID and IID foreign keys to USER here
 ALTER TABLE USER
 ADD FOREIGN KEY (`sid`) REFERENCES `webgrader`.`STUDENT`(id),
 ADD FOREIGN KEY (`iid`) REFERENCES `webgrader`.`INSTRUCTOR`(id);
-
-
-CREATE TRIGGER on_user_insert
-    BEFORE INSERT ON USER
-    FOR EACH ROW
-    SET new.id = uuid();
-
 
 -- QUESTION TABLE
 CREATE TABLE `webgrader`.`QUESTION` (
@@ -101,11 +77,6 @@ CREATE TABLE `webgrader`.`QUESTION` (
         REFERENCES `webgrader`.`INSTRUCTOR`(id),
     UNIQUE `unique`(`prompt`)
 ) ENGINE = InnoDB;
-
-CREATE TRIGGER on_question_insert
-    BEFORE INSERT ON QUESTION
-    FOR EACH ROW
-    SET new.id = uuid();
 
 -- EXAM TABLE
 -- need to supply its ID since there would be problems
