@@ -37,5 +37,20 @@
         else
             echo $output;
     }
+    //Student wants an exam's questions/data for taking exam
+    else if($req == "exam")
+    {
+        curl_setopt($ch, CURLOPT_URL, "http://1fourone.io/webgrader/mid/data.php?value=" . $req . "&id=" . $_REQUEST['id'] . "&student=" . $_REQUEST['student']);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+
+        $output = curl_exec($ch);
+        curl_close($ch);
+
+        if($output === false)
+            echo 'Curl error: ' . curl_error($ch);
+        else
+            echo $output;
+    }
 
 ?>

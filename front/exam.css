@@ -1,0 +1,10 @@
+.submissionArea
+{
+    border: 1px solid red;
+    display: block;
+}
+
+.question
+{
+    border: 2px dashed blue;
+}

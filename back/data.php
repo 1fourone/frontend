@@ -62,6 +62,16 @@
             echo "Instructor " . $_REQUEST['instructor'] . " requested exams.";
         }
     }
+    //Student wants an exam's questions/data for taking exam
+    else if($req == "exam")
+    {
+        $sql = "SELECT q.prompt, e.maxPoints FROM EXAM e, QUESTION q WHERE e.qid=q.id AND e.id='" . $_REQUEST['id'] . "' AND e.sid='" . $_REQUEST['student'] . "'";
+        $result = $conn->query($sql);
+        $questions = array();
+        while(($q = $result->fetch_assoc()) != NULL)
+            array_push($questions, (object)$q);
+        echo json_encode($questions);
+    }
     
     $conn->close();
 ?>
