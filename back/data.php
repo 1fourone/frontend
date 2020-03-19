@@ -33,7 +33,7 @@
         if(isset($_REQUEST['student'])) //Student requested this
         {
             //first get the active exams
-            $sql = "SELECT DISTINCT e.name, c.course, c.section FROM EXAM e, CLASS c WHERE e.sid='" . $_REQUEST['student'] . "' AND e.cid=c.id AND status=2";
+            $sql = "SELECT DISTINCT e.id, e.name, c.course, c.section FROM EXAM e, CLASS c WHERE e.sid='" . $_REQUEST['student'] . "' AND e.cid=c.id AND status=2";
             $result = $conn->query($sql);
             $actives = array();
             while(($e = $result->fetch_assoc()) != NULL)
@@ -41,14 +41,14 @@
             //echo json_encode($actives);
 
             //then get the unreleased exams
-            $sql = "SELECT DISTINCT e.name, c.course, c.section FROM EXAM e, CLASS c WHERE e.sid='" . $_REQUEST['student'] . "' AND e.cid=c.id AND status=1";
+            $sql = "SELECT DISTINCT e.id, e.name, c.course, c.section FROM EXAM e, CLASS c WHERE e.sid='" . $_REQUEST['student'] . "' AND e.cid=c.id AND status=1";
             $result = $conn->query($sql);
             $unreleased = array();
             while(($e = $result->fetch_assoc()) != NULL)
                 array_push($unreleased, (object)$e);
             
             //then get the released exams
-            $sql = "SELECT DISTINCT e.name, c.course, c.section FROM EXAM e, CLASS c WHERE e.sid='" . $_REQUEST['student'] . "' AND e.cid=c.id AND status=0";
+            $sql = "SELECT DISTINCT e.id, e.name, c.course, c.section FROM EXAM e, CLASS c WHERE e.sid='" . $_REQUEST['student'] . "' AND e.cid=c.id AND status=0";
             $result = $conn->query($sql);
             $released = array();
             while(($e = $result->fetch_assoc()) != NULL)
