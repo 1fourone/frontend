@@ -46,6 +46,17 @@
                   "outputTwo":"18",
                   "autoFeedback":"",
                   "functionName":"sum3"
+                }],
+                "5":[{
+                  "prompt":"Given an int n, return the absolute difference between n and 21, except return double the absolute difference if n is over 21.",
+                  "studentSubmission":"def ndiff21(num):\n\tif num<=21:\n\t\treturn 21-num\n\tif num>21:\n\t\tnum = num-21\n\t\treturn num*2",
+                  "maxPoints":"10",
+                  "testCaseOne":"19",
+                  "outputOne":"2",
+                  "testCaseTwo":"21",
+                  "outputTwo":"0",
+                  "autoFeedback":"",
+                  "functionName":"ndiff21"
                 }]
   }'; 
   
@@ -57,7 +68,7 @@
   
   
   //go through all submissions
-  for($i = 4; $i<5; $i++){
+  for($i = 5; $i<6; $i++){
   
     //boolean that checks and sees if the student answer function works
     $totalPoints = 10;
@@ -114,6 +125,7 @@
     $output2 = shell_exec('python main.py 2>&1 ');
     unlink($filename);
     
+    
     //check if output matches
     $test1 = $output1;
     $test2 = $output2;
@@ -126,6 +138,7 @@
     }else{
       $array[$i][0]["autoFeedback"] = $array[$i][0]["autoFeedback"]." Your answer is incorrect! ";
     }
+    
     
     //see if there is syntax errors
     if(preg_match("/\bTraceback\b/i", $output1) and preg_match("/\bTraceback\b/i", $output2)){
@@ -156,8 +169,8 @@
   //echo $array[1][0]["autoFeedback"];
   //echo $array[2][0]["autoFeedback"];
   //echo $array[3][0]["autoFeedback"];
-  echo $array[4][0]["autoFeedback"];
-
+  //echo $array[4][0]["autoFeedback"];
+  echo $array[5][0]["autoFeedback"];
 
 
 
