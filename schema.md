@@ -71,6 +71,7 @@ There cannot be 1+ entry with the same `course` and `section`.
 `QUESTION` - contains information about a question
 - `id` - UUID to represent each distinct question (primary key)
 - `prompt` - instructions/prompt for the question (unique)
+- `functionSignature` - the function signature stated in the prompt
 - `difficulty` - number to represent difficulty (0 = easy, 1 = medium, 2 = hard)
 - `topic` - topic a question belongs to
 - `creatorID` - UUID to represent the creator of question (foreign key to `INSTRUCTOR`.`id`)
@@ -80,11 +81,11 @@ There cannot be 1+ entry with the same `course` and `section`.
 - `secondTestCase` - testcase for autograder to grade a future exam submission
 - `secondOutput` - expected result for second test case
 
-| id (PK) | prompt (U)                                                                     | difficulty | topic    | creatorID (FK)| creationDate | firstTestCase | firstOutput | secondTestCase | secondOutput |
-|---------|------------------------------------------------------------------------------|----------------|--------------|---------------|------------------|---------------|-------------|----------------|--------------|
-| f3s0... | Write a function add(a, b) that adds two numbers and returns the result.     | 0              | Functions    | 43s8...       | 1584283994       | 1,5           | 6           | -3,15          | 12           |
-| a5sl... | Write a function isLeapYear(year) that returns whether year is a  leap year. | 1              | Conditionals | a9s5...       | 1584254553       | 2020          | True        | 2019           | False        |
-| ...     | ...                                                                          | ...            | ...          | ...           | ...              | ...           | ...         | ...            | ...          |
+| id (PK) | prompt (U)                                                                   | functionSignature | difficulty | topic        | creatorID (FK) | creationDate | firstTestCase | firstOutput | secondTestCase | secondOutput |
+|---------|------------------------------------------------------------------------------|-------------------|------------|--------------|----------------|--------------|---------------|-------------|----------------|--------------|
+| f3s0... | Write a function add(a, b) that adds two numbers and returns the result.     | add(a, b)         | 0          | Functions    | 43s8...        | 1584283994   | 1,5           | 6           | -3,15          | 12           |
+| a5sl... | Write a function isLeapYear(year) that returns whether year is a  leap year. | isLeapYear(year)  | 1          | Conditionals | a9s5...        | 1584254553   | 2020          | True        | 2019           | False        |
+| ...     | ...                                                                          | ...               | ...        | ...          | ...            | ...          | ...           | ...         | ...            | ...          |
 
 A `QUESTION` has a `prompt` with instructions on what to do.
 A `QUESTION` has a `firstTestCase` and `secondTestCase` with their respective `firstOutput` and `secondOutput`.
