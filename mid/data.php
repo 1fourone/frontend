@@ -53,6 +53,21 @@
             else
                 echo $output;
     }
+    else if($data == "exam")
+    {
+        if(!empty($_POST['exam']))
+        {
+            /* inserting an exam */
+            curl_setopt($ch, CURLOPT_URL, $base_url);
+            curl_setopt($ch, CURLOPT_POST, TRUE);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, "data=exam&exam=" . $_POST['exam']);
+            $output = curl_exec($ch);
+            if($output === false)
+                echo "Curl error: " . curl_error($ch);
+            else
+                echo $output;
+        }
+    }
 
     curl_close($ch);
 ?>

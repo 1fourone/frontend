@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebQuiz Create Exam</title>
+    <link rel="stylesheet" href="cexam.css">
+    <script src="utils.js"></script>
+    <script src="cexam.js"></script>
+</head>
+<body>
+    <!-- Place holder for header -->
+    <header id="header">
+        <div id="header-name"></div>
+        <div id="header-brand"></div>
+        <div id="header-logout"></div>
+    </header>
+
+    <div id="content">
+        <div id="upper">
+            <h1 id="title">Create Exam</h1>
+        </div>
+        
+        <!-- no filtering/sorting for now -->
+        <h1 id="subtitle">Current Exam Questions</h1>
+        <p id="error-label"></p>
+        <div id="exam-list-box" class="flexbox" ondrop="checkDrop(event);" ondragover="allowDrop(event);"></div>
+        <span id="class-list">
+            <p id="error-label"></p>
+            <label for="class">Select a class</label>
+            <select name="class" id="class-select">
+                <option value="none" onclick="setActiveClassID(-1);">None</option>
+            </select>
+        </span>
+        <div id="name-info">
+            <label for="name">Exam Name:</label>
+            <input type="text" name="name" id="name">
+        </div>
+        <input type="submit" value="DISPATCH EXAM" onclick="validateInput();">
+         
+        <iframe src="qbank.html" frameborder="0" id="qbank"></iframe>
+
+    </div>
+</body>
+</html>

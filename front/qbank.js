@@ -9,11 +9,12 @@ if(_utype != "instructor")
 /* Now that user is authorized to see the page, render header */
 window.onload = function() 
 {
-    renderHeader(_uname);
+    if(this.parent == this)
+        renderHeader(_uname);
     getPageRenderData();
 }
 
-let questionList = null; /* list of questions */
+var questionList = null; /* list of questions */
 
 
 /* getPageRenderData() - will collect necessary class and exam information */
@@ -83,11 +84,13 @@ function checkDrop(ev)
 {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
+    console.log("Dropped on " + ev.target);
     ev.target.appendChild(document.getElementById(data));
 }
 
 /* called when a new drag starts */
 function drag(ev)
 {
+    console.log("Started drag on qbank");
     ev.dataTransfer.setData("text", ev.target.id);
 }

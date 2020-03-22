@@ -76,6 +76,48 @@
             array_push($questions, (object)$q);
         echo json_encode($questions);
     }
+    else if($data == "exam")
+    {
+        if(!empty($_POST['exam']))
+        {
+            /* inserting an exam */
+            $examList = json_decode($_POST['exam']);
+            var_dump($examList);
+
+            /* get the student ids in the class */
+            $sql = sprintf("SELECT s.id FROM STUDENT s, CLASS c WHERE s.cid=c.id AND c.id='%s';", $examList[0]->{'cid'});
+            //echo $sql;
+            $result = $conn->query($sql);
+
+            $students = array();
+            /* For every student in the class */
+            while(($s = $result->fetch_assoc()) != NULL)
+                array_push($students, $s);
+
+                
+            $result = $conn->query("SELECT UUID();");
+            $examID = $result->fetch_row()[0];
+
+            /* TRANSACTION - insert each question to all members in class */
+            $conn->autocommit(FALSE);
+            $conn->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+            
+            /* INSERT INTO EXAM(id, name, qid, sid, cid, status, maxPoints) */
+            for($i = 0; $i < count($examList); $i++)
+            {
+                for($j = 0; $j < count($students); $j++)
+                {
+                    $sql = sprintf("INSERT INTO EXAM(id, name, qid, sid, cid, status, maxPoints) VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s');",
+                    $examID, $examList[$i]->{'name'}, $examList[$i]->{'id'}, $students[$j]['id'], $examList[$i]->{'cid'}, 3, $examList[$i]->{'maxPoints'});
+                    var_dump($sql);
+                    $conn->query($sql);
+                }
+            }
+            $result = $conn->commit();
+
+            echo ($result === true) ? "success" : "failure";
+        }
+    }
 
     curl_close($ch);
 ?>
