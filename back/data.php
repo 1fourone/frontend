@@ -13,6 +13,7 @@
 
     /* Data related logic from request here */
     $data = $_REQUEST["data"];
+
     if($data == "home")
     {
         if(empty($_GET['instructor']))
@@ -50,6 +51,19 @@
                 array_push($examList, (object)$e);
 
             echo "[" . json_encode($classList) . "," . json_encode($examList) . "]";
+        }
+    }
+    else if($data == "question")
+    {
+        if(!empty($_POST['question']))
+        {
+            /* inserting a question to bank */
+            $question = json_decode($_POST['question']);
+            $sql = sprintf("INSERT INTO QUESTION(id, prompt, functionSignature, difficulty, topic, creatorID, firstTestCase, firstOutput, secondTestCase, secondOutput) VALUES(UUID(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",
+                $question->{'prompt'}, $question->{'functionSignature'}, $question->{'difficulty'}, $question->{'topic'}, $question->{'creatorID'}, $question->{'firstTestCase'}, 
+                $question->{'firstOutput'}, $question->{'secondTestCase'}, $question->{'secondOutput'});
+            $result = $conn->query($sql);
+            echo ($result === false) ? "failure" : "success";
         }
     }
 

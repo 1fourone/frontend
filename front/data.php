@@ -28,6 +28,21 @@
                 echo $output;
         }
     }
+    else if($data == "question")
+    {
+        if(!empty($_POST['question']))
+        {
+            /* inserting a question to bank */
+            curl_setopt($ch, CURLOPT_URL, $base_url);
+            curl_setopt($ch, CURLOPT_POST, TRUE);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, "data=question&question=" . $_POST['question']);
+            $output = curl_exec($ch);
+            if($output === false)
+                echo "Curl error: " . curl_error($ch);
+            else
+                echo $output;
+        }
+    }
 
     curl_close($ch);
 ?>

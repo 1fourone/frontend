@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebQuiz Add Question</title>
+    <link rel="stylesheet" href="qadd.css">
+    <script src="utils.js"></script>
+    <script src="qadd.js"></script>
+</head>
+<body>
+    <!-- Place holder for header -->
+    <header id="header">
+        <div id="header-name"></div>
+        <div id="header-brand"></div>
+        <div id="header-logout"></div>
+    </header>
+
+    <div id="content">
+        <div id="upper">
+            <h1 id="title">Add to Question Bank</h1>
+            <p id="error-label"></p>
+        </div>
+        
+        <label for="prompt">Prompt</label>
+        <textarea name="prompt" id="prompt" cols="30" rows="10"></textarea>
+        
+        <label for="difficulty">Difficulty</label>
+        <select name="difficulty" id="difficulty">
+            <option value="0">Easy</option>
+            <option value="1">Medium</option>
+            <option value="2">Hard</option>
+        </select>
+
+        <label for="function-signature">Function Signature</label>
+        <input type="text" name="function-signature" id="function-signature">
+    
+        <label for="topic">Topic</label>
+        <input type="text" name="topic" id="topic">
+
+        <label for="first-test-case">First Test Case</label>
+        <input type="text" name="first-test-case" id="first-test-case">
+
+        <label for="first-output">Output</label>
+        <input type="text" name="first-output" id="first-output">
+        
+        <label for="second-test-case">Second Test Case</label>
+        <input type="text" name="second-test-case" id="second-test-case">
+
+        <label for="second-output">Output</label>
+        <input type="text" name="second-output" id="second-output">
+
+        <input type="submit" id="submit" value="ADD TO BANK" onclick="validateInput();">
+    </div>
+</body>
+</html>
