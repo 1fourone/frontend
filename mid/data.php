@@ -20,6 +20,12 @@
         else
         {
             /* instructor home data is requested */
+            curl_setopt($ch, CURLOPT_URL, $base_url . "data=home&instructor=" . $_GET['instructor']);
+            $output = curl_exec($ch);
+            if($output === false)
+                echo "Curl error: " . curl_error($ch);
+            else
+                echo $output;
         }
     }
 

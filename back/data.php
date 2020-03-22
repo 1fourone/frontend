@@ -35,6 +35,21 @@
         else
         {
             /* instructor home data is requested */
+            $classList = array();
+            
+            $sql = sprintf("SELECT c.id, c.course, c.section FROM CLASS c, INSTRUCTOR i WHERE i.cid=c.id AND i.id='%s';", $_GET['instructor']);
+            $result = $conn->query($sql);
+            while(($c = $result->fetch_assoc()) != NULL)
+                array_push($classList, (object)$c);
+
+            $examList = array();
+            
+            $sql = sprintf("SELECT DISTINCT e.id, e.name, e.date, c.course, c.section FROM EXAM e, CLASS c, INSTRUCTOR i WHERE i.id='%s' AND i.cid=c.id AND e.cid=c.id", $_GET['instructor']);
+            $result = $conn->query($sql);
+            while(($e = $result->fetch_assoc()) != NULL)
+                array_push($examList, (object)$e);
+
+            echo "[" . json_encode($classList) . "," . json_encode($examList) . "]";
         }
     }
 
