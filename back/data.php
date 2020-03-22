@@ -66,6 +66,16 @@
             echo ($result === false) ? "failure" : "success";
         }
     }
+    else if($data == "bank")
+    {
+        /* getting all questions from the bank */
+        $questions = array();
+        $sql = "SELECT q.id, q.prompt, q.difficulty, q.topic, i.uname AS creatorName, q.creationDate FROM QUESTION q, INSTRUCTOR i WHERE q.creatorID=i.id;";
+        $result = $conn->query($sql);
+        while(($q = $result->fetch_assoc()) != NULL)
+            array_push($questions, (object)$q);
+        echo json_encode($questions);
+    }
 
     curl_close($ch);
 ?>

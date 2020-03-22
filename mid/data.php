@@ -43,6 +43,16 @@
                 echo $output;
         }
     }
+    else if($data == "bank")
+    {
+        /* getting all questions from the bank */
+        curl_setopt($ch, CURLOPT_URL, $base_url . "data=bank");
+            $output = curl_exec($ch);
+            if($output === false)
+                echo "Curl error: " . curl_error($ch);
+            else
+                echo $output;
+    }
 
     curl_close($ch);
 ?>
