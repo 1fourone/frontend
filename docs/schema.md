@@ -99,7 +99,7 @@ A `QUESTION`s prompt has to be unique - you cannot have more than one question w
 - `qid` - UUID to represent each distinct question (primary key, foreign key to `QUESTION`.`id`)
 - `sid` - UUID to represent each distinct student (primary key, foreign key to `STUDENT`.`id`)
 - `cid` - UUID to represent each distinct class (foreign key to `CLASS`.`id`)
-- `status` - number to represent state of exam (0 = past released, 1 = past unreleased, 2 = active)
+- `status` - number to represent state of exam (0 = past released, 1 = past unreleased, 2 = awaiting grade, 3 = active)
 - `date` - timestamp of when exam was assigned
 - `maxPoints` - number of points the question is worth
 - `submissionText` - answer that the student wrote
