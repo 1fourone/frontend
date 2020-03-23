@@ -19,7 +19,7 @@ function attemptLogin()
     var pw = document.getElementById("pw").value;
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", 'http://1fourone.io/webgrader/front/login.php', true);
+    xhr.open("POST", 'login.php', true);
 
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); //We're sending JSON data in a string
     xhr.onreadystatechange = function() 

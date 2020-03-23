@@ -92,7 +92,7 @@
             //echo $output; //JSON string with exam info necessary for grader
             /* got the data successfully, curl to grader here for results */
             /* send a POST request to grader to retrieve "updated" examInfo */
-            curl_setopt($ch, CURLOPT_URL, "http://1fourone.io/webgrader/mid/grader.php?");
+            curl_setopt($ch, CURLOPT_URL, "grader.php?");
             curl_setopt($ch, CURLOPT_POST, TRUE);
             curl_setopt($ch, CURLOPT_POSTFIELDS, "data=" . $output);
             //curl_setopt($ch, CURLOPT_URL, "data=" . json_encode($output));
