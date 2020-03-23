@@ -68,7 +68,7 @@ function renderPageElement(type)
         
             if(examList.length == 0)
             {
-                errorLabel.innerHTML = "You have no exams of this type.";
+                errorLabel.innerHTML = "You have no exams on this class.";
                 listBox.style.visibility = "hidden";
             }
             else
@@ -106,6 +106,7 @@ function setActiveClassID(index)
 /* setActiveExamID - sets the active exam ID to the clicked exam on the right flexbox */
 function reviewExam(index)
 {
-    /* TODO: set cookie and redirect to 'vexam.html` */
-    console.log("You're now viewing exam: " + homeInfo[1][index]['id']);
+    setCookie("activeReviewExam", homeInfo[1][index]['id'], 100);
+    document.location.href = 'vexam.html';
+    //console.log("You're now viewing exam: " + homeInfo[1][index]['id']);
 }

@@ -47,11 +47,11 @@
     {
         /* getting all questions from the bank */
         curl_setopt($ch, CURLOPT_URL, $base_url . "data=bank");
-            $output = curl_exec($ch);
-            if($output === false)
-                echo "Curl error: " . curl_error($ch);
-            else
-                echo $output;
+        $output = curl_exec($ch);
+        if($output === false)
+            echo "Curl error: " . curl_error($ch);
+        else
+            echo $output;
     }
     else if($data == "exam")
     {
@@ -67,6 +67,28 @@
             else
                 echo $output;
         }
+        else if(!empty($_GET['id']))
+        {
+            /* getting an exam's info */
+            curl_setopt($ch, CURLOPT_URL, $base_url . "data=exam&id=" . $_GET['id']);
+            $output = curl_exec($ch);
+            if($output === false)
+                echo "Curl error: " . curl_error($ch);
+            else
+                echo $output;
+        }
+    }
+    else if($data == "autograde")
+    {
+        /* autograding the exam */
+        curl_setopt($ch, CURLOPT_URL, $base_url);
+        curl_setopt($ch, CURLOPT_POST, TRUE);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "data=autograde&id=" . $_POST['id']);
+        $output = curl_exec($ch);
+        if($output === false)
+            echo "Curl error: " . curl_error($ch);
+        else
+            echo $output;
     }
 
     curl_close($ch);

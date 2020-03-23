@@ -27,6 +27,7 @@ function getPageRenderData()
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) 
         {
             /* Received the questionList array */
+            //console.log(this.responseText);
             questionList = JSON.parse(this.responseText);
             renderPageElement('questions');
         }

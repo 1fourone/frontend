@@ -93,7 +93,7 @@ CREATE TABLE `webgrader`.`EXAM` (
     `submissionText` VARCHAR(512) DEFAULT NULL,
     `autoFeedback` VARCHAR(256) DEFAULT NULL,
     `instructorFeedback` VARCHAR(256) DEFAULT NULL,
-    `pointsRecevied` TINYINT DEFAULT NULL,
+    `pointsReceived` TINYINT DEFAULT NULL,
 
     PRIMARY KEY(`id`, `qid`, `sid`),
     FOREIGN KEY(`qid`)

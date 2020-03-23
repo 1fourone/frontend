@@ -13,7 +13,7 @@
 
     /* Data related logic from request here */
     $data = $_REQUEST["data"];
-
+    
     if($data == "home")
     {
         if(empty($_GET['instructor']))
@@ -82,7 +82,7 @@
         {
             /* inserting an exam */
             $examList = json_decode($_POST['exam']);
-            var_dump($examList);
+            //var_dump($examList);
 
             /* get the student ids in the class */
             $sql = sprintf("SELECT s.id FROM STUDENT s, CLASS c WHERE s.cid=c.id AND c.id='%s';", $examList[0]->{'cid'});
@@ -109,12 +109,60 @@
                 {
                     $sql = sprintf("INSERT INTO EXAM(id, name, qid, sid, cid, status, maxPoints) VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s');",
                     $examID, $examList[$i]->{'name'}, $examList[$i]->{'id'}, $students[$j]['id'], $examList[$i]->{'cid'}, 3, $examList[$i]->{'maxPoints'});
-                    var_dump($sql);
+                    //var_dump($sql);
                     $conn->query($sql);
                 }
             }
             $result = $conn->commit();
 
+            echo ($result === true) ? "success" : "failure";
+        }
+        else if(!empty($_GET['id']))
+        {
+            /* getting an exam's info */
+            $sql = sprintf("SELECT DISTINCT e.name, c.course, c.section FROM EXAM e, CLASS c WHERE e.cid =c.id AND e.id='%s';", $_GET['id']);
+            $result = $conn->query($sql); 
+            $examInfo = $result->fetch_assoc();
+            echo json_encode((object)$examInfo);
+        }
+    }
+    else if($data == "autograde")
+    {
+        if(!empty($_GET['id']))
+        {
+            /* getting the exam needed info for autograding */
+            $sql = sprintf("SELECT e.qid, e.sid, q.prompt, q.functionSignature, e.submissionText, e.maxPoints, q.firstTestCase, q.firstOutput, q.secondTestCase, q.secondOutput
+            FROM EXAM e, QUESTION q
+            WHERE e.qid=q.id AND e.id='%s';", $_GET['id']);
+            //var_dump($sql);
+            $result = $conn->query($sql);
+            $examInfoList = array();
+            /* For every student in the class */
+            while(($e = $result->fetch_assoc()) != NULL)
+                array_push($examInfoList, (object)$e);
+            echo json_encode($examInfoList);
+        }
+        else if(!empty($_POST['content']))
+        {
+            /* updating the exams with the new graded content */
+            $examID = $_POST['id'];
+            $content = json_decode($_POST['content']);
+
+            /* BEGIN TRANSACTION */
+            $conn->autocommit(FALSE);
+            $conn->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
+            foreach ($content as $entry) {
+                $pointsLost = array_sum($entry->{'autoFeedback'}->{'pointsLost'});
+                //var_dump($entry->{'autoFeedback'}->{'pointsLost'});
+                //var_dump($pointsLost);
+                $sql = sprintf("UPDATE EXAM SET status=1, autoFeedback='%s', pointsReceived='%s' WHERE id='%s' AND qid='%s' AND sid='%s'",
+                json_encode($entry->{'autoFeedback'}), $entry->{'maxPoints'} - $pointsLost, $examID, $entry->{'qid'}, $entry->{'sid'});
+                //var_dump($sql);
+                $conn->query($sql);
+            }
+            
+            $result = $conn->commit();
             echo ($result === true) ? "success" : "failure";
         }
     }

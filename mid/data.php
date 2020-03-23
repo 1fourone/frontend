@@ -67,6 +67,55 @@
             else
                 echo $output;
         }
+        else if(!empty($_GET['id']))
+        {
+            /* getting an exam's info */
+            curl_setopt($ch, CURLOPT_URL, $base_url . "data=exam&id=" . $_GET['id']);
+            $output = curl_exec($ch);
+            if($output === false)
+                echo "Curl error: " . curl_error($ch);
+            else
+                echo $output;
+        }
+    }
+    else if($data == "autograde")
+    {
+        /* Here mid will send a get request to back first to get the exam info
+            for this exam id it needs */
+        $examID = $_POST['id'];
+        curl_setopt($ch, CURLOPT_URL, $base_url . "data=autograde&id=" . $examID);
+        $output = curl_exec($ch);
+        if($output === false)
+            echo "Curl error: " . curl_error($ch);
+        else
+        {
+            //echo $output; //JSON string with exam info necessary for grader
+            /* got the data successfully, curl to grader here for results */
+            /* send a POST request to grader to retrieve "updated" examInfo */
+            curl_setopt($ch, CURLOPT_URL, "http://1fourone.io/webgrader/mid/grader.php?");
+            curl_setopt($ch, CURLOPT_POST, TRUE);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, "data=" . $output);
+            //curl_setopt($ch, CURLOPT_URL, "data=" . json_encode($output));
+            $output = curl_exec($ch);
+            if($output === false)
+                echo "Curl error: " . curl_error($ch);
+            else
+            {
+                /* TODO: got the updated data back successfully, send a POST to back to update */
+                curl_setopt($ch, CURLOPT_URL, $base_url);
+                curl_setopt($ch, CURLOPT_POST, TRUE);
+                //var_dump("data=autograde&id=" . $examID . "&data=" . $output);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, "data=autograde&id=" . $examID . "&content=" . $output);
+                $output = curl_exec($ch);
+                if($output === false)
+                    echo "Curl error: " . curl_error($ch);
+                else
+                {
+                    /* got the back's result here, send it to front */
+                    echo $output;
+                }
+            }
+        }
     }
 
     curl_close($ch);

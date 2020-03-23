@@ -52,12 +52,20 @@ function validateInput()
         errorLabel.innerHTML = "The topic must be nonempty and less than or equal to 32 characters.";
     else if(firstTestCase.value.length == 0 || firstTestCase.value.length > 64)
         errorLabel.innerHTML = "The first test case must be nonempty and less than or equal to 64 characters.";
+    else if(firstTestCase.value.indexOf('"') != -1)
+        errorLabel.innerHTML = "Test cases and outputs for strings cannot contain double quotes. Use only single quotes.";
     else if(firstOutput.value.length == 0 || firstOutput.value.length > 64)
         errorLabel.innerHTML = "The first output must be nonempty and less than or equal to 64 characters.";
+    else if(firstOutput.value.indexOf('"') != -1)
+        errorLabel.innerHTML = "Test cases and outputs for strings cannot contain double quotes. Use only single quotes.";
     else if(secondTestCase.value.length == 0 || secondTestCase.value.length > 64)
         errorLabel.innerHTML = "The second test case must be nonempty and less than or equal to 64 characters.";
+    else if(secondTestCase.value.indexOf('"') != -1)
+        errorLabel.innerHTML = "Test cases and outputs for strings cannot contain double quotes. Use only single quotes.";
     else if(secondOutput.value.length == 0 || secondOutput.value.length > 64)
         errorLabel.innerHTML = "The second output must be nonempty and less than or equal to 64 characters.";
+    else if(secondOutput.value.indexOf('"') != -1)
+        errorLabel.innerHTML = "Test cases and outputs for strings cannot contain double quotes. Use only single quotes.";
     else
         attemptQuestionCreation();
 }
@@ -80,14 +88,14 @@ function attemptQuestionCreation()
         "functionSignature": functionSignature.value,
         "difficulty": difficulty.selectedIndex,
         "topic": topic.value,
-        "firstTestCase": firstTestCase.value,
-        "firstOutput": firstOutput.value,
-        "secondTestCase": secondTestCase.value,
-        "secondOutput": secondOutput.value,
+        "firstTestCase": firstTestCase.value.replace(/'/g,"\\\'"),
+        "firstOutput": firstOutput.value.replace(/'/g,"\\\'"),
+        "secondTestCase": secondTestCase.value.replace(/'/g,"\\\'"),
+        "secondOutput": secondOutput.value.replace(/'/g,"\\\'"),
         "creatorID": _uid
     };
 
-    //console.log(JSON.stringify(question));
+    //console.log(question);
     /* try to insert the valid question into database */
     var xhr = new XMLHttpRequest();
     xhr.open("POST", 'data.php', true);
@@ -106,4 +114,5 @@ function attemptQuestionCreation()
     };
 
     xhr.send("data=question&question=" + JSON.stringify(question)); //send the JSON
+    
 }

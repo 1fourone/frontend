@@ -31,6 +31,11 @@ function clearAllCookies()
     setCookie("userType", "", d-1000);
     setCookie("userName", "", d-1000);
     setCookie("dbID", "", d-1000);
+    setCookie("activeTakeExam", "", d-1000);
+    setCookie("activeReviewExam", "", d-1000);
+    setCookie("activeClassID", "", d-1000);
+
+
 }
 
 function renderHeader(userName)
@@ -41,9 +46,16 @@ function renderHeader(userName)
     {
         var btn = document.createElement("button");
         btn.innerHTML = "Log Out";
+        btn.setAttribute("onclick", "logOut();");
         document.getElementById("header-logout").appendChild(btn);
         nameLabel.innerHTML = userName;
     }
     else
         nameLabel.innerHTML = "Not logged in.";
+}
+
+function logOut()
+{
+    clearAllCookies();
+    window.location.href = 'login.html';
 }
