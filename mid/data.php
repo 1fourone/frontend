@@ -164,6 +164,28 @@
         else
             echo $output;
     }
+    else if($data == "take")
+    {
+        /* requesting specific exam info for a particular exam for review */
+        curl_setopt($ch, CURLOPT_URL, $base_url . "data=take&id=" . $_GET['id'] . "&content=" . $_GET['content']);
+        $output = curl_exec($ch);
+        if($output === false)
+            echo "Curl error: " . curl_error($ch);
+        else
+            echo $output;
+    }
+    else if($data == "submit")
+    {
+        /* student submits exam */
+        curl_setopt($ch, CURLOPT_URL, $base_url);
+        curl_setopt($ch, CURLOPT_POST, TRUE);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "data=submit&id=" . $_POST['id'] . "&content=" . $_POST['content']);
+        $output = curl_exec($ch);
+        if($output === false)
+            echo "Curl error: " . curl_error($ch);
+        else
+            echo $output;
+    }
 
     curl_close($ch);
 ?>

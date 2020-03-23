@@ -2,12 +2,12 @@
 var _uname = getCookie("userName");
 var _utype = getCookie("userType");
 var _uid = getCookie("dbID");
-var _eid = getCookie("activeReviewExam");
+var _eid = getCookie("activeTakeExam");
 
-if(_utype != "instructor")
+if(_utype != "student")
     window.location.href = "login.html";
 if(_eid == "")
-    window.location.href = "instructor.html";
+    window.location.href = "student.html";
 
 /* Now that user is authorized to see the page, render header */
 window.onload = function() 
@@ -32,10 +32,11 @@ function getPageRenderData()
             /* Received the questionList array */
             //console.log(this.responseText);
             examInfoList = JSON.parse(this.responseText);
+            //examInfoList = Array(examInfo);
             renderPageElement('exams');
         }
     };
-    xhr.open("GET", 'data.php?data=exams&id=' + _eid, true);
+    xhr.open("GET", 'data.php?data=take&id=' + _uid + "&content=" + _eid, true);
     xhr.send();
 }
 
@@ -44,7 +45,7 @@ function renderPageElement(type)
 {
     if(type === "exams")
     {   
-        let listBox = document.getElementById("submission-list-box");
+        let listBox = document.getElementById("question-list-box");
 
         /* first clear all the elements in the div */
         while(listBox.childElementCount)
@@ -61,12 +62,12 @@ function renderPageElement(type)
             p.innerHTML = '<b>Prompt:</b> ' + examInfoList[i]['prompt'];
             let ta1 = document.createElement("textarea");
             ta1.setAttribute("id", "ta1" + i);
-            ta1.setAttribute("readOnly", "");
-            ta1.value = (examInfoList[i]['submissionText'] == null) ? '' : examInfoList[i]['submissionText'].slice(1, examInfoList[i]['submissionText'].length-1);
             ta1.setAttribute("cols", "80");
             ta1.setAttribute("rows", "6");
+            ta1.setAttribute("onkeydown", "insertTab(this, event);");
             let p1 = document.createElement("p");
             p1.innerHTML = "<b>Student Submission</b>";
+            /*
             let p2 = document.createElement("p");
             p2.innerHTML = "<b>Grader Feedback</b>";
             let ta2 = document.createElement("textarea");
@@ -74,7 +75,7 @@ function renderPageElement(type)
             ta2.setAttribute("readOnly", "");
             ta2.setAttribute("cols", "80");
             ta2.setAttribute("rows", "6");
-            /* get the auto feedback and present it in a nice way */
+            /* get the auto feedback and present it in a nice way 
             let feedback = '';
             let autoFeedback = JSON.parse(examInfoList[i]['autoFeedback']);
             //console.log(autoFeedback);
@@ -97,25 +98,27 @@ function renderPageElement(type)
 
             let ta3 = document.createElement("textarea");
             ta3.setAttribute("id", "ta3" + i);
+            ta3.setAttribute("readOnly", "");
             ta3.setAttribute("cols", "80");
             ta3.setAttribute("rows", "6");
+            ta3.value = examInfoList[i]['instructorFeedback'].slice(1, examInfoList[i]['instructorFeedback'].length-1);
             
             let p4 = document.createElement("p");
             p4.innerHTML = "<b>Override Points Lost</b>";
             
             let override = document.createElement("input");
             override.setAttribute("id", "o"+i);
-
+            */
 
             visualExam.appendChild(p);
             visualExam.appendChild(p1);
             visualExam.appendChild(ta1);
+            /*
             visualExam.appendChild(p2);
             visualExam.appendChild(ta2);
             visualExam.appendChild(p3);
             visualExam.appendChild(ta3);
-            visualExam.appendChild(p4);
-            visualExam.appendChild(override);
+            */
 
             listBox.appendChild(visualExam);
         }
@@ -124,7 +127,7 @@ function renderPageElement(type)
 
 function validateInput()
 {
-    let submissionsBox = document.getElementById("submission-list-box");
+    let submissionsBox = document.getElementById("question-list-box");
     let errorLabel = document.getElementById("error-label");
     var updateInfo = [];
 
@@ -132,43 +135,30 @@ function validateInput()
 
     for(let i=0; i < submissionsBox.childElementCount; i++)
     {
-        let instructorFeedback = document.getElementById('ta3'+i).value;
-        let overridePoints = document.getElementById('o'+i).value;
-        overridePoints = (overridePoints == '') ? JSON.parse(examInfoList[i]['autoFeedback'])['pointsLost'].reduce((a,b) => a + b, 0) : overridePoints;
-        let resultingPoints = parseFloat(overridePoints).toFixed(2);
-
-        if(isNaN(resultingPoints))
-            errorLabel.innerHTML = "You cannot have non-float input for overriding lost points.";
-        else if(resultingPoints > parseFloat(examInfoList[i]['maxPoints']).toFixed(2))
-            errorLabel.innerHTML = "You cannot have a question have a greater amount of points lost than it's worth.";
-        else 
-        {
-            /* is valid */
-            //console.log(resultingPoints);
-            //console.log("EID: " + _eid + "\tQID: " + examInfoList[i]['qid'] + "\tSID: " + examInfoList[i]['sid']);
-            var examUpdate = {
-                "id": _eid,
-                "qid": examInfoList[i]['qid'],
-                "sid": examInfoList[i]['sid'],
-                "instructorFeedback": instructorFeedback,
-                "pointsReceived": parseFloat(examInfoList[i]['maxPoints']).toFixed(2) - resultingPoints
-            };
-            updateInfo.push(examUpdate);
-        }
-        
+        var input = document.getElementById("ta1" + i);
+        /* is valid */
+        //console.log(resultingPoints);
+        //console.log("EID: " + _eid + "\tQID: " + examInfoList[i]['qid'] + "\tSID: " + examInfoList[i]['sid']);
+        var examUpdate = {
+            "id": _eid,
+            "qid": examInfoList[i]['qid'],
+            "sid": examInfoList[i]['sid'],
+            "submissionText": input.value
+        };
+        updateInfo.push(examUpdate);
     }
 
+    console.log(updateInfo);
     if(errorLabel.innerHTML == "")
     {
         /* no errors, submit feedback */
-        submitFeedback(updateInfo);
+        submitSubmission(updateInfo);
     }
     
 }
 
-function submitFeedback(updateInfo)
+function submitSubmission(updateInfo)
 {  
-    console.log("attempting to submit feedback for exam ID " + _eid);
     //console.log(JSON.stringify(updateInfo));
     /* try to insert the valid question into database */
     var xhr = new XMLHttpRequest();
@@ -187,5 +177,35 @@ function submitFeedback(updateInfo)
         }
     };
 
-    xhr.send("data=exams&id=" + _eid + "&content=" + JSON.stringify(updateInfo)); //send the JSON
+    xhr.send("data=submit&id=" + _eid + "&content=" + JSON.stringify(updateInfo)); //send the JSON
+}
+
+/* credit: https://sumtips.com/snippets/javascript/tab-in-textarea/#js */
+function insertTab(o, e)
+{		
+	var kC = e.keyCode ? e.keyCode : e.charCode ? e.charCode : e.which;
+	if (kC == 9 && !e.shiftKey && !e.ctrlKey && !e.altKey)
+	{
+		var oS = o.scrollTop;
+		if (o.setSelectionRange)
+		{
+			var sS = o.selectionStart;	
+			var sE = o.selectionEnd;
+			o.value = o.value.substring(0, sS) + "\t" + o.value.substr(sE);
+			o.setSelectionRange(sS + 1, sS + 1);
+			o.focus();
+		}
+		else if (o.createTextRange)
+		{
+			document.selection.createRange().text = "\t";
+			e.returnValue = false;
+		}
+		o.scrollTop = oS;
+		if (e.preventDefault)
+		{
+			e.preventDefault();
+		}
+		return false;
+	}
+	return true;
 }

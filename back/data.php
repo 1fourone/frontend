@@ -25,9 +25,9 @@
             while(($c = $result->fetch_assoc()) != NULL)
                 array_push($classList, (object)$c);
 
-            $examList = array();
             $sql = sprintf("SELECT DISTINCT e.id, e.name, e.date, e.status, c.course, c.section FROM EXAM e, CLASS c WHERE e.sid='%s' AND c.id=e.cid;", $_GET['student']);
             $result = $conn->query($sql);
+            $examList = array();
             while(($e = $result->fetch_assoc()) != NULL)
                 array_push($examList, (object)$e);
 
@@ -59,9 +59,11 @@
         {
             /* inserting a question to bank */
             $question = json_decode($_POST['question']);
-            $sql = sprintf("INSERT INTO QUESTION(id, prompt, functionSignature, difficulty, topic, creatorID, firstTestCase, firstOutput, secondTestCase, secondOutput) VALUES(UUID(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",
+            $timestamp = time();
+            $sql = sprintf("INSERT INTO QUESTION(id, prompt, functionSignature, difficulty, topic, creatorID, firstTestCase, firstOutput, secondTestCase, secondOutput, creationDate) VALUES(UUID(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",
                 $question->{'prompt'}, $question->{'functionSignature'}, $question->{'difficulty'}, $question->{'topic'}, $question->{'creatorID'}, $question->{'firstTestCase'}, 
-                $question->{'firstOutput'}, $question->{'secondTestCase'}, $question->{'secondOutput'});
+                $question->{'firstOutput'}, $question->{'secondTestCase'}, $question->{'secondOutput'}, $timestamp);
+            //var_dump($sql);
             $result = $conn->query($sql);
             echo ($result === false) ? "failure" : "success";
         }
@@ -97,6 +99,7 @@
                 
             $result = $conn->query("SELECT UUID();");
             $examID = $result->fetch_row()[0];
+            $timestamp = time();
 
             /* TRANSACTION - insert each question to all members in class */
             $conn->autocommit(FALSE);
@@ -107,8 +110,8 @@
             {
                 for($j = 0; $j < count($students); $j++)
                 {
-                    $sql = sprintf("INSERT INTO EXAM(id, name, qid, sid, cid, status, maxPoints) VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s');",
-                    $examID, $examList[$i]->{'name'}, $examList[$i]->{'id'}, $students[$j]['id'], $examList[$i]->{'cid'}, 4, $examList[$i]->{'maxPoints'});
+                    $sql = sprintf("INSERT INTO EXAM(id, name, qid, sid, cid, status, maxPoints, date) VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",
+                    $examID, $examList[$i]->{'name'}, $examList[$i]->{'id'}, $students[$j]['id'], $examList[$i]->{'cid'}, 4, $examList[$i]->{'maxPoints'}, $timestamp);
                     //var_dump($sql);
                     $conn->query($sql);
                 }
@@ -215,6 +218,41 @@
         while(($e = $result->fetch_assoc()) != NULL)
             array_push($examContents, (object)$e);
         echo json_encode($examContents);
+    }
+    else if($data == "take")
+    {
+        /* requesting specific exam info for a particular exam for review */
+        $sql = sprintf("SELECT e.name, e.qid, e.sid, q.prompt FROM EXAM e, QUESTION q WHERE e.qid=q.id AND e.id=%s AND e.sid='%s'", $_GET['content'], $_GET['id']);
+        //var_dump($sql);
+        $result = $conn->query($sql);
+        $questionContents = array();
+        while(($q = $result->fetch_assoc()) != NULL)
+            array_push($questionContents, (object)$q);
+        echo json_encode($questionContents);
+        
+    }
+    else if($data == "submit")
+    {
+        /* student submits exam */
+        /* UPDATE each question from content with their submission, and set the status to awaiting grading (3) */
+        $examID = $_POST['id'];
+        $content = json_decode($_POST['content']);
+
+        /* BEGIN TRANSACTION */
+        $conn->autocommit(FALSE);
+        $conn->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
+        //var_dump($content);
+        foreach ($content as $entry) {
+            //var_dump($entry);
+            $sql = sprintf("UPDATE EXAM SET status=3, submissionText='%s' WHERE id=%s AND qid='%s' AND sid='%s'",
+            json_encode($entry->{'submissionText'}), $_POST['id'], $entry->{'qid'}, $entry->{'sid'});
+            $conn->query($sql);
+            //var_dump($sql);
+        }
+
+        $result = $conn->commit();
+        echo ($result === true) ? "success" : "failure";
     }
 
     curl_close($ch);

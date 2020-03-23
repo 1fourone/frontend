@@ -29,6 +29,7 @@ function getPageRenderData()
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) 
         {
             /* Received the HomeInfo array */
+            //console.log(this.responseText);
             homeInfo = JSON.parse(this.responseText);
             renderPageElement('classes');
             renderPageElement('exams');
@@ -140,6 +141,7 @@ function evaluateStudentChoice()
         {
             console.log("You are now taking exam " + activeExamID);
             setCookie("activeTakeExam", activeExamID, 1);
+            window.location.href = 'exam.html';
             //@TODO: set cookies, redirect to take exam
         }
     }

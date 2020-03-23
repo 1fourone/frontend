@@ -5,7 +5,7 @@
 # Once satisfied with changes, should put appropriate files in AFS.
 # Moves all files on every change
 
-for f in ./*; do
+for f in ./front/ ./back ./mid; do
     if [[ $f != *.sh ]]
     then
         scp -r $f pi@1fourone.io:/var/www/html/webgrader

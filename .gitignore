@@ -6,3 +6,4 @@ test/
 
 # Ignore tmp doc files
 docs/visuals/*.*~
+docs/
