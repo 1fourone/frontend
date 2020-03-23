@@ -205,6 +205,17 @@
         $result = $conn->query($sql);
         echo ($result === true) ? "success" : "failure";
     }
+    else if($data == "review")
+    {
+        /* requesting specific exam info for a particular exam for student review */
+        $sql = sprintf("SELECT e.name, e.qid, e.sid, q.prompt, e.submissionText, e.autoFeedback, e.instructorFeedback, e.maxPoints, e.pointsReceived FROM EXAM e, QUESTION q WHERE e.qid = q.id AND e.id = %s AND e.sid='%s'", $_GET['content'], $_GET['id']);
+        //echo $sql;
+        $result = $conn->query($sql);
+        $examContents = array();
+        while(($e = $result->fetch_assoc()) != NULL)
+            array_push($examContents, (object)$e);
+        echo json_encode($examContents);
+    }
 
     curl_close($ch);
 ?>

@@ -1,0 +1,54 @@
+/* The website header */
+
+#header-name {
+    float: right;
+}
+
+#header-brand {
+    font-size: 3em;
+}
+
+#header-logout button {
+    float: right;
+    margin-top: -30px;
+}
+
+/* Webpage specific info */
+#title {
+    text-align: center;
+}
+
+.flexbox {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid red;
+    width: 50%;
+    margin: auto;
+}
+
+.flexbox > button {
+    font-size: 1em;
+    border: 1px solid blue;
+    text-align: center;
+    padding: 0.5em;
+}
+
+textbox {
+    display:block;
+}
+
+.visual-question {
+    border: 1px solid orange;
+}
+
+#submit {
+    display: block;
+    margin: auto;
+    font-size: 2em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+#error-label {
+    text-align: center;
+}

@@ -154,6 +154,16 @@
         else
             echo $output;
     }
+    else if($data == "review")
+    {
+        /* requesting specific exam info for a particular exam for review */
+        curl_setopt($ch, CURLOPT_URL, $base_url . "data=review&id=" . $_GET['id'] . "&content=" . $_GET['content']);
+        $output = curl_exec($ch);
+        if($output === false)
+            echo "Curl error: " . curl_error($ch);
+        else
+            echo $output;
+    }
 
     curl_close($ch);
 ?>

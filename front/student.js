@@ -139,12 +139,15 @@ function evaluateStudentChoice()
         if(confirm("You are about to visit an active exam.\nYou cannot leave/resume an active exam once you've opened it, so be sure that you're ready.\n\nAre you ready?"))
         {
             console.log("You are now taking exam " + activeExamID);
+            setCookie("activeTakeExam", activeExamID, 1);
             //@TODO: set cookies, redirect to take exam
         }
     }
     else
     {
         console.log("You are now reviewing exam " + activeExamID);
+        setCookie("activeReviewExam", activeExamID, 1);
+        window.location.href = 'result.html';
         //@TODO: set cookies, redirect to review exam
     }
 }
