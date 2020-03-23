@@ -89,11 +89,11 @@ CREATE TABLE `webgrader`.`EXAM` (
     `cid` CHAR(36) NOT NULL,
     `status` TINYINT NOT NULL,
     `date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `maxPoints` TINYINT NOT NULL,
+    `maxPoints` FLOAT NOT NULL,
     `submissionText` VARCHAR(512) DEFAULT NULL,
     `autoFeedback` VARCHAR(256) DEFAULT NULL,
     `instructorFeedback` VARCHAR(256) DEFAULT NULL,
-    `pointsReceived` TINYINT DEFAULT NULL,
+    `pointsReceived` FLOAT DEFAULT NULL,
 
     PRIMARY KEY(`id`, `qid`, `sid`),
     FOREIGN KEY(`qid`)

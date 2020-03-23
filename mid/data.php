@@ -117,6 +117,43 @@
             }
         }
     }
+    else if($data == "exams")
+    {
+        if(!empty($_GET['id']))
+        {
+            /* requesting all the exam info for a particular exam for review */
+            curl_setopt($ch, CURLOPT_URL, $base_url . "data=exams&id=" . $_GET['id']);
+            $output = curl_exec($ch);
+            if($output === false)
+                echo "Curl error: " . curl_error($ch);
+            else
+                echo $output;
+        }
+        else if(!empty($_POST['id']))
+        {
+            /* updating all exams based on professor feedback */
+            curl_setopt($ch, CURLOPT_URL, $base_url);
+            curl_setopt($ch, CURLOPT_POST, TRUE);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, "data=exams&id=" . $_POST['id'] . "&content=" . $_POST['content']);
+            $output = curl_exec($ch);
+            if($output === false)
+                echo "Curl error: " . curl_error($ch);
+            else
+                echo $output;
+        }
+    }
+    else if($data == "release")
+    {
+        /* updating all exams to be released */
+        curl_setopt($ch, CURLOPT_URL, $base_url);
+        curl_setopt($ch, CURLOPT_POST, TRUE);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "data=release&id=" . $_POST['id']);
+        $output = curl_exec($ch);
+        if($output === false)
+            echo "Curl error: " . curl_error($ch);
+        else
+            echo $output;
+    }
 
     curl_close($ch);
 ?>

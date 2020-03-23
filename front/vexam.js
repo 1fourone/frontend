@@ -41,32 +41,85 @@ function getPageRenderData()
 /* begin autograding */
 function beginAutograde()
 {
-    /*  send a POST request to mid to start grading
-        mid will have to get eid's data it needs from back,
-        manipulate it, and then send it back to back for update
-        back updates and returns a result which if successful
-        means mid passes back the grader */
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", 'data.php', true);
-    
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); //We're sending JSON data in a string
-        xhr.onreadystatechange = function() 
+    if(examInfo['status'] < 3)
+        document.getElementById("error-label").innerHTML = "This exam has already been autograded.";
+    else
+    {
+        if(examInfo['status'] == 4)
+            var r = confirm("Some students haven't submitted their work. Autograding now will treat their submissions as non-existent.\nDo you want to continue?");
+        if(r == true || examInfo['status'] == 3)
         {
-            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) 
+            /*  send a POST request to mid to start grading
+            mid will have to get eid's data it needs from back,
+            manipulate it, and then send it back to back for update
+            back updates and returns a result which if successful
+            means mid passes back the grader */
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", 'data.php', true);
+
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); //We're sending JSON data in a string
+            xhr.onreadystatechange = function() 
             {
-                console.log(this.responseText);
-                if(this.responseText === "success")
-                    window.location.href = 'instructor.html';
-                else
-                    document.getElementById("error-label").innerHTML = "All exams have already been autograded. Try giving some feedback instead!";
-            }
-        };
+                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) 
+                {
+                    console.log(this.responseText);
+                    if(this.responseText === "success")
+                        window.location.href = 'instructor.html';
+                    else
+                        document.getElementById("error-label").innerHTML = "All exams have already been autograded. Try giving some feedback instead!";
+                }
+            };
+
+            xhr.send("data=autograde&id=" + _eid); //send the JSON
+        }
+    }
     
-        xhr.send("data=autograde&id=" + _eid); //send the JSON
 }
 
 /* review a previously released exam */
 function reviewExam(index)
 {
     console.log("This functionality isn't implemented yet!");
+}
+
+
+function releaseScores()
+{
+    if(examInfo['status'] > 1)
+        document.getElementById("error-label").innerHTML = "This exam has not received feedback yet.";
+    else if(examInfo['status'] < 1)
+        document.getElementById("error-label").innerHTML = "This exam has already been released.";
+    else
+    {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", 'data.php', true);
+
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); //We're sending JSON data in a string
+        xhr.onreadystatechange = function() 
+        {
+            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) 
+            {
+                console.log(this.responseText);
+                if(this.responseText == 'success')
+                    window.location.href = 'instructor.html';
+                else
+                    document.getElementById("error-label").innerHTML = "There was an error releasing the results.";
+            }
+        };
+
+        xhr.send("data=release&id=" + _eid); //send the JSON
+    }
+}
+
+/* begin feedback */
+function beginFeedback()
+{
+    if(examInfo['status'] > 2)
+        document.getElementById("error-label").innerHTML = "This exam has not been autograded yet.";
+    else if(examInfo['status'] < 2)
+        document.getElementById("error-label").innerHTML = "This exam has already received feedback.";
+    else
+    {
+        window.location.href = 'efeedback.html';
+    }
 }

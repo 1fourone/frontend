@@ -70,8 +70,12 @@ function renderPageElement(type)
         }
         else 
         {
-            let examList = homeInfo[1].filter(exam => exam['course'] == homeInfo[0][activeClassID]['course'] && exam['section'] == homeInfo[0][activeClassID]['section']).filter(exam => exam['status'] == activeExamType);
-        
+            var examList;
+            if(activeExamType != 1)
+                examList = homeInfo[1].filter(exam => exam['course'] == homeInfo[0][activeClassID]['course'] && exam['section'] == homeInfo[0][activeClassID]['section']).filter(exam => exam['status'] == activeExamType);
+            else 
+                examList = homeInfo[1].filter(exam => exam['course'] == homeInfo[0][activeClassID]['course'] && exam['section'] == homeInfo[0][activeClassID]['section']).filter(exam => exam['status'] == 1 || exam['status'] == 2 || exam['status'] == 3);
+            
             if(examList.length == 0)
             {
                 errorLabel.innerHTML = "You have no exams of this type.";
@@ -112,6 +116,7 @@ function setActiveClassID(index)
 /* setActiveExamType - sets the variable once an element is clicked on the left flexbox */
 function setActiveExamType(status)
 {
+    activeExamID = -1;
     activeExamType = status;
     renderPageElement("exams");
 }
@@ -125,9 +130,11 @@ function setActiveExamID(index)
 /* evaluateStudentChoice - called when the student clicks on Go To Exam button */
 function evaluateStudentChoice()
 {
-    if(activeExamType == 1)
+    if(activeExamID == -1)
+        document.getElementById("error-label").innerHTML = "Please select a valid exam first."
+    else if(activeExamType == 1)
         console.log("You cannot access that exam until it is released by your instructor.");
-    else if(activeExamType == 3)
+    else if(activeExamType == 4)
     {
         if(confirm("You are about to visit an active exam.\nYou cannot leave/resume an active exam once you've opened it, so be sure that you're ready.\n\nAre you ready?"))
         {

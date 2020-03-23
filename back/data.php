@@ -108,7 +108,7 @@
                 for($j = 0; $j < count($students); $j++)
                 {
                     $sql = sprintf("INSERT INTO EXAM(id, name, qid, sid, cid, status, maxPoints) VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s');",
-                    $examID, $examList[$i]->{'name'}, $examList[$i]->{'id'}, $students[$j]['id'], $examList[$i]->{'cid'}, 3, $examList[$i]->{'maxPoints'});
+                    $examID, $examList[$i]->{'name'}, $examList[$i]->{'id'}, $students[$j]['id'], $examList[$i]->{'cid'}, 4, $examList[$i]->{'maxPoints'});
                     //var_dump($sql);
                     $conn->query($sql);
                 }
@@ -120,7 +120,7 @@
         else if(!empty($_GET['id']))
         {
             /* getting an exam's info */
-            $sql = sprintf("SELECT DISTINCT e.name, c.course, c.section FROM EXAM e, CLASS c WHERE e.cid =c.id AND e.id='%s';", $_GET['id']);
+            $sql = sprintf("SELECT DISTINCT e.name, c.course, c.section, e.status FROM EXAM e, CLASS c WHERE e.cid =c.id AND e.id='%s';", $_GET['id']);
             $result = $conn->query($sql); 
             $examInfo = $result->fetch_assoc();
             echo json_encode((object)$examInfo);
@@ -156,7 +156,7 @@
                 $pointsLost = array_sum($entry->{'autoFeedback'}->{'pointsLost'});
                 //var_dump($entry->{'autoFeedback'}->{'pointsLost'});
                 //var_dump($pointsLost);
-                $sql = sprintf("UPDATE EXAM SET status=1, autoFeedback='%s', pointsReceived='%s' WHERE id='%s' AND qid='%s' AND sid='%s'",
+                $sql = sprintf("UPDATE EXAM SET status=2, autoFeedback='%s', pointsReceived='%s' WHERE id='%s' AND qid='%s' AND sid='%s'",
                 json_encode($entry->{'autoFeedback'}), $entry->{'maxPoints'} - $pointsLost, $examID, $entry->{'qid'}, $entry->{'sid'});
                 //var_dump($sql);
                 $conn->query($sql);
@@ -165,6 +165,45 @@
             $result = $conn->commit();
             echo ($result === true) ? "success" : "failure";
         }
+    }
+    else if($data == "exams")
+    {
+        if(!empty($_GET['id']))
+        {
+            /* requesting all the exam info for a particular exam for review */
+            $sql = sprintf("SELECT e.name, e.qid, e.sid, q.prompt, e.submissionText, e.autoFeedback, e.maxPoints, e.pointsReceived FROM EXAM e, QUESTION q WHERE e.qid = q.id AND e.id = '%s'", $_GET['id']);
+            $examData = array();
+            $result = $conn->query($sql);
+            while(($e = $result->fetch_assoc()) != NULL)
+                array_push($examData, (object)$e);
+            echo json_encode($examData);
+        }
+        else if(!empty($_POST['id']))
+        {
+            /* updating all exams based on professor feedback */
+            $submissions = json_decode($_POST['content']);
+            //var_dump($submissions);
+            //$submissions[i]->{'field'}
+
+            /* BEGIN TRANSACTION */
+            $conn->autocommit(FALSE);
+            $conn->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
+            foreach ($submissions as $s) {
+                $sql = sprintf("UPDATE EXAM SET status=1, instructorFeedback='%s', pointsReceived='%s' WHERE id='%s' AND qid='%s' AND sid='%s'",
+                json_encode($s->{'instructorFeedback'}), $s->{'pointsReceived'}, $_POST['id'], $s->{'qid'}, $s->{'sid'});
+                $conn->query($sql);
+            }
+            
+            $result = $conn->commit();
+            echo ($result === true) ? "success" : "failure";
+        }
+    }
+    else if($data == "release")
+    {
+        $sql = sprintf("UPDATE EXAM SET status='0' WHERE id='%s'", $_POST['id']);
+        $result = $conn->query($sql);
+        echo ($result === true) ? "success" : "failure";
     }
 
     curl_close($ch);
