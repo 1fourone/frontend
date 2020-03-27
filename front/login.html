@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebQuiz Login</title>
+    <link rel="stylesheet" href="login.css">
+    <script src="utils.js"></script>
+    <script src="login.js"></script>
+</head>
+<body>
+    <!-- Place holder for header -->
+    <header id="header">
+        <div id="header-name"></div>
+        <div id="header-brand"></div>
+        <div id="header-logout"></div>
+    </header>
+
+    <div id="content">
+        <h1 id="title">Login</h1>
+        <p id="error-label">The credentials you supplied were invalid. Try again!</p>
+        <div id="input-box">
+            <label for="uname">Username</label>
+            <input type="text" name="uname" id="uname" class="text-input"/>
+            
+            <label for="pw">Password</label>
+            <input type="password" name="pw" id="pw" class="text-input" />
+            <input type="submit" id="submit" value="LOGIN" onclick="attemptLogin();" />
+        </div>
+    </div>
+</body>
+</html>

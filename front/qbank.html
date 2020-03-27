@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebQuiz Question Bank</title>
+    <link rel="stylesheet" href="qbank.css">
+    <script src="utils.js"></script>
+    <script src="qbank.js"></script>
+</head>
+<body>
+    <!-- Place holder for header -->
+    <header id="header">
+        <div id="header-name"></div>
+        <div id="header-brand"></div>
+        <div id="header-logout"></div>
+    </header>
+
+    <div id="content">
+        <div id="upper">
+            <h1 id="title">Question Bank</h1>
+        </div>
+        
+        <!-- no filtering/sorting for now -->
+    
+        <div id="question-list-box" class="flexbox" ondrop="checkDrop(event);"></div>
+        
+    </div>
+</body>
+</html>

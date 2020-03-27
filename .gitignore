@@ -1,0 +1,9 @@
+# Ignore krita files for visual representations
+/docs/visuals/*.kra*
+
+# Ignore testing folder
+test/
+
+# Ignore tmp doc files
+docs/visuals/*.*~
+docs/

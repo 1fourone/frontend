@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebQuiz Instructor Home</title>
+    <link rel="stylesheet" href="instructor.css">
+    <script src="utils.js"></script>
+    <script src="instructor.js"></script>
+</head>
+<body>
+    <!-- Place holder for header -->
+    <header id="header">
+        <div id="header-name"></div>
+        <div id="header-brand"></div>
+        <div id="header-logout"></div>
+    </header>
+
+    <div id="content">
+        <div id="upper">
+            <h1 id="title">Instructor Home</h1>
+        </div>
+        
+        <div id="instructor-action" class="flexbox">
+            <button id="qadd" onclick="window.location.href='qadd.html'">ADD QUESTION</button>
+            <button id="qview" onclick="window.location.href='qbank.html'">VIEW BANK</button>
+            <button id="eadd" onclick="window.location.href='cexam.html'">CREATE EXAM</button>
+            <button id="eview" onclick="document.getElementById('exam-section').style.visibility = 'visible';">VIEW EXAM</button>
+        </div>
+
+        <div id="exam-section">
+            <div id="class-list">
+                <p id="error-label"></p>
+                <label for="class">Select a class</label>
+                <select name="class" id="class-select">
+                    <option value="none" onclick="setActiveClassID(-1);">None</option>
+                </select>
+            </div>
+            
+    
+            <div id="exam-list-box" class="flexbox"></div>
+        </div>
+        
+    </div>
+</body>
+</html>

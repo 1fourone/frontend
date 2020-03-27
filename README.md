@@ -1,89 +1,30 @@
-# CS490 Project - Frontend
+## README
 
-The frontend to our (unnamed as of right now) CS490 project.
+#### Description
+Beta release for WebQuiz, an online testing solution. 
+This version supports the following features:
+- [Identification for Student/Instructor](docs/identification.md)
+- [Student Home Page](docs/student_home.md)
+- [Instructor Home Page](docs/instructor_home.md)
+- [Viewing the Question Bank](docs/view_bank.md)
+- [Adding to the Question Bank](docs/add_bank.md)
+- [Creating an Exam](docs/create_exam.md)
+- [Taking an Exam](docs/take_exam.md)
+- [Grading an Exam](docs/grade_exam.md)
+- [Reviewing an Exam Result](docs/review_exam.md)
 
-### Architecture
-![architecture](490_architecture.png "Architecture")
 
+#### Endpoints
+- `Front End` - responsible for handling the views (and logic) displayed to the user.
+- `Middle End` - responsible for communicating information between Front and Back, and grading exams automatically.
+- `Back End` - responsible for fetching and storing data from the database.
 
-### Layout
-Each php script can be either a `sender+receiver` or a `receiver`.
+#### Cookies
+Cookies are used on the site to maintain information between webpages.
+Here's a list of the cookies that are used:
 
-A `sender+receiver` is a php script which will use `cURL` to "send" some data to another script and will have some data "returned" to it by the script they called. Front and Mid both belong to this category.
-
-A `receiver` is a php script that doesn't use `cURL` to communicate to another script: it simply gets passed some data from another script, performs some logic on it, and returns some data to the script that called it. Back belongs to this category.
-
-#### Sender-receiver code skeleton
-```php
-<?php
-    //receives data from calling script/document via $_POST
-    $v = $_POST['credentials'];
-
-    //performs some optional initial logic with the data
-    //i.e hashing, etc.
-
-    //Sends data to "next in chain" script
-    $ch = curl_init();
-    
-    //@TODO: update with correct "following" php path
-    curl_setopt($ch, CURLOPT_URL, "the_php_target.php"); 
-    curl_setopt($ch, CURLOPT_POST, TRUE);
-    //$v may have been modified - it's the data you send to the next script
-    curl_setopt($ch, CURLOPT_POSTFIELDS, "credentials=" . $v);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-
-    //Get the result from the execution (what the "NiC" script will return)
-    $output = curl_exec($ch);
-    if($output === false)
-        echo 'Curl error: ' . curl_error($ch);
-    else {
-        //If no errors, (optionally modify/apply logic) and return data to the script that called you
-        echo $output;
-    }
-    
-    curl_close($ch);
-?>
-```
-
-#### Receiver code skeleton
-```php
-<?php
-    //receives data from calling script/document via $_POST
-    $v = $_POST['credentials'];
-
-    //performs some optional initial logic with the data
-    //i.e hashing, etc.
-
-    //DOES NOT CALL CURL - it is the "last in line"
-    //Simply returns what it wants to pass onto its caller
-    $output = '{"njit":"", "local":"false"}';
-    echo $output
-?>
-```
-
-#### Specific Chain of Events
-1. Front reads input from HTML, passes a `Credentials` JSON object to `front.php` with username and plaintext password.
-2. `front.php` gets this `Credentials` and passes it onto Middle in `mid.php`.
-3. Middle gets this `Credentials` and performs spoof logic to NJIT with them and keeps track of the outcome. 
-4. While doing #3, it makes an extra copy of `Credentials`, and replaces the plaintext password with a hashed one (via php's `hash()`). Middle sends this "hashed" `Credentials` object and passes it onto Back in `back.php`.
-5. Back gets this "hashed" `Credentials` and compares the hashed password to the hashed password on the DB. Based on the result, Back prepares a partially complete `Result` JSON object (with only the local result) and returns it.
-6. Middle gets this returned `Result`, and completes the `Result` by adding the outcome of the NJIT spoof. It returns this complete `Result`.
-7. Frontend receives this `Result`, and returns it.
-8. Within JS, a function is called to update the view on the browser based on the `Result`.
-
-### Data
-Will send a `Credentials` JSON object to Middle.
-```json
-{
-    "user": user_name,
-    "password": their_hashed_password
-}
-```
-
-Expects a `Result` JSON object from Middle.
-```json 
-{
-    "njit" : "success",
-    "local" : "failure"
-}
-```
+**userType**, active until log out/close window across entire site.
+**dbID**, active until log out/close window across entire site.
+**userName**, active until log out/close window across entire site.
+**activeReviewExam**, active until log out/close window/leave exam review across entire site.
+**activeClassID**, active until log out/close window/return to home page.
