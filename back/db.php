@@ -1,9 +1,9 @@
 <?php
 
-    $dbServer = "1fourone.io";
-    $dbUser = "webster";
-    $dbPass = "490project";
-    $dbName = "webgrader";
+    $dbServer = "sql1.njit.edu";
+    $dbUser = "spp34";
+    $dbPass = "Discovery05!";
+    $dbName = "spp34";
 
     $handle = mysqli_connect($dbServer, $dbUser, $dbPass, $dbName);
     if(!$handle)
