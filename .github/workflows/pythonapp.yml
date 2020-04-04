@@ -33,6 +33,6 @@ jobs:
     - name: Test with pytest
       run: |
         docker-compose up --build -d
-        pip install pytest
+        pip install pytest requests
         cd mid/
         pytest
