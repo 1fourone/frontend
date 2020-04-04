@@ -28,7 +28,7 @@
     */
     function evaluateQuestion($q) {
         populateSubmissionFile($q);
-        $output = explode("\n", shell_exec("/usr/bin/python /tmp/submission.py 2>&1 "));
+        $output = explode("\n", shell_exec("python3.8 /tmp/submission.py 2>&1 "));
         $result = (object)[];
 
         /* Populate the graderQuestionOutput here */
