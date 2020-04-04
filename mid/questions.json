@@ -1,0 +1,27 @@
+{
+    "questions": [
+        {
+            "name": "String last char v1",
+            "data": {
+                "prompt": "Write a function named lastChar that takes parameter s gets the last character of s and prints the result",
+                "functionName": "lastChar",
+                "parameters": ["s"],
+                "constraint": "print",
+                "studentInput": "def lastChar(s):\n\tprint 2",
+                "testCases": [
+                    ["'hello'", "'o'"],
+                    ["'samba'", "'a'"],
+                    ["'123'", "'3'"]
+                ],
+                "expectedOutput": {
+                    "name": 0,
+                    "constraint": 0,
+                    "colon": 0,
+                    "tests": [
+                        1, 1, 1
+                    ]
+                }
+            }
+        }
+    ]
+}
