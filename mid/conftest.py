@@ -11,7 +11,7 @@ def getQuestions(fileName):
 def pytest_generate_tests(metafunc):
     if "q" in metafunc.fixturenames:
         questions = getQuestions('questions.json')
-        names = {questions[i]['name'] for i in range(len(questions))}
+        names = [questions[i]['name'] for i in range(len(questions))]
         metafunc.parametrize("q", questions, ids=names)
 
 '''
