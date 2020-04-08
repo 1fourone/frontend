@@ -7,3 +7,7 @@ test/
 # Ignore tmp doc files
 docs/visuals/*.*~
 docs/
+
+# Ignore the python cache files
+.pytest_cache/
+mid/__pycache__/

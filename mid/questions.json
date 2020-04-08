@@ -1,0 +1,77 @@
+{
+    "questions": [
+        {
+            "name": "String last char v1",
+            "data": {
+                "prompt": "Write a function named lastChar that takes parameter s gets the last character of s and prints the result",
+                "functionName": "lastChar",
+                "parameters": ["s"],
+                "constraint": "print",
+                "studentInput": "def%20lastChar%28s%29%3A%5Cn%5Ctprint%202",
+                "testCases": [
+                    ["\"hello\"", "\"o\""],
+                    ["'samba'", "'a'"],
+                    ["\"123\"", "\"3\""]
+                ],
+                "expectedOutput": {
+                    "name": 0,
+                    "constraint": 0,
+                    "colon": 0,
+                    "tests": [
+                        1, 1, 1
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Array add v1",
+            "data": {
+                "prompt": "Write a function named arrAdd that takes parameter a gets the total value of all elements added and returns the result",
+                "functionName": "arrAdd",
+                "parameters": ["a"],
+                "constraint": "for",
+                "studentInput": "def%20arrAdd%28a%29%3A%5Cn%5Cttotal%20%3D%200%5Cn%5Ctfor%20el%20in%20a%3A%5Cn%5Ct%5Cttotal%20%2B%3D%20el%5Cn%5Ctreturn%20total",
+                "testCases": [
+                    ["[1, 2, 3]", "6"],
+                    ["[-1, -2, -3]", "-6"],
+                    ["[0, 0, 0, 0, 0, 0, 0]", "0"],
+                    ["[1]", "1"]
+                ],
+                "expectedOutput": {
+                    "name": 0,
+                    "constraint": 0,
+                    "colon": 0,
+                    "tests": [
+                        0, 0, 0, 0
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Tuple Grow v1",
+            "data": {
+                "prompt": "Write a function named tupleGrow that takes parameter t doubles every element in the t and returns the result",
+                "functionName": "tupleGrow",
+                "parameters": ["t"],
+                "constraint": "print",
+                "studentInput": "def%20tupleGrow%28t%29%3A%5Cn%5Cttuple%20%3D%20%28t%5B0%5D%20%2a%202%2C%20t%5B1%5D%20%2a%202%29%5Cn%5Ctprint%28tuple%29",
+                "testCases": [
+                    ["(1, 2)", "(2, 4)"],
+                    ["(-1, -2)", "(-2, -4)"],
+                    ["(0, 0)", "(0, 0)"],
+                    ["(12, 10)", "(24, 20)"],
+                    ["(-1, 1)", "(-2, 2)"],
+                    ["(4, 4)", "(8, 8)"]
+                ],
+                "expectedOutput": {
+                    "name": 0,
+                    "constraint": 0,
+                    "colon": 0,
+                    "tests": [
+                        0, 0, 0, 0, 0, 0
+                    ]
+                }
+            }
+        }
+    ]
+}
