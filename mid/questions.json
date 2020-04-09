@@ -9,9 +9,9 @@
                 "constraint": "print",
                 "studentInput": "def%20lastChar%28s%29%3A%5Cn%5Ctprint%202",
                 "testCases": [
-                    ["\"hello\"", "\"o\""],
-                    ["'samba'", "'a'"],
-                    ["\"123\"", "\"3\""]
+                    ["\"hello\"", "o"],
+                    ["'samba'", "a"],
+                    ["\"123\"", "3"]
                 ],
                 "expectedOutput": {
                     "name": 0,
@@ -72,6 +72,29 @@
                     ]
                 }
             }
+        },
+        {
+            "name": "String test v2",
+            "data": {
+                "prompt": "Write a function named repeat that takes parameter s as a string and prints the result",
+                "functionName": "repeat",
+                "parameters": ["t"],
+                "constraint": "print",
+                "studentInput": "def%20repeat%28s%29%3A%5Cn%5Ctprint%28s%29",
+                "testCases": [
+                    ["'hi'", "hi"],
+                    ["\"foo\"", "foo"]
+                ],
+                "expectedOutput": {
+                    "name": 0,
+                    "constraint": 0,
+                    "colon": 0,
+                    "tests": [
+                        0, 0
+                    ]
+                }
+            }
         }
+        
     ]
 }
