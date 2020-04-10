@@ -20,3 +20,11 @@
 .question {
     margin-bottom: 5px;
 }
+
+.exam-question-points {
+    width: 2em;
+    font-size: 3.125em;
+    height: 2em;
+    text-align: center;
+    margin-top: -5px;
+}
