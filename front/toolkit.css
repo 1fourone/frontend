@@ -1,0 +1,32 @@
+.list-select {
+	border: 2px solid #ccc;
+	border-radius: 3px;
+	width: min-content;
+}
+
+.panel {
+	display: flex;
+}
+
+.panel-item {
+	border: 1px solid red;
+	margin: 5%;
+}
+
+.panel-item:hover {
+	background-color: #bbbbbb;
+}
+
+.panel-item:active {
+	background-color: #eeaaee;
+}
+
+.panel-item img {
+	height: 256px;
+	width: 256px;
+}
+
+.panel-item label {
+	display: block;
+	text-align: center;
+}
