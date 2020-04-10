@@ -63,7 +63,7 @@ ADD FOREIGN KEY (`iid`) REFERENCES `webgrader`.`INSTRUCTOR`(id);
 CREATE TABLE `webgrader`.`QUESTION` (
     `id` CHAR(36) DEFAULT "garbage" NOT NULL,
     `prompt` VARCHAR(128) NOT NULL,
-    `functionSignature` VARCHAR(64) NOT NULL,
+    `functionName` VARCHAR(64) NOT NULL,
     `parameters` VARCHAR(64), NOT NULL,
     `difficulty` TINYINT NOT NULL,
     `topic` VARCHAR(32) NOT NULL,
