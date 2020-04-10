@@ -67,6 +67,7 @@ CREATE TABLE `webgrader`.`QUESTION` (
     `parameters` VARCHAR(64), NOT NULL,
     `difficulty` TINYINT NOT NULL,
     `topic` VARCHAR(32) NOT NULL,
+    `constraint` VARCHAR(32) NOT NULL,
     `creatorID` CHAR(36) NOT NULL,
     `creationDate` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `firstTestCase` VARCHAR(64) NOT NULL,
