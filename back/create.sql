@@ -72,6 +72,14 @@ CREATE TABLE `webgrader`.`QUESTION` (
     `firstOutput` VARCHAR(64) NOT NULL,
     `secondTestCase` VARCHAR(64) NOT NULL,
     `secondOutput` VARCHAR(64) NOT NULL,
+    `thirdTestCase` VARCHAR(64) NULL,
+    `thirdOutput` VARCHAR(64) NULL,
+    `fourthTestCase` VARCHAR(64) NULL,
+    `fourthOutput` VARCHAR(64) NULL,
+    `fifthTestCase` VARCHAR(64) NULL,
+    `fifthOutput` VARCHAR(64) NULL,
+    `sixthTestCase` VARCHAR(64) NULL,
+    `sixthOutput` VARCHAR(64) NULL,
 
     PRIMARY KEY(`id`),
     FOREIGN KEY(`creatorID`)
