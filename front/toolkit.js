@@ -41,10 +41,10 @@ function createSearchBox(name) {
     /* access the word list on search box by <elem>.value.split(" ") */
 }
 
-function createSubmissionButton(text, source) {
+function createSubmissionButton(text) {
     var el = document.createElement("button");
     el.setAttribute("id", "submit");
-    el.setAttribute("onclick", "submit('" + source + "');");
+    el.setAttribute("onclick", "submit();");
     el.innerHTML = text;
     
     var referenceNode = document.getElementById("placeholder");
@@ -62,7 +62,8 @@ function createPanel(name, content=[], labels=[]) {
         var tmp = createPanelItem(name, i, content[i], labels[i]);
         el.appendChild(tmp);
     }
-    document.getElementById("placeholder").appendChild(el);
+    var referenceNode = document.getElementById("placeholder");
+    referenceNode.parentNode.insertBefore(el, referenceNode.nextSibling);
 }
 
 function createPanelItem(name, index, content, label) {
@@ -94,7 +95,14 @@ function createPanelItem(name, index, content, label) {
     return wrapper;
 }
 
-/* TODO: next/previous items */
+function createScrollButton(isLeft) {
+    var el = document.createElement("button");
+    el.innerHTML = (isLeft) ? "🡄" : "🡆";
+    el.setAttribute("onclick", (isLeft) ? "prevItem();" : "nextItem();");
+    var referenceNode = document.getElementById("placeholder");
+    referenceNode.parentNode.insertBefore(el, referenceNode.nextSibling);
+    /* site that uses a scroller is responsible for implementing prevItem() and nextItem() */
+}
 
 function test() {
     /*
