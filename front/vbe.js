@@ -105,6 +105,58 @@ function createExamListVBE(qIDs=[]) {
     referenceNode.parentNode.insertBefore(wrapper, referenceNode.nextSibling);
 }
 
+/* Credit: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent */
+function customEncode(str) {
+    /* encode tabs and newlines */
+    str = str.replace(/\n/g, "\\n");
+    str = str.replace(/\t/g, "\\t");
+
+    return encodeURIComponent(str).replace(/[!'()*]/g, function(c) {
+      return '%' + c.charCodeAt(0).toString(16);
+    });
+}
+
+/* Credit: https://sumtips.com/snippets/javascript/tab-in-textarea/ */
+function allowTabs(o, e) {
+    var kC = e.keyCode ? e.keyCode : e.charCode ? e.charCode : e.which;
+    if (kC == 9 && !e.shiftKey && !e.ctrlKey && !e.altKey) {
+        var oS = o.scrollTop;
+        if (o.setSelectionRange) {
+            var sS = o.selectionStart;	
+            var sE = o.selectionEnd;
+            o.value = o.value.substring(0, sS) + "\t" + o.value.substr(sE);
+            o.setSelectionRange(sS + 1, sS + 1);
+            o.focus();
+        }
+        else if (o.createTextRange) {
+            document.selection.createRange().text = "\t";
+            e.returnValue = false;
+        }
+        o.scrollTop = oS;
+        if (e.preventDefault) {
+            e.preventDefault();
+        }
+        return false;
+    }
+    return true;
+}
+
+function createCodeBoxVBE() {
+    var wrapper = document.createElement("div");
+
+    var ta = document.createElement("textarea");
+    ta.setAttribute("class", "code-box");
+    ta.setAttribute("onkeydown", "allowTabs(this, event);");
+    
+
+    wrapper.appendChild(ta);
+
+    var referenceNode = document.getElementById("placeholder");
+    referenceNode.parentNode.insertBefore(wrapper, referenceNode.nextSibling);
+    /* can get (encoded, ready for JSON) content via
+        customEncode(<el>.value) */
+}
+
 function test(type) {
     const questions = [
         {
@@ -158,6 +210,11 @@ function test(type) {
             for(let i=0; i < questions.length; i++)
                 qIDs.push("q-" + i);
             createExamListVBE(qIDs);
+        case 3:
+            createCodeBoxVBE();
+        case 4:
+            console.log(customEncode(document.getElementsByClassName("code-box")[0].value));
+            console.log(JSON.stringify(customEncode(document.getElementsByClassName("code-box")[0].value)));
         default:
             break;
     }
