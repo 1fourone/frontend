@@ -50,17 +50,20 @@
         /* Evaluate test cases/output */
         $testResults = array();
         $numOfTests = count($q->{'expectedOutput'}->{'tests'});
+        $maxPoints = $q->{'maxPoints'};
+        $conditions = 3 + count($q->{'expectedOutput'}->{'tests'});
+        $takeOffPoints = floor(($maxPoints/$conditions));
 
         if($errorFound == true) {
             for($i = 0; $i < $numOfTests; $i++)
-                array_push($testResults, 1);
+                array_push($testResults, $takeOffPoints);
         }
         else {
             //check tests
             for($i = 0 ; $i < $numOfTests; $i++) {
                 $trueLine = ($q->{'constraintName'} == "print") ? 2 * $i : $i;
                 if($outputLines[$trueLine] != $q->{'testCases'}[$i][1])
-                    array_push($testResults, 1);
+                    array_push($testResults, $takeOffPoints);
                 else
                     array_push($testResults, 0);
             }
@@ -68,19 +71,19 @@
         $result->{'tests'} = $testResults;
 
         /* Evaluate remaining criteria */
-        if(!strstr($q->{'studentInput'}, $q->{'functionName'}))
-            $result->{'name'} = 1;
+        if(!strstr($q->{'studentInput'} . "(", $q->{'functionName'}))
+            $result->{'name'} = $takeOffPoints;
         else 
             $result->{'name'} = 0;
 
         $studentLines = explode("\n", $q->{'studentInput'});
         if($studentLines[0][strlen($studentLines[0])-1] != ":") 
-            $result->{'colon'} = 1;
+            $result->{'colon'} = $takeOffPoints;
         else
             $result->{'colon'} = 0;
 
         if(!strstr($q->{'studentInput'}, $q->{'constraintName'}))
-            $result->{'constraintName'} = 1;
+            $result->{'constraintName'} = $takeOffPoints;
         else
             $result->{'constraintName'} = 0;
 

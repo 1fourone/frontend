@@ -6,7 +6,8 @@
                 "prompt": "Write a function named lastChar that takes parameter s gets the last character of s and prints the result",
                 "functionName": "lastChar",
                 "parameters": ["s"],
-                "constraint": "print",
+                "constraintName": "print",
+                "maxPoints":7,
                 "studentInput": "def%20lastChar%28s%29%3A%5Cn%5Ctprint%202",
                 "testCases": [
                     ["\"hello\"", "o"],
@@ -15,7 +16,7 @@
                 ],
                 "expectedOutput": {
                     "name": 0,
-                    "constraint": 0,
+                    "constraintName": 0,
                     "colon": 0,
                     "tests": [
                         1, 1, 1
@@ -29,7 +30,8 @@
                 "prompt": "Write a function named arrAdd that takes parameter a gets the total value of all elements added and returns the result",
                 "functionName": "arrAdd",
                 "parameters": ["a"],
-                "constraint": "for",
+                "constraintName": "for",
+                "maxPoints":10,
                 "studentInput": "def%20arrAdd%28a%29%3A%5Cn%5Cttotal%20%3D%200%5Cn%5Ctfor%20el%20in%20a%3A%5Cn%5Ct%5Cttotal%20%2B%3D%20el%5Cn%5Ctreturn%20total",
                 "testCases": [
                     ["[1, 2, 3]", "6"],
@@ -39,7 +41,7 @@
                 ],
                 "expectedOutput": {
                     "name": 0,
-                    "constraint": 0,
+                    "constraintName": 0,
                     "colon": 0,
                     "tests": [
                         0, 0, 0, 0
@@ -53,7 +55,8 @@
                 "prompt": "Write a function named tupleGrow that takes parameter t doubles every element in the t and returns the result",
                 "functionName": "tupleGrow",
                 "parameters": ["t"],
-                "constraint": "print",
+                "constraintName": "print",
+                "maxPoints":4,
                 "studentInput": "def%20tupleGrow%28t%29%3A%5Cn%5Cttuple%20%3D%20%28t%5B0%5D%20%2a%202%2C%20t%5B1%5D%20%2a%202%29%5Cn%5Ctprint%28tuple%29",
                 "testCases": [
                     ["(1, 2)", "(2, 4)"],
@@ -65,7 +68,7 @@
                 ],
                 "expectedOutput": {
                     "name": 0,
-                    "constraint": 0,
+                    "constraintName": 0,
                     "colon": 0,
                     "tests": [
                         0, 0, 0, 0, 0, 0
@@ -79,7 +82,8 @@
                 "prompt": "Write a function named repeat that takes parameter s as a string and prints the result",
                 "functionName": "repeat",
                 "parameters": ["t"],
-                "constraint": "print",
+                "constraintName": "print",
+                "maxPoints":11,
                 "studentInput": "def%20repeat%28s%29%3A%5Cn%5Ctprint%28s%29",
                 "testCases": [
                     ["'hi'", "hi"],
@@ -87,14 +91,163 @@
                 ],
                 "expectedOutput": {
                     "name": 0,
-                    "constraint": 0,
+                    "constraintName": 0,
                     "colon": 0,
                     "tests": [
                         0, 0
                     ]
                 }
             }
+        },
+        {
+            "name": "operation test case",
+            "data": {
+                "prompt": "Write a function named operation that takes three argumemts: 'op' which is an arithmetic operator, '+','-','*',or '/', and 'a' and 'b' which are two int numbers. The function must return the result. ",
+                "functionName": "operation",
+                "parameters": ["op,a,b"],
+                "constraintName": "return",
+                "maxPoints":5,
+                "studentInput": "def%20operation%28op%2C%20a%2C%20b%29%3A%5Cn%5Ctif%20op%20%3D%3D%20%27%2B%27%3A%5Cn%5Ct%5Ctreturn%20a%20%2B%20b%5Cn%5Ctelif%20op%20%3D%3D%20%27-%27%3A%5Cn%5Ct%5Ctreturn%20a%20-%20b%5Cn%5Ctelif%20op%20%3D%3D%20%27%2a%27%3A%5Cn%5Ct%5Ctreturn%20a%20%2a%20b%5Cn%5Ctelif%20op%20%3D%3D%20%27%2F%27%3A%5Cn%5Ct%5Ctreturn%20a%20%2F%20b%5Cn%5Ctelse%3A%5Cn%5Ct%5Ctreturn%20-1",
+                "testCases": [
+                    ["%27%2B%27%203%202","5"],
+                    ["%27-%27%205%203","2"],
+                    ["%27/%27%208%204","2"],
+                    ["%27*%27%208%204","32"],
+                    ["%27*%27%200%200","0"]
+                ],
+                "expectedOutput": {
+                    "name": 0,
+                    "constraintName": 0,
+                    "colon": 0,
+                    "tests": [
+                        0, 0, 0, 0, 0
+                    ]
+                }
+            }
+        },
+        {
+            "name": "arrays sum test case",
+            "data": {
+                "prompt": "Write a function named arrayAddition that takes 2 array arguments, arr1 and arr2, and returns the sum of the biggest integer in both arrays. ",
+                "functionName": "arrayAddition",
+                "parameters": ["arr1,arr2"],
+                "constraintName": "return",
+                "maxPoints":17,
+                "studentInput": "def%20arrayAddition%28arr1%2C%20arr2%29%3A%5Cn%5Ctarr1.sort%28%29%5Cn%5Ctarr2.sort%28%29%5Cn%5Ctreturn%20arr1%5B-1%5D%20%2B%20arr2%5B-1%5D",
+                "testCases": [
+                    ["[1,4,5,3,2],[2,10]","15"],
+                    ["[2],[2,10,100]","102"],
+                    ["[9,8,7,6],[0,1]","10"]
+                ],
+                "expectedOutput": {
+                    "name": 0,
+                    "constraintName": 0,
+                    "colon": 0,
+                    "tests": [
+                        0,0,0
+                    ]
+                }
+            }
+        },
+        {
+            "name": "arrays sum test case",
+            "data": {
+                "prompt": "Write a function named arrayAddition that takes 2 array arguments, arr1 and arr2, and returns the sum of the biggest integer in both arrays. ",
+                "functionName": "arrayAddition",
+                "parameters": ["arr1,arr2"],
+                "constraintName": "return",
+                "maxPoints":57,
+                "studentInput": "def%20arrayAddition%28arr1%2C%20arr2%29%3A%5Cn%5Ctarr1.sort%28%29%5Cn%5Ctarr2.sort%28%29%5Cn%5Ctreturn%20arr1%5B-1%5D%20%2B%20arr2%5B-1%5D",
+                "testCases": [
+                    ["[1,4,5,3,2],[2,10]","15"],
+                    ["[2],[2,10,100]","102"],
+                    ["[9,8,7,6],[0,1]","10"]
+                ],
+                "expectedOutput": {
+                    "name": 0,
+                    "constraintName": 0,
+                    "colon": 0,
+                    "tests": [
+                        0,0,0
+                    ]
+                }
+            }
+        },
+        {
+            "name": "combine strings from array test case",
+            "data": {
+                "prompt": "Write a function named combineStringArray that takes two array arguments and a character, and it returns the last string argument of the first array and the first string argument of the second array plus the character combined!  ",
+                "functionName": "combineStringArray",
+                "parameters": ["arr1,arr2,char"],
+                "constraintName": "return",
+                "maxPoints":10,
+                "studentInput": "def%20combineStringArray%28arr1%2C%20arr2%2C%20char%29%3A%5Cn%5Ctreturn%20arr1%5B-1%5D%20%2B%20arr2%5B-1%5D%20%2B%20char",
+                "testCases": [
+                    ["[\"hello\",\"amazing\"],[\"rona\"],'d'","amazingronad"],
+                    ["[\"ego\",\"crap\",\"123\"],[\"cat\",\"dogs\"],'e'","123dogse"]
+                ],
+                "expectedOutput": {
+                    "name": 0,
+                    "constraintName": 0,
+                    "colon": 0,
+                    "tests": [
+                        0,0
+                    ]
+                }
+            }
+        },
+        {
+            "name": "compare string lengths",
+            "data": {
+                "prompt": "Write a function called, getBiggestString, that takes two parameters, stringA and string B, and it compares two strings and prints the string with the with the largest length. If the string lengths are same, print both lengths combined. ",
+                "functionName": "getBiggestString",
+                "parameters": ["stringA,stringB"],
+                "constraintName": "print",
+                "maxPoints":11,
+                "studentInput": "def%20getBiggestString%28stringA%2C%20stringB%29%3A%5Cn%5Ctif%20len%28stringA%29%3Elen%28stringB%29%3A%5Cn%5Ct%5Ctprint%28stringA%29%5Cn%5Ctelif%20len%28stringB%29%3Elen%28stringA%29%3A%5Cn%5Ct%5Ctprint%28stringB%29%5Cn%5Ctelse%3A%5Cn%5Ct%5Ctprint%28stringA%2BstringB%29",
+                "testCases": [
+                    ["\"Hello\",\"Hi\"","Hello"],
+                    ["\"Donkey\",\"Donkey\"","DonkeyDonkey"],
+                    ["\"123\",\"1234\"","1234"],
+                    ["\"a\",\"2\"","a2"]
+                ],
+                "expectedOutput": {
+                    "name": 0,
+                    "constraintName": 0,
+                    "colon": 0,
+                    "tests": [
+                        0,0,0,0
+                    ]
+                }
+            }
+        },
+        {
+            "name": "doubleIt",
+            "data": {
+                "prompt": "Write a function, doubleIt, that takes two parameters, stringA and numB, and returns an array of first element being the string doubled and the second element is numB doubled. ",
+                "functionName": "doubleIt",
+                "parameters": ["stringA,numB"],
+                "constraintName": "return",
+                "maxPoints":66,
+                "studentInput": "def%20doubleIt%28stringA%2C%20numB%29%3A%5Cn%5Ctarr%20%3D%20%5B%5D%5Cn%5Ctarr.append%28stringA%2BstringA%29%5Cn%5Ctarr.append%28numB%2a2%29%5Cn%5Ctreturn%20arr",
+                "testCases": [
+                    ["\"Test11\",9","['Test11Test11', 18]"],
+                    ["\"PostMalone\",0","['PostMalonePostMalone', 0]"],
+                    ["\"aBc\",2","['aBcaBc', 4]"],
+                    ["\"Sid\",-9","['SidSid', -18]"],
+                    ["\"69420\",100","['6942069420', 200]"]
+                ],
+                "expectedOutput": {
+                    "name": 0,
+                    "constraintName": 0,
+                    "colon": 0,
+                    "tests": [
+                        0,0,0,0,0
+                    ]
+                }
+            }
         }
-        
+
+
     ]
 }
