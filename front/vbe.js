@@ -210,8 +210,10 @@ function test(type) {
             for(let i=0; i < questions.length; i++)
                 qIDs.push("q-" + i);
             createExamListVBE(qIDs);
+            break;
         case 3:
             createCodeBoxVBE();
+            break;
         case 4:
             console.log(customEncode(document.getElementsByClassName("code-box")[0].value));
             console.log(JSON.stringify(customEncode(document.getElementsByClassName("code-box")[0].value)));
