@@ -58,7 +58,7 @@
         else {
             //check tests
             for($i = 0 ; $i < $numOfTests; $i++) {
-                $trueLine = ($q->{'constraint'} == "print") ? 2 * $i : $i;
+                $trueLine = ($q->{'constraintName'} == "print") ? 2 * $i : $i;
                 if($outputLines[$trueLine] != $q->{'testCases'}[$i][1])
                     array_push($testResults, 1);
                 else
@@ -79,10 +79,10 @@
         else
             $result->{'colon'} = 0;
 
-        if(!strstr($q->{'studentInput'}, $q->{'constraint'}))
-            $result->{'constraint'} = 1;
+        if(!strstr($q->{'studentInput'}, $q->{'constraintName'}))
+            $result->{'constraintName'} = 1;
         else
-            $result->{'constraint'} = 0;
+            $result->{'constraintName'} = 0;
 
         return json_encode($result);
     }
