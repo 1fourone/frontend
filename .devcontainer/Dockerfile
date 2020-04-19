@@ -7,12 +7,6 @@
 
 FROM 1fourone/php-apache-python-afs:2.0
 
-#COPY ./src /var/www/html
-RUN chown -R www-data:www-data /var/www/html
-
-RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
-#COPY ./../php.ini /usr/local/etc/php
-
 # Avoid warnings by switching to noninteractive
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -49,6 +43,13 @@ RUN apt-get update \
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
+
+# Install mysqli
+RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
+
+# Configure php.ini
+RUN echo "error_reporting = E_ALL" > /usr/local/etc/php/php.ini \
+    && echo "display_errors = off" >> /usr/local/etc/php/php.ini
 
 # Switch back to dialog for any ad-hoc use of apt-get
 ENV DEBIAN_FRONTEND=dialog

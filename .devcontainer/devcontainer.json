@@ -26,7 +26,8 @@
 	// Add the IDs of extensions you want installed when the container is created in the array below.
 	"extensions": [
 		"felixfbecker.php-debug",
-		"felixfbecker.php-intellisense"
+		"felixfbecker.php-intellisense",
+		"eamodio.gitlens"
 	],
 
 	// Uncomment the next line if you want start specific services in your Docker Compose config.

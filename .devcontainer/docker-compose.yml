@@ -13,7 +13,6 @@ services:
             - DOCKER_HOST=localhost
         volumes:
             - ./../src:/var/www/html
-            - ./../config:/usr/local/etc/php
         networks: 
             - default
     db:
