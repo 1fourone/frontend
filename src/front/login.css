@@ -1,0 +1,51 @@
+/* The website header */
+
+#header-name {
+    float: right;
+}
+
+#header-brand {
+    font-size: 3em;
+}
+
+#header-logout button {
+    float: right;
+    margin-top: -30px;
+}
+
+/* Webpage specific info */
+
+#error-label {
+    visibility: hidden;
+    text-align: center;
+}
+
+#title {
+    text-align: center;   
+}
+
+#input-box {
+    width: 18%;
+    display: block;
+    margin: auto;
+    background: #78abe6;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+label {
+    display: block;
+    margin: 1em 0em 0.8em 1.7em;
+}
+
+#submit {
+    display: block;
+    margin: auto;
+    font-size: 2em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.text-input {
+    margin-left: 5em;
+}
