@@ -8,7 +8,7 @@
     */
     function populateSubmissionFile($q) {
         $file = fopen("/tmp/submission.py", "w") or die ("unable to open submissions file");
-        fwrite($file, rawurldecode($q->{'studentInput'}) . "\n");
+        fwrite($file, $q->{'studentInput'} . "\n");
         foreach($q->{'testCases'} as $tc) {
             fwrite($file, "print(" . $q->{'functionName'} . "(");
             
@@ -34,66 +34,73 @@
         returns a JSON string for a graderQuestionOutput object
     */
     function evaluateQuestion($q) {
-        populateSubmissionFile($q);
-        $outputString = shell_exec("python3.8 /tmp/submission.py 2>&1 ");
-        $outputLines = explode("\n", $outputString);
-        $result = (object)[];
-
-
-        /* Error handling */
-        $errors = array("Error", "Interrupt", "Traceback");
-        $errorFound = false;
-        foreach($errors as $err) {
-            if(!(strpos($outputString, $err) === FALSE ))
-                $errorFound = true;
-        }
-
-        /* Evaluate test cases/output */
+        
+        /* Prepare for non-testcase fields */
         $testResults = array();
         $numOfTests = count($q->{'testCases'});
         $maxPoints = $q->{'maxPoints'};
         $conditions = 3 + $numOfTests;
         $takeOffPoints = floor(($maxPoints/$conditions));
+        $result = (object)[];
         
         $result->{'qid'} = $q->{'qid'};
         $result->{'sid'} = $q->{'sid'};
         $result->{'maxPoints'} = $q->{'maxPoints'};
-        
-        
 
-        if($errorFound == true) {
-            for($i = 0; $i < $numOfTests; $i++)
-                array_push($testResults, $takeOffPoints);
-        }
-        else {
-            //check tests
-            for($i = 0 ; $i < $numOfTests; $i++) {
-                $trueLine = ($q->{'constraintName'} == "print") ? 2 * $i : $i;
-                if($outputLines[$trueLine] != $q->{'testCases'}[$i][1])
-                    array_push($testResults, $takeOffPoints);
-                else
-                    array_push($testResults, 0);
-            }
-        }
-        $result->{'tests'} = $testResults;
-
-        /* Evaluate remaining criteria */
-        if(strpos(rawurldecode($q->{'studentInput'}), $q->{'functionName'} . "(") === FALSE)
+        $inputLines = explode("\n", rawurldecode($q->{'studentInput'}));
+        
+        // check function name, correct if necessary
+        if(strpos($inputLines[0], $q->{'functionName'} . "(") === FALSE) {
             $result->{'name'} = $takeOffPoints;
+            $inputLines[0] = preg_replace('(def [a-zA-Z0-9,]+\()', 'def ' . $q->{'functionName'} . "(", $inputLines[0]);
+        }
         else 
             $result->{'name'} = 0;
 
-        $studentLines = explode("\n", rawurldecode($q->{'studentInput'}));
-        if($studentLines[0][strlen($studentLines[0])-1] != ":") 
+        // check colon name, correct if necessary
+        //@TODO: may not be enough to just check for last character
+        //def a((t1, t2)):xkxxkxjjx
+        $closeParenIndex = strrpos($inputLines[0], ')');
+        if(strlen($inputLines[0]) <= $closeParenIndex+1 || $inputLines[0][$closeParenIndex+1] != ":") {
             $result->{'colon'} = $takeOffPoints;
+            $inputLines[0] = substr($inputLines[0], 0, $closeParenIndex+1) . ":";
+        }
         else
             $result->{'colon'} = 0;
 
-        if(strpos(rawurldecode($q->{'studentInput'}), $q->{'constraintName'}) === FALSE)
+
+        // check constraint
+        $constraintFind = $q->{'constraintName'};
+        if($q->{'constraintName'} === "none") 
+            $constraintFind = "return";
+        
+        if(strpos(rawurldecode($q->{'studentInput'}), $constraintFind) === FALSE)
             $result->{'constraintName'} = $takeOffPoints;
         else
             $result->{'constraintName'} = 0;
-            
+
+        // package q back to itself, with updated lines
+        $fixedInput = "";
+        foreach($inputLines as $line)
+            $fixedInput = $fixedInput . $line . "\n";
+
+        $q->{'studentInput'} = $fixedInput;
+        populateSubmissionFile($q);
+        $outputString = shell_exec("python3.8 /tmp/submission.py 2>&1 ");
+        $outputLines = explode("\n", $outputString);
+
+        /* Evaluate test cases/output */
+       
+        for($i = 0 ; $i < $numOfTests; $i++) {
+            $trueLine = ($q->{'constraintName'} == "print") ? 2 * $i : $i;
+            if($outputLines[$trueLine] != $q->{'testCases'}[$i][1])
+                array_push($testResults, $takeOffPoints);
+            else
+                array_push($testResults, 0);
+        }
+        
+        $result->{'tests'} = $testResults;
+    
         return json_encode($result);
     }
     
