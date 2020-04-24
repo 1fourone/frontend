@@ -38,8 +38,7 @@
         $outputString = shell_exec("python3.8 /tmp/submission.py 2>&1 ");
         $outputLines = explode("\n", $outputString);
         $result = (object)[];
-        //var_dump(shell_exec("cat /tmp/submission.py"));
-        //var_dump($outputString);
+
 
         /* Error handling */
         $errors = array("Error", "Interrupt", "Traceback");
@@ -48,8 +47,7 @@
             if(!(strpos($outputString, $err) === FALSE ))
                 $errorFound = true;
         }
-        //var_dump("ERROR: " . $errorFound);
-        //var_dump($outputString);
+
         /* Evaluate test cases/output */
         $testResults = array();
         $numOfTests = count($q->{'testCases'});
@@ -80,11 +78,6 @@
         $result->{'tests'} = $testResults;
 
         /* Evaluate remaining criteria */
-        //var_dump(($q->{'studentInput'} . "(", $q->{'functionName'}));
-        //var_dump("Q IS " . $q);
-         //var_dump($q->{"functionName"});
-        //var_dump(rawurlencode($q->{'studentInput'}));
-        //var_dump(strpos($q->{'studentInput'}, $q->{'functionName'} . "("));
         if(strpos(rawurldecode($q->{'studentInput'}), $q->{'functionName'} . "(") === FALSE)
             $result->{'name'} = $takeOffPoints;
         else 
@@ -113,15 +106,9 @@
     if($type === "test")
         echo evaluateQuestion(json_decode($_GET['question']));
     else {
-        //var_dump($_POST['data']);
-        //file_get_contents("php://input");
-        //$data = json_decode($_POST['data']);
         $content = file_get_contents("php://input");
         $data = json_decode(strstr($content, "["));
-        //var_dump($content);
-        //var_dump($data);
         $output = array();
-        //var_dump("hi");
         foreach ($data as $q) {
             array_push($output, evaluateQuestion($q));
         }
