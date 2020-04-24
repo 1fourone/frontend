@@ -134,7 +134,9 @@
             //var_dump(json_encode($A1));
                    
             
-            curl_setopt($ch, CURLOPT_URL, "https://web.njit.edu/~as2863/RC/grader2.php?");
+            //curl_setopt($ch, CURLOPT_URL, "https://web.njit.edu/~as2863/RC/grader2.php?");
+            curl_setopt($ch, CURLOPT_URL, "http://localhost/mid/grader.php?");
+
             curl_setopt($ch, CURLOPT_POST, TRUE);
             curl_setopt($ch, CURLOPT_POSTFIELDS, "data=" . json_encode($A1) );
             //var_dump($output);
