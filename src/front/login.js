@@ -27,15 +27,14 @@ function attemptLogin()
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) 
         {
             console.log(this.responseText);
-            /*response = JSON.parse(this.responseText);
+            response = JSON.parse(this.responseText);
             if(response['result'] == "success") 
             {
                 response['name'] = uname;
-                //loadHomePageForUser(response);
+                loadHomePageForUser(response);
             }
             else
                 document.getElementById("error-label").style.visibility = "visible";
-            */
         }
     };
 
