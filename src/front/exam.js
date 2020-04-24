@@ -1,6 +1,6 @@
 /* Check whether user is instructor; if not, redirect */
 var _uname = getCookie("userName");
-var _utype = getCookie("something");
+var _utype = getCookie("userType");
 var _uid = getCookie("dbID");
 var _eid = getCookie("activeTakeExam");
 
