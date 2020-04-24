@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebQuiz Take Exam</title>
+    <link rel="stylesheet" href="exam.css">
+    <script src="utils.js"></script>
+    <script src="exam.js"></script>
+</head>
+<body>
+    <!-- Place holder for header -->
+    <header id="header">
+        <div id="header-name"></div>
+        <div id="header-brand"></div>
+        <div id="header-logout"></div>
+    </header>
+
+    <div id="content">
+        <div id="upper">
+            <h1 id="title">Take Exam</h1>
+            <h2 id="ename"></h2>
+            <p id="error-label"></p>
+        </div>
+        
+        <!-- no filtering/sorting for now -->
+    
+        <div id="question-list-box" class="flexbox">
+            
+        </div>
+        <input type="submit" value="SUBMIT EXAM" id="submit" onclick="validateInput();">
+    </div>
+</body>
+</html>

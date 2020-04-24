@@ -1,0 +1,60 @@
+/* The website header */
+
+#header-name {
+    float: right;
+}
+
+#header-brand {
+    font-size: 3em;
+}
+
+#header-logout button {
+    float: right;
+    margin-top: -30px;
+}
+
+/* Webpage specific info */
+
+.flexbox {
+    display: flex;
+    flex-direction: column;
+}
+
+.flexbox > button {
+    font-size: 3em;
+    text-align: center;
+    padding: 0.5em;
+}
+
+#exam-type-box {
+    margin: 4em 2em 1.5em 4em;
+    width: 33%;
+}
+
+#exam-list-box {
+    float: right;
+    margin: -26em 2em 1.5em 4em;
+    width: 50%;
+    visibility: hidden;
+}
+
+#exam-list-box > button {
+    margin: 0.3em;
+}
+
+#class-select {
+    display: block;
+}
+
+#upper {
+    text-align: center;
+}
+
+#class-select {
+    margin:auto;
+}
+
+#submit {
+    margin: 1.5em 3em 1.5em 4em;
+    font-size: 3em;
+}

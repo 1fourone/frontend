@@ -1,0 +1,58 @@
+/* The website header */
+
+#header-name {
+    float: right;
+}
+
+#header-brand {
+    font-size: 3em;
+}
+
+#header-logout button {
+    float: right;
+    margin-top: -30px;
+}
+
+/* Webpage specific info */
+#title {
+    text-align: center;
+}
+
+.flexbox {
+    display: flex;
+    flex-direction: column;
+    background: #7dc1f8;
+    width: 50%;
+    margin: auto;
+}
+
+.flexbox > button {
+    font-size: 1em;
+    text-align: center;
+    padding: 0.5em;
+}
+
+textbox {
+    display:block;
+}
+
+.visual-question {
+    padding: 3em;
+}
+
+#submit {
+    display: block;
+    margin: auto;
+    font-size: 2em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+#error-label {
+    text-align: center;
+}
+
+textarea { 
+    width: 638px;
+    height: 246px;
+}

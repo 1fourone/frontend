@@ -1,0 +1,111 @@
+/* The website header */
+
+#header-name {
+    float: right;
+}
+
+#header-brand {
+    font-size: 3em;
+}
+
+#header-logout button {
+    float: right;
+    margin-top: -30px;
+}
+
+/* Webpage specific info */
+#title {
+    text-align: center;
+}
+
+.flexbox {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid red;
+    width: 50%;
+    margin: auto;
+}
+
+.flexbox > button {
+    font-size: 1em;
+    border: 1px solid blue;
+    text-align: center;
+    padding: 0.5em;
+}
+
+textbox {
+    display:block;
+}
+
+.visual-question {
+    border: 1px solid orange;
+}
+
+#submit {
+    display: block;
+    font-size: 2em;
+    margin-right: 1em;
+    margin-left: 1em;
+}
+
+#error-label {
+    text-align: center;
+}
+
+.question table {
+    background-color: #dfdfdf;
+    width: 600px;
+}
+
+.question table td {
+    font-family: sans-serif;
+}
+
+.question-prompt td {
+    text-align: center;
+    max-width: 300px;
+}
+
+#submission-list-box {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2em;
+    align-items: center;
+}
+
+.question {
+    margin-bottom: 10px;
+}
+
+.exam-question-points {
+    width: 2em;
+    font-size: 3.125em;
+    height: 1.8em;
+    text-align: center;
+    margin-top: -8px;
+}
+
+.submission {
+    width: 461px;
+    height: 72px;
+}
+
+.pointsDisplay {
+    display: ruby;
+    font-size: 2em;
+    margin-left: 5em;
+}
+
+.comment {
+    width: 456px;
+    height: 82px;
+}
+
+#bottom {
+    display: flex;
+    justify-content: center;
+}
+
+#bottom button {
+    font-size: 4em;
+}

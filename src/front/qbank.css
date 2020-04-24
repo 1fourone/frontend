@@ -1,0 +1,62 @@
+/* The website header */
+
+#header-name {
+    float: right;
+}
+
+#header-brand {
+    font-size: 3em;
+}
+
+#header-logout button {
+    float: right;
+    margin-top: -30px;
+}
+
+/* Webpage specific info */
+#title {
+    text-align: center;
+}
+
+.question table {
+    background-color: #dfdfdf;
+    width: 600px;
+}
+
+.question table td {
+    font-family: sans-serif;
+}
+
+.question-prompt td {
+    text-align: center;
+    max-width: 300px;
+}
+
+#question-list-box {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2em;
+    align-items: center;
+}
+
+.question {
+    margin-bottom: 10px;
+}
+
+.exam-question-points {
+    width: 2em;
+    font-size: 3.125em;
+    height: 1.8em;
+    text-align: center;
+    margin-top: -8px;
+}
+
+#outer-flex {
+    display: flex;
+    justify-content: center;
+}
+
+#outer-flex div {
+    padding-right: 5px;
+}
+

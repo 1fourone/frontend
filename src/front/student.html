@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebQuiz Student Home</title>
+    <link rel="stylesheet" href="student.css">
+    <script src="utils.js"></script>
+    <script src="student.js"></script>
+</head>
+<body>
+    <!-- Place holder for header -->
+    <header id="header">
+        <div id="header-name"></div>
+        <div id="header-brand"></div>
+        <div id="header-logout"></div>
+    </header>
+
+    <div id="content">
+        <div id="upper">
+            <h1 id="title">Student Home</h1>
+
+            <label for="class">Select a class</label>
+            <select name="class" id="class-select">
+                <option value="none" onclick="setActiveClassID(-1);">None</option>
+            </select>
+            <p id="error-label"></p>
+        </div>
+        
+        
+        <div id="exam-type-box" class="flexbox">
+            <button id="type-active" onclick="setActiveExamType(4);">ACTIVE EXAMS</button>
+            <button id="type-released" onclick="setActiveExamType(0);">RELEASED EXAMS</button>
+            <button id="type-unreleased" onclick="setActiveExamType(1);">UNRELEASED EXAMS</button>
+        </div>
+
+        <div id="exam-list-box" class="flexbox"></div>
+
+        <button id="submit" onclick="evaluateStudentChoice();">GO TO EXAM</button>
+    </div>
+</body>
+</html>

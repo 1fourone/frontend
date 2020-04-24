@@ -1,0 +1,45 @@
+/* The website header */
+
+#header-name {
+    float: right;
+}
+
+#header-brand {
+    font-size: 3em;
+}
+
+#header-logout button {
+    float: right;
+    margin-top: -30px;
+}
+
+/* Webpage specific info */
+
+html, body, #content {
+    height: 100%;
+}
+
+#content {
+    margin: 80px;
+}
+
+#qbank {
+    float: right;
+    width: 50%;
+    height: 100%;
+    margin-top: -45em;
+}
+
+#submit {
+    font-size: 3em;
+    margin-top: 0.5em;
+}
+
+#upper {
+    text-align: center;
+}
+
+#prompt {
+    width: 510px;
+    height: 67px;
+}

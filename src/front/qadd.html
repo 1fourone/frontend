@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebQuiz Add Question</title>
+    <link rel="stylesheet" href="qadd.css">
+    <script src="utils.js"></script>
+    <script src="qadd.js"></script>
+</head>
+<body>
+    <!-- Place holder for header -->
+    <header id="header">
+        <div id="header-name"></div>
+        <div id="header-brand"></div>
+        <div id="header-logout"></div>
+    </header>
+
+    <div id="content">
+        <div id="main">
+            <div id="upper">
+                <h1 id="title">Add to Question Bank</h1>
+                <p id="error-label"></p>
+            </div>
+            
+            
+            <div>
+                <p>Prompt</p>
+                <textarea name="prompt" id="prompt" cols="30" rows="10"></textarea>
+            </div>
+                <p>Difficulty</p>
+                <select name="difficulty" id="difficulty">
+                    <option value="0">Easy</option>
+                    <option value="1">Medium</option>
+                    <option value="2">Hard</option>
+                </select>
+            <div>
+                <p>Function Name</p>
+                <input type="text" name="function-name" id="function-name">
+            </div>
+            
+            <div>
+                <p>Topic</p>
+                <select name="topic" id="topic">
+                    <option value="0">Arithmetic</option>
+                    <option value="1">Tuples</option>
+                    <option value="2">Strings</option>
+                    <option value="3">Loops</option>
+                    <option value="4">Lists</option>
+                    <option value="5">Dictionary</option>
+                    <option value="6">Conditionals</option>
+                </select>
+            </div>
+    
+            <div>
+                <p>Constraint</p>
+                <select name="constraint-name" id="constraint-name">
+                    <option value="for">For</option>
+                    <option value="while">While</option>
+                    <option value="print">Print</option>
+                </select>
+            </div>
+
+            <div>
+                <p>Test Cases</p>
+                <table>
+                    <tr>
+                        <td>Input</td>
+                        <td>Output</td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="tc-input"></td>
+                        <td><input type="text" class="tc-output"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="tc-input"></td>
+                        <td><input type="text" class="tc-output"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="tc-input"></td>
+                        <td><input type="text" class="tc-output"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="tc-input"></td>
+                        <td><input type="text" class="tc-output"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="tc-input"></td>
+                        <td><input type="text" class="tc-output"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="tc-input"></td>
+                        <td><input type="text" class="tc-output"></td>
+                    </tr>
+                    <!-- Access each one via <el>.innerHTML
+                        Need to encode as well -->
+                </table>
+            </div>
+        
+            <div>
+                <input type="submit" id="submit" value="ADD TO BANK" onclick="validateInput();">
+            </div>
+        </div>
+        
+        
+        <iframe src="qbank.html" frameborder="0" id="qbank"></iframe>
+    </div>
+</body>
+</html>

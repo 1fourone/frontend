@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebQuiz Question Bank</title>
+    <link rel="stylesheet" href="qbank.css">
+    <script src="utils.js"></script>
+    <script src="qbank.js"></script>
+</head>
+<body>
+    <!-- Place holder for header -->
+    <header id="header">
+        <div id="header-name"></div>
+        <div id="header-brand"></div>
+        <div id="header-logout"></div>
+    </header>
+
+    <div id="content">
+        <div id="upper">
+            <h1 id="title">Question Bank</h1>
+        </div>
+        
+        <!-- no filtering/sorting for now -->
+    
+        <div id="outer-flex">
+            <div id="filters">
+                <p><b>Filter By</b></p>
+                <textarea id="sb-keywords" onkeyup="filter();"></textarea>
+                <div class="list-select">
+                    <select id="ls-difficulty" multiple="" onchange="filter();">
+                        <option value="easy" selected>easy</option>
+                        <option value="medium" selected>medium</option>
+                        <option value="hard" selected>hard</option>
+                    </select>
+                </div>
+                <div class="list-select">
+                    <select id="ls-topic" multiple="" onchange="filter();">
+                        <option value="Arithmetic" selected>Arithmetic</option>
+                        <option value="Tuples" selected>Tuples</option>
+                        <option value="Strings" selected>Strings</option>
+                        <option value="Loops" selected>Loops</option>
+                        <option value="Lists" selected>Lists</option>
+                        <option value="Dictionary" selected>Dictionary</option>
+                        <option value="Conditionals" selected>Conditionals</option>
+                    </select>
+                </div>
+            </div>
+            <div id="inner-flex">
+                <div id="question-list-box" ondrop="checkDrop(event);"></div>
+            </div>
+        </div>
+        
+        
+    </div>
+</body>
+</html>

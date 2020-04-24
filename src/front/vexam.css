@@ -1,0 +1,76 @@
+/* The website header */
+
+#header-name {
+    float: right;
+}
+
+#header-brand {
+    font-size: 3em;
+}
+
+#header-logout button {
+    float: right;
+    margin-top: -30px;
+}
+
+/* Webpage specific info */
+
+.flexbox {
+    display: flex;
+    background: #78abe6;
+}
+
+.flexbox > button {
+    font-size: 3em;
+    text-align: center;
+    padding: 0.5em;
+}
+
+#exam-type-box {
+    margin: 4em 2em 1.5em 4em;
+    width: 33%;
+}
+
+#exam-list-box {
+    border: 1px solid orange;
+    float: right;
+    margin: -10em 2em 1.5em 4em;
+    width: 50%;
+    visibility: hidden;
+    flex-direction: column;
+}
+
+#instructor-action {
+    width: 75%;
+    margin: auto;
+}
+
+#instructor-action > button {
+    margin: 1em auto;
+}
+
+#exam-list-box > button {
+    margin: 0.3em;
+}
+
+#class-select {
+    display: block;
+}
+
+#class-list {
+    width: max-content;
+    margin: 12em 2em 0em 25em;
+}
+
+#upper {
+    text-align: center;
+}
+
+#submit {
+    margin: 1.5em 3em 1.5em 4em;
+    font-size: 3em;
+}
+
+#exam-section {
+    visibility: hidden;
+}

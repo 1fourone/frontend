@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebQuiz Exam Feedback</title>
+    <link rel="stylesheet" href="efeedback.css">
+    <script src="utils.js"></script>
+    <script src="efeedback.js"></script>
+</head>
+<body>
+    <!-- Place holder for header -->
+    <header id="header">
+        <div id="header-name"></div>
+        <div id="header-brand"></div>
+        <div id="header-logout"></div>
+    </header>
+
+    <div id="content">
+        <div id="upper">
+            <h1 id="title">Exam Feedback</h1>
+            <h2 id="ename"></h2>
+        </div>
+        
+        <!-- no filtering/sorting for now -->
+    
+        <div id="submission-list-box" class="flexbox">
+            
+        </div>
+        
+        <p id="error-label"></p>
+        <div id="bottom">
+            <!--<button onclick="previousID();">↩</button>-->
+            <input type="submit" value="SUBMIT FEEDBACK" id="submit" onclick="validateInput(0);">
+            <!--<button onclick="nextID();">↪</button>-->
+        </div>
+    </div>
+</body>
+</html>
