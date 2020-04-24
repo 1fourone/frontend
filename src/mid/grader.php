@@ -93,10 +93,13 @@
        
         for($i = 0 ; $i < $numOfTests; $i++) {
             $trueLine = ($q->{'constraintName'} == "print") ? 2 * $i : $i;
+            $testObject = (object)[];
+            $testObject->{'result'} = $outputLines[$trueLine];
             if($outputLines[$trueLine] != $q->{'testCases'}[$i][1])
-                array_push($testResults, $takeOffPoints);
+                $testObject->{'lost'} = $takeOffPoints;
             else
-                array_push($testResults, 0);
+                $testObject->{'lost'} = 0;
+            array_push($testResults, $testObject);
         }
         
         $result->{'tests'} = $testResults;
