@@ -255,6 +255,7 @@ function createReviewQuestionVBE(index, studentID) {
     td1.innerHTML = "Function Name";
     td2 = document.createElement("td");
     td2.innerHTML = (autoFeedback["name"] == 0) ? "Passed" : "Failed";
+    td2.style.color = (autoFeedback["name"] == 0) ? "#3eb53e" : "#c83a3a";
     td3 = document.createElement("td");
     td3.innerHTML = autoFeedback["name"];
     td3.setAttribute("class", "old-points-" + index);
@@ -276,6 +277,7 @@ function createReviewQuestionVBE(index, studentID) {
     td1.innerHTML = "Colon";
     td2 = document.createElement("td");
     td2.innerHTML = (autoFeedback["colon"] == 0) ? "Passed" : "Failed";
+    td2.style.color = (autoFeedback["colon"] == 0) ? "#3eb53e" : "#c83a3a";
     td3 = document.createElement("td");
     td3.innerHTML = autoFeedback["colon"];
     td3.setAttribute("class", "old-points-" + index);
@@ -297,6 +299,7 @@ function createReviewQuestionVBE(index, studentID) {
     td1.innerHTML = "Constraint";
     td2 = document.createElement("td");
     td2.innerHTML = (autoFeedback["constraintName"] == 0) ? "Passed" : "Failed";
+    td2.style.color = (autoFeedback["constraintName"] == 0) ? "#3eb53e" : "#c83a3a";
     td3 = document.createElement("td");
     td3.setAttribute("class", "old-points-" + index);
     td3.innerHTML = autoFeedback["constraintName"];
@@ -319,13 +322,14 @@ function createReviewQuestionVBE(index, studentID) {
     for(let i=0; i < tests.length; i++) {
         var tr = document.createElement("tr");
         td1 = document.createElement("td");
-        var decodedArgs = decodeURIComponent(examsList[studentID][index][getTestCaseString(i, false)]).replace(/ /g, ", ");
-        var decodedOutput = decodeURIComponent(examsList[studentID][index][getTestCaseString(i, true)].replace(/ /g, ", "));
+        var decodedArgs = decodeURIComponent(examsList[studentID][index][getTestCaseString(i, false)]).replace(/\s(?=(?:"[^"]*"|[^"])*$)/g, ", ");
+        var decodedOutput = decodeURIComponent(examsList[studentID][index][getTestCaseString(i, true)].replace(/\s(?=(?:"[^"]*"|[^"])*$)/g, ", "));
         td1.innerHTML = "<b>Test Case:</b> Ran " + examsList[studentID][index]['functionName'] + "(" + decodedArgs + ")";
-        td1.innerHTML += " : expected " + decodeURIComponent(examsList[studentID][index][getTestCaseString(i, true)]);
-        td1.innerHTML += ", got " + tests[i]['result'].replace(/ /g, ", ");
+        td1.innerHTML += " : expected " + decodedOutput;
+        td1.innerHTML += " → got " + tests[i]['result'].replace(/ /g, ", ");
         td2 = document.createElement("td");
         td2.innerHTML = (tests[i]["lost"] == 0) ? "Passed" : "Failed";
+        td2.style.color = (tests[i]["lost"] == 0) ? "#3eb53e" : "#c83a3a";
         td3 = document.createElement("td");
         td3.setAttribute("class", "old-points-" + index);
         td3.innerHTML = tests[i]["lost"];
