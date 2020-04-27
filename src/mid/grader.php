@@ -85,6 +85,7 @@
             $fixedInput = $fixedInput . $line . "\n";
 
         $q->{'studentInput'} = $fixedInput;
+        //@TODO: what to do if there's some syntax errors within the code? (ie i++)?
         populateSubmissionFile($q);
         $outputString = shell_exec("python3.8 /tmp/submission.py 2>&1 ");
         $outputLines = explode("\n", $outputString);

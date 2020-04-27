@@ -175,6 +175,20 @@ for(i=0; < N; i++)
     createReviewQuestionVBE(i, STUD_ID)
 */
 
+function getTestCaseString(index, output = false) 
+{
+    switch(index)
+    {
+        case 0: return (output) ? "firstOutput" : "firstTestCase";
+        case 1: return (output) ? "secondOutput" : "secondTestCase";
+        case 2: return (output) ? "thirdOutput" : "thirdTestCase";
+        case 3: return (output) ? "fourthOutput" : "fourthTestCase";
+        case 4: return (output) ? "fifthOutput" : "fifthTestCase";
+        case 5: return (output) ? "sixthOutput" : "sixthTestCase";
+    }
+    return -1;
+}
+
 function createReviewQuestionVBE(index, studentID) {
     var wrapper = document.createElement("div");
     wrapper.setAttribute("class", "question visual-question");
@@ -305,12 +319,16 @@ function createReviewQuestionVBE(index, studentID) {
     for(let i=0; i < tests.length; i++) {
         var tr = document.createElement("tr");
         td1 = document.createElement("td");
-        td1.innerHTML = "Test Case " + (i+1);
+        var decodedArgs = decodeURIComponent(examsList[studentID][index][getTestCaseString(i, false)]).replace(/ /g, ", ");
+        var decodedOutput = decodeURIComponent(examsList[studentID][index][getTestCaseString(i, true)].replace(/ /g, ", "));
+        td1.innerHTML = "<b>Test Case:</b> Ran " + examsList[studentID][index]['functionName'] + "(" + decodedArgs + ")";
+        td1.innerHTML += " : expected " + decodeURIComponent(examsList[studentID][index][getTestCaseString(i, true)]);
+        td1.innerHTML += ", got " + tests[i]['result'].replace(/ /g, ", ");
         td2 = document.createElement("td");
-        td2.innerHTML = (autoFeedback["tests"][i] == 0) ? "Passed" : "Failed";
+        td2.innerHTML = (tests[i]["lost"] == 0) ? "Passed" : "Failed";
         td3 = document.createElement("td");
         td3.setAttribute("class", "old-points-" + index);
-        td3.innerHTML = autoFeedback["tests"][i];
+        td3.innerHTML = tests[i]["lost"];
         td4 = document.createElement("td");
         var override = document.createElement("input");
         override.setAttribute("class", "points points-" + index);
