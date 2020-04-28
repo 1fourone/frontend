@@ -326,7 +326,7 @@ function createReviewQuestionVBE(index, studentID) {
         var decodedOutput = decodeURIComponent(examsList[studentID][index][getTestCaseString(i, true)].replace(/\s(?=(?:"[^"]*"|[^"])*$)/g, ", "));
         td1.innerHTML = "<b>Test Case:</b> Ran " + examsList[studentID][index]['functionName'] + "(" + decodedArgs + ")";
         td1.innerHTML += " : expected " + decodedOutput;
-        td1.innerHTML += " → got " + tests[i]['result'].replace(/ /g, ", ");
+        td1.innerHTML += " → got " + tests[i]['result'];
         td2 = document.createElement("td");
         td2.innerHTML = (tests[i]["lost"] == 0) ? "Passed" : "Failed";
         td2.style.color = (tests[i]["lost"] == 0) ? "#3eb53e" : "#c83a3a";

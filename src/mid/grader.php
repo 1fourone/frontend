@@ -58,8 +58,6 @@
             $result->{'name'} = 0;
 
         // check colon name, correct if necessary
-        //@TODO: may not be enough to just check for last character
-        //def a((t1, t2)):xkxxkxjjx
         $closeParenIndex = strrpos($inputLines[0], ')');
         if(strlen($inputLines[0]) <= $closeParenIndex+1 || $inputLines[0][$closeParenIndex+1] != ":") {
             $result->{'colon'} = $takeOffPoints;
@@ -91,16 +89,29 @@
         $outputLines = explode("\n", $outputString);
 
         /* Evaluate test cases/output */
-       
-        for($i = 0 ; $i < $numOfTests; $i++) {
-            $trueLine = ($q->{'constraintName'} == "print") ? 2 * $i : $i;
+        // Handle syntax/etc errors unrelated to colon/name/constraint
+        if(preg_match('/.+Error/', $outputString, $matches) == 1)
+        {
+            //We found an error, and it's $matches[0] - put that as the value for every test and take points off
             $testObject = (object)[];
-            $testObject->{'result'} = $outputLines[$trueLine];
-            if($outputLines[$trueLine] != $q->{'testCases'}[$i][1])
-                $testObject->{'lost'} = $takeOffPoints;
-            else
-                $testObject->{'lost'} = 0;
-            array_push($testResults, $testObject);
+            
+            for($i = 0 ; $i < $numOfTests; $i++) {
+                $testObject = (object)['result' => $matches[0], 'lost' => $takeOffPoints];
+                array_push($testResults, $testObject);       
+            }
+        }
+        else
+        {
+            for($i = 0 ; $i < $numOfTests; $i++) {
+                $trueLine = ($q->{'constraintName'} == "print") ? 2 * $i : $i;
+                $testObject = (object)[];
+                $testObject->{'result'} = $outputLines[$trueLine];
+                if($outputLines[$trueLine] != rawurldecode($q->{'testCases'}[$i][1]))
+                    $testObject->{'lost'} = $takeOffPoints;
+                else
+                    $testObject->{'lost'} = 0;
+                array_push($testResults, $testObject);
+            }
         }
         
         $result->{'tests'} = $testResults;
