@@ -25,7 +25,7 @@
             while(($c = $result->fetch_assoc()) != NULL)
                 array_push($classList, (object)$c);
 
-            $sql = sprintf("SELECT DISTINCT e.id, e.name, e.date, e.status, c.course, c.section FROM EXAM e, CLASS c WHERE e.sid='%s' AND c.id=e.cid;", $_GET['student']);
+            $sql = sprintf("SELECT DISTINCT e.id, e.name, e.date, e.status, c.course, c.section FROM EXAM e, CLASS c WHERE e.sid='%s' AND c.id=e.cid GROUP BY e.id ORDER BY e.status DESC;", $_GET['student']);
             $result = $conn->query($sql);
             $examList = array();
             while(($e = $result->fetch_assoc()) != NULL)

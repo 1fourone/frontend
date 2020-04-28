@@ -125,7 +125,20 @@ function setActiveExamType(status)
 /* setActiveExamID - sets the active exam ID to the clicked exam on the right flexbox */
 function setActiveExamID(index)
 {
-    activeExamID = "\'" + homeInfo[1][index]['id'] + "\'";
+    //The true index of an exam in the array list is interpreted through exam type (active, unreleased, released)
+    // A A A U U R R R
+    //The 3rd active exam is 2 = 0 + 2
+    //The 2nd unreleased exam is 4 = 3 + 1
+    //The 2nd released exam is 6 = 3 + 2 + 1
+    var padding = 0;
+    if(activeExamType >= 4)
+        padding = 0;
+    else if(padding >= 1)
+        padding = homeInfo[1].filter((a) => a['status'] == 4).length;
+    else
+        padding = homeInfo[1].filter((a) => a['status'] == 4 || a['status'] == 3 || a['status'] == 2 || a['status'] == 1).length;
+    activeExamID = "\'" + homeInfo[1][padding + index]['id'] + "\'";
+    
 }
 
 /* evaluateStudentChoice - called when the student clicks on Go To Exam button */
