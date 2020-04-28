@@ -174,6 +174,10 @@
                 $fb->{'constraintName'} = $entry->{'constraintName'};
                 $fb->{'tests'} = $entry->{'tests'};
 
+                // escape single quotes in the json
+                $autoFeedback = json_encode($fb);
+                $autoFeedback = str_replace("'", "\\'", $autoFeedback);
+
                 $testPointsLost = 0;
                 foreach($entry->{'tests'} as $tResult)
                     $testPointsLost += $tResult->{'lost'};
@@ -181,7 +185,7 @@
                 //var_dump($entry->{'autoFeedback'}->{'pointsLost'});
                 //var_dump($pointsLost);
                 $sql = sprintf("UPDATE EXAM SET status=2, autoFeedback='%s', pointsReceived='%s' WHERE id='%s' AND qid='%s' AND sid='%s'",
-                json_encode($fb), $entry->{'maxPoints'} - $pointsLost, $examID, $entry->{'qid'}, $entry->{'sid'});
+                $autoFeedback, $entry->{'maxPoints'} - $pointsLost, $examID, $entry->{'qid'}, $entry->{'sid'});
                 //var_dump($sql);
                 $conn->query($sql);
             }
