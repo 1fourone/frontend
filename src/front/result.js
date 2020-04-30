@@ -33,8 +33,8 @@ function getPageRenderData()
         {
             /* Received the questionList array */
             console.log(this.responseText);
+            examsList = [];
             examInfoList = JSON.parse(this.responseText);
-            renderPageElement('exams');
 
             let currentID = examInfoList[0]["sid"];
             let curr = [];
@@ -57,185 +57,19 @@ function getPageRenderData()
     xhr.send();
 }
 
-/* renderPageElement() - will render the specified element(s) on the page */
-function renderPageElement(type)
+function getTestCaseString(index, output = false) 
 {
-    if(type === "exams")
-    {   
-        
-        let listBox = document.getElementById("submission-list-box");
-
-        /*
-        /* first clear all the elements in the div
-        while(listBox.childElementCount)
-            listBox.firstChild.remove();
-        
-        /* then draw each of the appropriate exam visual elements 
-        for(let i=0; i < examInfoList.length; i++)
-        {
-            /* TODO: add exam elements to right flexbox here 
-            let visualExam = document.createElement("div");
-            visualExam.setAttribute("id", "vq"+i);
-            visualExam.setAttribute("class", "visual-question");
-            let p = document.createElement("p");
-            p.innerHTML = '<b>Prompt:</b> ' + examInfoList[i]['prompt'];
-            let ta1 = document.createElement("textarea");
-            ta1.setAttribute("id", "ta1" + i);
-            ta1.setAttribute("readOnly", "");
-            ta1.value = (examInfoList[i]['submissionText'] == null) ? '' : examInfoList[i]['submissionText'].slice(1, examInfoList[i]['submissionText'].length-1);
-            ta1.setAttribute("cols", "80");
-            ta1.setAttribute("rows", "6");
-            let p1 = document.createElement("p");
-            p1.innerHTML = "<b>Student Submission</b>";
-            let p2 = document.createElement("p");
-            p2.innerHTML = "<b>Grader Feedback</b>";
-            let ta2 = document.createElement("textarea");
-            ta2.setAttribute("id", "ta2" + i);
-            ta2.setAttribute("readOnly", "");
-            ta2.setAttribute("cols", "80");
-            ta2.setAttribute("rows", "6");
-            /* get the auto feedback and present it in a nice way 
-            let feedback = '';
-            let autoFeedback = JSON.parse(examInfoList[i]['autoFeedback']);
-            //console.log(autoFeedback);
-            if(autoFeedback['firstPassed'] == "false")
-                feedback += 'Program did not pass the first testcase (-' + parseFloat(autoFeedback['pointsLost'][0]).toFixed(2) + ')\n';
-            if(autoFeedback['secondPassed'] == "false")
-                feedback += 'Program did not pass the second testcase (-' + parseFloat(autoFeedback['pointsLost'][1]).toFixed(2) + ')\n';
-            if(autoFeedback['ranSuccessfully'] == "false")
-                feedback += 'Program did not run successfully (-' + parseFloat(autoFeedback['pointsLost'][2]).toFixed(2) + ')\n';
-            if(autoFeedback['correctSignature'] == "false")
-                feedback += 'Program did not have the correct function signature (-' + parseFloat(autoFeedback['pointsLost'][3]).toFixed(2) + ')\n';
-            if(autoFeedback['hasReturn'] == "false")
-                feedback += 'Program did not return from function (-' + parseFloat(autoFeedback['pointsLost'][4]).toFixed(2) + ')\n';
-
-            feedback = (feedback == '') ? 'none' : feedback;
-            ta2.value = "Points Lost:\n" + feedback;
-
-            let p3 = document.createElement("p");
-            p3.innerHTML = "<b>Max Points:</b> " + examInfoList[i]['maxPoints'] + "<br><b>Total Points Lost:</b> " + (examInfo[i]['maxPoints'] - examInfo[i]['pointsReceived'])'<br><b>Instructor Feedback:</b> ';
-
-            let ta3 = document.createElement("textarea");
-            ta3.setAttribute("id", "ta3" + i);
-            ta3.setAttribute("cols", "80");
-            ta3.setAttribute("rows", "6");
-            
-            let p4 = document.createElement("p");
-            p4.innerHTML = "<b>Override Points Lost</b>";
-            
-            let override = document.createElement("input");
-            override.setAttribute("id", "o"+i);
-
-
-            visualExam.appendChild(p);
-            visualExam.appendChild(p1);
-            visualExam.appendChild(ta1);
-            visualExam.appendChild(p2);
-            visualExam.appendChild(ta2);
-            visualExam.appendChild(p3);
-            visualExam.appendChild(ta3);
-            visualExam.appendChild(p4);
-            visualExam.appendChild(override);
-
-            listBox.appendChild(visualExam);
-            
-        }
-        */
-    }
-}
-
-function validateInput(studentID=0)
-{
-    
-    let submissionsBox = document.getElementById("submission-list-box");
-    let errorLabel = document.getElementById("error-label");
-    var updateInfo = [];
-
-    errorLabel.innerHTML = "";
-
-    for(let i=0; i < submissionsBox.childElementCount; i++)
+    switch(index)
     {
-        let comment = document.getElementById('comment-'+i).value;
-        let instructorFeedback = 1;
-        let overridePoints = document.getElementsByClassName("points-" + i);
-        let oldPoints = document.getElementsByClassName("old-points-" + i);
-        //console.log(overridePoints);
-        let points = [];
-        let total = 0;
-        for(let j = 0; j < overridePoints.length; j++) {
-            points.push( (overridePoints[j].value != "") ? parseInt(overridePoints[j].value) :  parseInt(oldPoints[j].innerHTML));
-            total += points[j];
-        }
-        console.log(points, total);
-
-        var ifeedback = {
-            points: points,
-            comment: comment
-        };
-
-        console.log(total, examsList[studentID][i]["maxPoints"]);
-        if(total > examsList[studentID][i]["maxPoints"])
-            errorLabel.innerHTML = "You cannot have a question have a greater amount of points lost than it's worth.";
-        else 
-        {
-            /* Instructor feedback:
-            {
-                "points": [1, 2, 3..],
-                "comment": "You did good!"
-            }*/
-            //console.log(resultingPoints);
-            //console.log("EID: " + _eid + "\tQID: " + examInfoList[i]['qid'] + "\tSID: " + examInfoList[i]['sid']);
-            //JUST INTS NOW
-            var examUpdate = {
-                "id": _eid,
-                "qid": examInfoList[i]['qid'],
-                "sid": examInfoList[i]['sid'],
-                "instructorFeedback": ifeedback,
-                "pointsReceived": examInfoList[i]['maxPoints'] - total
-            };
-            updateInfo.push(examUpdate);
-        }
-       
+        case 0: return (output) ? "firstOutput" : "firstTestCase";
+        case 1: return (output) ? "secondOutput" : "secondTestCase";
+        case 2: return (output) ? "thirdOutput" : "thirdTestCase";
+        case 3: return (output) ? "fourthOutput" : "fourthTestCase";
+        case 4: return (output) ? "fifthOutput" : "fifthTestCase";
+        case 5: return (output) ? "sixthOutput" : "sixthTestCase";
     }
-
-    if(errorLabel.innerHTML == "")
-    {
-        /* no errors, submit feedback */
-        submitFeedback(updateInfo);
-    }
-    
+    return -1;
 }
-
-function submitFeedback(updateInfo)
-{  
-    console.log("attempting to submit feedback for exam ID " + _eid);
-    console.log(JSON.stringify(updateInfo));
-    /* try to insert the valid question into database */
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", 'data.php', true);
-
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); //We're sending JSON data in a string
-    xhr.onreadystatechange = function() 
-    {
-        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) 
-        {
-            console.log(this.responseText);
-            if(this.responseText == 'success') {
-                //window.location.href = 'instructor.html';
-            }
-            else
-                document.getElementById("error-label").innerHTML = "There was an error submitting the feedback.";
-        }
-    };
-
-    xhr.send("data=exams&id=" + _eid + "&content=" + JSON.stringify(updateInfo)); //send the JSON
-    
-}
-
-/*
-for(i=0; < N; i++)
-    createReviewQuestionVBE(i, STUD_ID)
-*/
 
 function createReviewQuestionVBE(index, studentID) {
     var wrapper = document.createElement("div");
@@ -303,6 +137,7 @@ function createReviewQuestionVBE(index, studentID) {
     td1.innerHTML = "Function Name";
     td2 = document.createElement("td");
     td2.innerHTML = (autoFeedback["name"] == 0) ? "Passed" : "Failed";
+    td2.style.color = (autoFeedback["name"] == 0) ? "#3eb53e" : "#c83a3a";
     td3 = document.createElement("td");
     td3.innerHTML = autoFeedback["name"];
     td3.setAttribute("class", "old-points-" + index);
@@ -324,6 +159,7 @@ function createReviewQuestionVBE(index, studentID) {
     td1.innerHTML = "Colon";
     td2 = document.createElement("td");
     td2.innerHTML = (autoFeedback["colon"] == 0) ? "Passed" : "Failed";
+    td2.style.color = (autoFeedback["colon"] == 0) ? "#3eb53e" : "#c83a3a";
     td3 = document.createElement("td");
     td3.innerHTML = autoFeedback["colon"];
     td3.setAttribute("class", "old-points-" + index);
@@ -342,9 +178,10 @@ function createReviewQuestionVBE(index, studentID) {
     /* constraint */
     var tr = document.createElement("tr");
     td1 = document.createElement("td");
-    td1.innerHTML = "Constraint";
+    td1.innerHTML = "Constraint (" + examsList[studentID][index]['constraintName'] + ")";
     td2 = document.createElement("td");
     td2.innerHTML = (autoFeedback["constraintName"] == 0) ? "Passed" : "Failed";
+    td2.style.color = (autoFeedback["constraintName"] == 0) ? "#3eb53e" : "#c83a3a";
     td3 = document.createElement("td");
     td3.setAttribute("class", "old-points-" + index);
     td3.innerHTML = autoFeedback["constraintName"];
@@ -367,12 +204,17 @@ function createReviewQuestionVBE(index, studentID) {
     for(let i=0; i < tests.length; i++) {
         var tr = document.createElement("tr");
         td1 = document.createElement("td");
-        td1.innerHTML = "Test Case " + (i+1);
+        var decodedArgs = decodeURIComponent(examsList[studentID][index][getTestCaseString(i, false)]).replace(/\s(?=(?:"[^"]*"|[^"])*$)/g, ", ");
+        var decodedOutput = decodeURIComponent(examsList[studentID][index][getTestCaseString(i, true)].replace(/\s(?=(?:"[^"]*"|[^"])*$)/g, ", "));
+        td1.innerHTML = "<b>Test Case:</b> Ran " + examsList[studentID][index]['functionName'] + "(" + decodedArgs + ")";
+        td1.innerHTML += " : expected " + decodedOutput;
+        td1.innerHTML += " → got " + tests[i]['result'];
         td2 = document.createElement("td");
-        td2.innerHTML = (autoFeedback["tests"][i] == 0) ? "Passed" : "Failed";
+        td2.innerHTML = (tests[i]["lost"] == 0) ? "Passed" : "Failed";
+        td2.style.color = (tests[i]["lost"] == 0) ? "#3eb53e" : "#c83a3a";
         td3 = document.createElement("td");
         td3.setAttribute("class", "old-points-" + index);
-        td3.innerHTML = autoFeedback["tests"][i];
+        td3.innerHTML = tests[i]["lost"];
         td4 = document.createElement("td");
         var override = document.createElement("input");
         override.setAttribute("class", "points points-" + index)
