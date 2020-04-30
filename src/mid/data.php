@@ -135,7 +135,8 @@
                    
             
             //curl_setopt($ch, CURLOPT_URL, "https://web.njit.edu/~as2863/RC/grader2.php?");
-            curl_setopt($ch, CURLOPT_URL, "http://localhost/mid/grader.php?");
+            $grader_url = "http://localhost/mid/grader.php?";
+            curl_setopt($ch, CURLOPT_URL, $grader_url);
 
             curl_setopt($ch, CURLOPT_POST, TRUE);
             curl_setopt($ch, CURLOPT_POSTFIELDS, "data=" . json_encode($A1) );

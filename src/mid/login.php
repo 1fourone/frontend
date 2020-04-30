@@ -1,6 +1,7 @@
 <?php
     //middle receives credentials through $_POST['credentials']
     $cred = $_POST['credentials'];
+    $base_url = "http://localhost/back/login.php";
 
     //Hashes password that came in via front
     $data = json_decode($cred);
@@ -12,7 +13,7 @@
 
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "http://localhost/back/login.php");
+    curl_setopt($ch, CURLOPT_URL, $base_url);
     curl_setopt($ch, CURLOPT_POST, TRUE);
     curl_setopt($ch, CURLOPT_POSTFIELDS, "credentials=" . json_encode($c));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
