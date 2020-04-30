@@ -202,14 +202,14 @@
 	        /* requesting all the exam info for a particular exam for review */
             if($_GET['type'] == "instructor") 
 	        {
-	    	    $sql = sprintf("SELECT e.name, e.qid, e.sid, q.prompt, q.functionName, q.firstTestCase, q.firstOutput, q.secondTestCase, q.secondOutput, q.thirdTestCase, q.thirdOutput, q.fourthTestCase, q.fourthOutput, q.fifthTestCase, q.fifthOutput, q.sixthTestCase, q.sixthOutput, e.submissionText, e.autoFeedback, e.instructorFeedback,  e.maxPoints, e.pointsReceived 
+	    	    $sql = sprintf("SELECT e.name, e.qid, e.sid, q.constraintName, q.prompt, q.functionName, q.firstTestCase, q.firstOutput, q.secondTestCase, q.secondOutput, q.thirdTestCase, q.thirdOutput, q.fourthTestCase, q.fourthOutput, q.fifthTestCase, q.fifthOutput, q.sixthTestCase, q.sixthOutput, e.submissionText, e.autoFeedback, e.instructorFeedback,  e.maxPoints, e.pointsReceived 
                 FROM EXAM e, QUESTION q 
                 WHERE e.qid = q.id AND e.id = '%s' 
                 ORDER BY e.sid", $_GET['id']);
 	        } 
             else 
             {
-                $sql = sprintf("SELECT e.name, e.qid, e.sid, q.prompt, q.functionName, q.firstTestCase, q.firstOutput, q.secondTestCase, q.secondOutput, q.thirdTestCase, q.thirdOutput, q.fourthTestCase, q.fourthOutput, q.fifthTestCase, q.fifthOutput, q.sixthTestCase, q.sixthOutput, e.submissionText, e.autoFeedback, e.instructorFeedback,  e.maxPoints, e.pointsReceived  
+                $sql = sprintf("SELECT e.name, e.qid, e.sid, q.constraintName, q.prompt, q.functionName, q.firstTestCase, q.firstOutput, q.secondTestCase, q.secondOutput, q.thirdTestCase, q.thirdOutput, q.fourthTestCase, q.fourthOutput, q.fifthTestCase, q.fifthOutput, q.sixthTestCase, q.sixthOutput, e.submissionText, e.autoFeedback, e.instructorFeedback,  e.maxPoints, e.pointsReceived  
                 FROM EXAM e, QUESTION q
                 WHERE e.qid = q.id AND e.id = %s
                 ORDER BY e.sid", $_GET['id']);

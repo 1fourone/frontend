@@ -296,7 +296,7 @@ function createReviewQuestionVBE(index, studentID) {
     /* constraint */
     var tr = document.createElement("tr");
     td1 = document.createElement("td");
-    td1.innerHTML = "Constraint";
+    td1.innerHTML = "Constraint (" + examsList[studentID][index]['constraintName'] + ")";
     td2 = document.createElement("td");
     td2.innerHTML = (autoFeedback["constraintName"] == 0) ? "Passed" : "Failed";
     td2.style.color = (autoFeedback["constraintName"] == 0) ? "#3eb53e" : "#c83a3a";
