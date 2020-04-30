@@ -266,4 +266,21 @@ function createReviewQuestionListVBE(studentID) {
     for(let i=0; i < examsList[0].length; i++) {
         wrapper.appendChild(createReviewQuestionVBE(i, studentID));
     }
+    showResults();
+}
+
+function showResults() {
+    var wrapper = document.getElementById("post-eval");
+    var p = document.createElement("p");
+
+    var totalGot = examsList[0]
+        .map( v => parseInt(v["pointsReceived"]) )
+        .reduce( (sum, current) => sum + current, 0);
+
+    var totalMax = examsList[0]
+    .map( v => parseInt(v["maxPoints"]) )
+    .reduce( (sum, current) => sum + current, 0);
+    p.innerHTML = "⭐ " + totalGot + "/" + totalMax + '<br>';
+    p.innerHTML += ((totalGot / totalMax) * 100.0).toFixed(2) + '%';
+    wrapper.appendChild(p);
 }

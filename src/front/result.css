@@ -101,3 +101,8 @@ textbox {
     width: 456px;
     height: 82px;
 }
+
+#post-eval {
+    text-align: center;
+    font-size: larger;
+}
