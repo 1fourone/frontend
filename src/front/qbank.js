@@ -184,19 +184,19 @@ function filter() {
 
     // want to find all the indices of things in filteredQuestions that have an ["id"] that's in questionList
     var trueIDs = [];
+    var finalQuestions = [];
     filteredQuestions.forEach(fq => {
         console.log("OBJ BELOW");
         console.log(questionList.filter(q => q["id"] == fq["id"])[0]);
         console.log("IDX: " + questionList.indexOf(questionList.filter(q => q["id"] == fq["id"])[0]));
         console.log(fq["id"]);
-        trueIDs.push(questionList.indexOf(questionList.filter(q => q["id"] == fq["id"])[0]));
+        var trueID = questionList.indexOf(questionList.filter(q => q["id"] == fq["id"])[0]);
+        if(parent.document.getElementById("q-" + trueID) == null) {
+            finalQuestions.push(fq);
+            trueIDs.push(trueID);
+        }
     });
     console.log("TRUE IDS: " + trueIDs);
 
-    trueIDs.forEach(id => {
-        filteredQuestions = filteredQuestions.filter(q => parent.document.getElementById("q-" + id) == null);
-    });
-    
-
-    createQuestionListVBE(filteredQuestions, true, trueIDs);
+    createQuestionListVBE(finalQuestions, true, trueIDs);
 }
