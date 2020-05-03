@@ -9,23 +9,38 @@
     function populateSubmissionFile($q) {
         $file = fopen("/tmp/submission.py", "w") or die ("unable to open submissions file");
         fwrite($file, $q->{'studentInput'} . "\n");
+        
+        $needsPrint = FALSE;
+        if(preg_match("/\s+print\(/", $q->{'studentInput'}) == FALSE)
+            $needsPrint = TRUE;
+        
         foreach($q->{'testCases'} as $tc) {
-            fwrite($file, "print(" . $q->{'functionName'} . "(");
-            
+
+            if($needsPrint == TRUE)
+                fwrite($file, "print(");
+            fwrite($file, $q->{'functionName'} . "(");
+
             $s = "['1', '2', '3'] 4 (1, 2)";
             $decodedTestInput = rawurldecode($tc[0]);
             preg_match_all('/(\[[-?\S*\.?\S*, "\']+\])|(\{[-?\S\.?, :"\']+\})|(\([-?\S\.?, "\']+\))|(["\'].*["\'])|([-+]?\d+\.?\d*e?[-+]?)/m', $decodedTestInput, $matches);
                             
             //matches[0] holds all "chunks"/arguments to the function
             if(empty($matches[0])) {
-                fwrite($file, $decodedTestInput . "))\n");
+                fwrite($file, $decodedTestInput . ")");
+                if($needsPrint == TRUE)
+                    fwrite($file, ")");
+                fwrite($file, "\n");
             }
             else {
                 for($i = 0; $i < count($matches[0]); $i++) {
                     if($i != count($matches[0]) -1)
                         fwrite($file, $matches[0][$i] . ", ");
-                    else
-                        fwrite($file, $matches[0][$i] . "))\n");
+                    else {
+                        fwrite($file, $matches[0][$i] . ")");
+                        if($needsPrint == TRUE)
+                            fwrite($file, ")");
+                        fwrite($file, "\n");
+                    }
                 }
             }
 
@@ -123,7 +138,8 @@
         else
         {
             for($i = 0 ; $i < $numOfTests; $i++) {
-                $trueLine = ($q->{'constraintName'} == "print") ? 2 * $i : $i;
+                //$trueLine = ($q->{'constraintName'} == "print") ? 2 * $i : $i;
+                $trueLine = $i;
                 $testObject = (object)[];
                 $testObject->{'result'} = $outputLines[$trueLine];
                 if($outputLines[$trueLine] != rawurldecode($q->{'testCases'}[$i][1]))
