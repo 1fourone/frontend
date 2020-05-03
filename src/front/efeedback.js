@@ -322,10 +322,44 @@ function createReviewQuestionVBE(index, studentID) {
     for(let i=0; i < tests.length; i++) {
         var tr = document.createElement("tr");
         td1 = document.createElement("td");
-        var decodedArgs = decodeURIComponent(examsList[studentID][index][getTestCaseString(i, false)]).replace(/\s(?=(?:"[^"]*"|[^"])*$)/g, ", ");
-        var decodedOutput = decodeURIComponent(examsList[studentID][index][getTestCaseString(i, true)].replace(/\s(?=(?:"[^"]*"|[^"])*$)/g, ", "));
-        td1.innerHTML = "<b>Test Case:</b> Ran " + examsList[studentID][index]['functionName'] + "(" + decodedArgs + ")";
-        td1.innerHTML += " : expected " + decodedOutput;
+        //let re = /(\[[-?\w*\.?\w*, "\']+\])|(\{[-?\w\.?, :"\']+\})|(\([-?\w\.?, "\']+\))|(["\']-?\w+\.?\w*["\'])|([-+]?\d+\.?\d*e?[-+]?)/gm;
+        //let re = /(\[[-?\S*\.?\S*, "\']+\])|(\{[-?\S\.?, :"\']+\})|(\([-?\S\.?, "\']+\))|(["\']-?\S+\.?\S*["\'])|([-+]?\d+\.?\d*e?[-+]?)/gm;
+        let re = /(\[[-?\S*\.?\S*, "\']+\])|(\{[-?\S\.?, :"\']+\})|(\([-?\S\.?, "\']+\))|(["\'].*["\'])|([-+]?\d+\.?\d*e?[-+]?)/gm;
+
+        //prepare input
+        var decodedInput = decodeURIComponent(examsList[studentID][index][getTestCaseString(i, false)]);
+        var input = "";
+        if(decodedInput.match(re) === null) {
+            input = decodedInput;
+        }
+        else {
+            decodedInput = (decodedInput.match(re) === null) ? decodedInput : decodedInput.match(re);
+            for(let j = 0; j < decodedInput.length; j++) {
+                if(j != decodedInput.length -1)
+                    input += decodedInput[j] + ", ";
+                else
+                    input += decodedInput[j];
+            }
+        }
+
+        //prepare output
+        var decodedOutput = decodeURIComponent(examsList[studentID][index][getTestCaseString(i, true)]);
+        var output = "";
+        if(decodedOutput.match(re) === null) {
+            output = decodedOutput;
+        }
+        else {
+            decodedOutput = (decodedOutput.match(re) === null) ? decodedOutput : decodedOutput.match(re);
+            for(let j = 0; j < decodedOutput.length; j++) {
+                if(j != decodedOutput.length -1)
+                    output += decodedOutput[j] + ", ";
+                else
+                    output += decodedOutput[j];
+            }
+        }
+
+        td1.innerHTML = "<b>Test Case:</b> Ran " + examsList[studentID][index]['functionName'] + "(" + input + ")";
+        td1.innerHTML += " : expected " + output;
         td1.innerHTML += " → got " + tests[i]['result'];
         td2 = document.createElement("td");
         td2.innerHTML = (tests[i]["lost"] == 0) ? "Passed" : "Failed";
