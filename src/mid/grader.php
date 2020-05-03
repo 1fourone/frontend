@@ -12,7 +12,25 @@
         foreach($q->{'testCases'} as $tc) {
             fwrite($file, "print(" . $q->{'functionName'} . "(");
             
-            /* print arrays/tuples 'as is' */
+            $s = "['1', '2', '3'] 4 (1, 2)";
+            $decodedTestInput = rawurldecode($tc[0]);
+            preg_match_all('/(\[[-?\S*\.?\S*, "\']+\])|(\{[-?\S\.?, :"\']+\})|(\([-?\S\.?, "\']+\))|(["\'].*["\'])|([-+]?\d+\.?\d*e?[-+]?)/m', $decodedTestInput, $matches);
+                            
+            //matches[0] holds all "chunks"/arguments to the function
+            if(empty($matches[0])) {
+                fwrite($file, $decodedTestInput . "))\n");
+            }
+            else {
+                for($i = 0; $i < count($matches[0]); $i++) {
+                    if($i != count($matches[0]) -1)
+                        fwrite($file, $matches[0][$i] . ", ");
+                    else
+                        fwrite($file, $matches[0][$i] . "))\n");
+                }
+            }
+
+            /*
+            /* print arrays/tuples 'as is' 
             if($tc[0][0] == "(" || $tc[0][0] == "[")
                 fwrite($file, $tc[0]);
             else
@@ -24,7 +42,9 @@
                         fwrite($file, ",");
                 }
             }
+            
             fwrite($file, "))\n");
+            */
         }
         pclose($file);
     }
